@@ -1,0 +1,116 @@
+{"frames": [
+
+{
+	"filename": "dice00",
+	"frame": {"x":44,"y":95,"w":41,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":0,"w":41,"h":46},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice01",
+	"frame": {"x":48,"y":1,"w":44,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":0,"w":44,"h":47},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice02",
+	"frame": {"x":1,"y":1,"w":45,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":1,"w":45,"h":47},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice03",
+	"frame": {"x":44,"y":143,"w":41,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":4,"w":41,"h":44},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice04",
+	"frame": {"x":1,"y":50,"w":43,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":3,"w":43,"h":43},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice05",
+	"frame": {"x":1,"y":145,"w":41,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":0,"w":41,"h":47},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice06",
+	"frame": {"x":44,"y":189,"w":41,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":4,"w":41,"h":44},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice07",
+	"frame": {"x":46,"y":50,"w":43,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":3,"w":43,"h":43},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice08",
+	"frame": {"x":44,"y":189,"w":41,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":3,"w":41,"h":44},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice09",
+	"frame": {"x":1,"y":95,"w":41,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":0,"w":41,"h":48},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice10",
+	"frame": {"x":87,"y":187,"w":38,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":4,"w":38,"h":42},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice11",
+	"frame": {"x":87,"y":95,"w":40,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":3,"w":40,"h":44},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dice12",
+	"frame": {"x":87,"y":141,"w":40,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":3,"w":40,"h":44},
+	"sourceSize": {"w":48,"h":48}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "dice_2_atlas.png",
+	"format": "RGBA8888",
+	"size": {"w":128,"h":234},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:26838d55329c4f2c0d1382b6e6312fc4:8c2e2972b7bdb754edbb6d50548fe6ff:fbb468207df19db099d2390f99468515$"
+}
+}

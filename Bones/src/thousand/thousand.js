@@ -61,11 +61,12 @@ var ThousandState = (function (_super) {
     };
     ThousandState.prototype.createPlayers = function () {
         this.score = 0;
+        this.playerIndex = 0;
         this.players = {
-            "user": ["Вы", new Phaser.Text(this.game, 50, 548, "Вы", { font: "18px Arial", fill: "#FFFFFF" }), 0],
-            "player1": ["Джек", new Phaser.Text(this.game, 50, 257, "Джек", { font: "18px Arial", fill: "#FFFFFF" }), 0],
-            "player2": ["Барбосса", new Phaser.Text(this.game, 628, 257, "Барбосса", { font: "18px Arial", fill: "#FFFFFF" }), 0],
-            "player3": ["Анжелика", new Phaser.Text(this.game, 628, 548, "Анжелика", { font: "18px Arial", fill: "#FFFFFF" }), 0]
+            "0": ["Вы", new Phaser.Text(this.game, 50, 548, "Вы", { font: "18px Arial", fill: "#FFFFFF" }), 0],
+            "1": ["Джек", new Phaser.Text(this.game, 50, 257, "Джек", { font: "18px Arial", fill: "#FFFFFF" }), 0],
+            "2": ["Барбосса", new Phaser.Text(this.game, 628, 257, "Барбосса", { font: "18px Arial", fill: "#FFFFFF" }), 0],
+            "3": ["Анжелика", new Phaser.Text(this.game, 628, 548, "Анжелика", { font: "18px Arial", fill: "#FFFFFF" }), 0]
         };
         for (var key in this.players) {
             this.players[key][1].text = this.players[key][0] + ": не вступил.";
@@ -218,6 +219,8 @@ var ThousandState = (function (_super) {
         var index;
         var newPosX;
         var newPosY;
+        if (this.diceCountMax === 0)
+            this.diceCountMax = 5;
         for (var key in this.boxDice) {
             if (this.boxDice[key][1] === false) {
                 index = this.randomValue(6);
@@ -240,12 +243,45 @@ var ThousandState = (function (_super) {
     };
     ThousandState.prototype.onRollDiceTweenComplete = function (event) {
         this.diceCountMax--;
+        console.log(this.diceCountMax);
         if (this.diceCountMax === 0) {
+            this.diceCountMax = 5;
             if (this.checkScoreDice() === true) {
-                this.messageText.text = "Вам выпало " + this.score + " очков. \nЖелаете бросить ещё?";
+                this.messageText.text = "Вы набрали " + this.score + " очков. \nЖелаете бросить ещё?";
+                if (this.diceCountMax === 0)
+                    for (var key in this.boxDice)
+                        this.boxDice[key][1] = false;
             }
             else {
-                this.messageText.text = "Вам ничего не выпало.\nХод переходит к другому игроку.";
+                if (this.playerIndex === 0) {
+                    this.score = 0;
+                    this.playerIndex++;
+                    this.messageText.text = "Вам ничего не выпало.\nХод переходит к " + this.players[this.playerIndex.toString()][0] + ".";
+                    this.buttonApply.visible = false;
+                    this.buttonCancel.visible = false;
+                    for (var key in this.boxDice)
+                        this.boxDice[key][1] = false;
+                }
+                else {
+                    if (this.playerIndex < 3) {
+                        this.score = 0;
+                        this.playerIndex++;
+                        this.messageText.text = "Ничего не выпало.\nХод переходит к " + this.players[this.playerIndex.toString()][0] + ".";
+                        this.buttonApply.visible = false;
+                        this.buttonCancel.visible = false;
+                        for (var key in this.boxDice)
+                            this.boxDice[key][1] = false;
+                    }
+                    else {
+                        this.score = 0;
+                        this.playerIndex = 0;
+                        this.messageText.text = "Ничего не выпало.\nХод переходит к Вам.";
+                        this.buttonApply.visible = true;
+                        this.buttonCancel.visible = true;
+                        for (var key in this.boxDice)
+                            this.boxDice[key][1] = false;
+                    }
+                }
             }
         }
     };
@@ -273,12 +309,13 @@ var ThousandState = (function (_super) {
         return result;
     };
     ThousandState.prototype.checkDice5 = function () {
-        console.log("DICE 5");
         var dice = [];
         /* Поиск уникальной комбинации */
         for (var Key in this.boxDice) {
             if (this.boxDice[Key][1] === false)
                 dice.push(this.boxDice[Key][0]);
+            else
+                this.diceCountMax--;
         }
         dice.sort(function (valueA, valueB) {
             return valueA - valueB;
@@ -287,16 +324,19 @@ var ThousandState = (function (_super) {
             if (dice[0] === 1 && dice[1] === 2 && dice[2] === 3 && dice[3] === 4 && dice[4] === 5) {
                 this.score -= 100;
                 this.selectDice("ALL");
+                this.diceCountMax -= 5;
                 return true;
             }
             if (dice[0] === 2 && dice[1] === 3 && dice[2] === 4 && dice[3] === 5 && dice[4] === 6) {
                 this.score += 200;
                 this.selectDice("ALL");
+                this.diceCountMax -= 5;
                 return true;
             }
             if (dice[0] === dice[1] && dice[0] === dice[2] && dice[0] === dice[3] && dice[0] === dice[4]) {
                 this.score += 1000;
                 this.selectDice("ALL");
+                this.diceCountMax -= 5;
                 return true;
             }
         }
@@ -305,7 +345,6 @@ var ThousandState = (function (_super) {
         }
     };
     ThousandState.prototype.checkDice4 = function () {
-        console.log("DICE 4");
         var dice = [];
         /* Поиск одинаковых значений кубиков */
         for (var iKey in this.boxDice) {
@@ -329,8 +368,8 @@ var ThousandState = (function (_super) {
                         this.score += 500;
                     if (this.boxDice[iKey][0] === 6)
                         this.score += 600;
-                    console.log(this.boxDice[iKey][0] + " SCORE = " + this.score);
                     this.selectDice(dice);
+                    this.diceCountMax -= 4;
                     return true;
                 }
                 else {
@@ -341,7 +380,6 @@ var ThousandState = (function (_super) {
         return false;
     };
     ThousandState.prototype.checkDice3 = function () {
-        console.log("DICE 3");
         var dice = [];
         /* Поиск одинаковых значений кубиков */
         for (var iKey in this.boxDice) {
@@ -365,8 +403,8 @@ var ThousandState = (function (_super) {
                         this.score += 50;
                     if (this.boxDice[iKey][0] === 6)
                         this.score += 60;
-                    console.log(this.boxDice[iKey][0] + " SCORE = " + this.score);
                     this.selectDice(dice);
+                    this.diceCountMax -= 3;
                     return true;
                 }
                 else {
@@ -377,7 +415,6 @@ var ThousandState = (function (_super) {
         return false;
     };
     ThousandState.prototype.checkDice1 = function () {
-        console.log("DICE 1");
         var result = false;
         var dice = [];
         for (var iKey in this.boxDice) {
@@ -386,13 +423,13 @@ var ThousandState = (function (_super) {
                     result = true;
                     this.score += 10;
                     dice.push(iKey);
-                    console.log(this.boxDice[iKey][0]);
+                    this.diceCountMax -= 1;
                 }
                 if (this.boxDice[iKey][0] === 5) {
                     result = true;
                     this.score += 5;
                     dice.push(iKey);
-                    console.log(this.boxDice[iKey][0]);
+                    this.diceCountMax -= 1;
                 }
             }
         }
@@ -402,13 +439,11 @@ var ThousandState = (function (_super) {
     };
     ThousandState.prototype.selectDice = function (dice) {
         var tween;
-        console.log(dice);
         if (dice === "ALL") {
             for (var key in this.boxDice) {
                 this.boxDice[key][1] = false;
                 tween = this.game.add.tween(this.boxDice[key][4]);
                 tween.to({ x: this.boxDice[key][2], y: this.boxDice[key][3] }, 500, Phaser.Easing.Linear.None);
-                tween.onComplete.add(this.onRollDiceTweenComplete, this);
                 tween.start();
             }
         }
@@ -418,7 +453,6 @@ var ThousandState = (function (_super) {
                 this.boxDice[dice[i]][1] = true;
                 tween = this.game.add.tween(this.boxDice[dice[i]][4]);
                 tween.to({ x: this.boxDice[dice[i]][2], y: this.boxDice[dice[i]][3] }, 500, Phaser.Easing.Linear.None);
-                tween.onComplete.add(this.onRollDiceTweenComplete, this);
                 tween.start();
             }
         }

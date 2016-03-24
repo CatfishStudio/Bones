@@ -4,3 +4,9 @@ C:\Users\Catfish\Dropbox\PHASER\TypeScript\Bones\Bones\bin\Bones.pdb
 C:\Users\Catfish\Dropbox\PHASER\TypeScript\Bones\Bones\obj\Debug\Bones.csprojResolveAssemblyReference.cache
 C:\Users\Catfish\Dropbox\PHASER\TypeScript\Bones\Bones\obj\Debug\Bones.dll
 C:\Users\Catfish\Dropbox\PHASER\TypeScript\Bones\Bones\obj\Debug\Bones.pdb
+C:\Program Code\Git\Bones\Bones\bin\Bones.dll.config
+C:\Program Code\Git\Bones\Bones\bin\Bones.dll
+C:\Program Code\Git\Bones\Bones\bin\Bones.pdb
+C:\Program Code\Git\Bones\Bones\obj\Debug\Bones.csprojResolveAssemblyReference.cache
+C:\Program Code\Git\Bones\Bones\obj\Debug\Bones.dll
+C:\Program Code\Git\Bones\Bones\obj\Debug\Bones.pdb

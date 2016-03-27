@@ -3,6 +3,8 @@
 /// <reference path="./src/thousand/thousand.ts" />
 /// <reference path="./src/preloader/preloader.ts" />
 
+var sound: boolean = true;
+
 class Game extends Phaser.Game {
     constructor() {
         super(860, 730, Phaser.CANVAS, "content", PreloaderState);

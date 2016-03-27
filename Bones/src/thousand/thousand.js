@@ -129,7 +129,8 @@ var ThousandState = (function (_super) {
         this.group.addChild(this.buttonCancel);
     };
     ThousandState.prototype.onButtonClick = function (event) {
-        this.sound4.play();
+        if (sound === true)
+            this.sound4.play();
         switch (event.name) {
             case "button_end_game":
                 {
@@ -145,6 +146,7 @@ var ThousandState = (function (_super) {
                     this.group.removeChildren();
                     this.group = null;
                     this.windowHelp = null;
+                    this.windowSettings = null;
                     this.messageText = null;
                     this.buttonApply = null;
                     this.buttonCancel = null;
@@ -168,6 +170,7 @@ var ThousandState = (function (_super) {
                     this.group.removeChildren();
                     this.group = null;
                     this.windowHelp = null;
+                    this.windowSettings = null;
                     this.messageText = null;
                     this.buttonApply = null;
                     this.buttonCancel = null;
@@ -191,6 +194,34 @@ var ThousandState = (function (_super) {
             case "button_help_close":
                 {
                     this.windowHelpClose();
+                    break;
+                }
+            case "button_settings":
+                {
+                    this.windowSettingsCreate();
+                    break;
+                }
+            case "button_settings_close":
+                {
+                    this.windowSettingsClose();
+                    break;
+                }
+            case "button_settings_sound":
+                {
+                    if (sound === true) {
+                        sound = false;
+                        this.windowSettings.removeChild(event);
+                        event = new Phaser.Button(this.game, (this.game.width / 2) - 70, 285, 'button_settings_sound_off', this.onButtonClick, this);
+                        event.name = 'button_settings_sound';
+                        this.windowSettings.addChild(event);
+                    }
+                    else {
+                        sound = true;
+                        this.windowSettings.removeChild(event);
+                        event = new Phaser.Button(this.game, (this.game.width / 2) - 70, 285, 'button_settings_sound_on', this.onButtonClick, this);
+                        event.name = 'button_settings_sound';
+                        this.windowSettings.addChild(event);
+                    }
                     break;
                 }
             default:
@@ -286,8 +317,8 @@ var ThousandState = (function (_super) {
         }
     };
     ThousandState.prototype.rollDice = function () {
-        this.sound1.stop();
-        this.sound2.play();
+        if (sound === true)
+            this.sound2.play();
         var tween;
         var index;
         var newPosX;
@@ -391,8 +422,8 @@ var ThousandState = (function (_super) {
         }
     };
     ThousandState.prototype.rollDiceAI = function () {
-        this.sound1.stop();
-        this.sound2.play();
+        if (sound === true)
+            this.sound2.play();
         var tween;
         var index;
         var newPosX;
@@ -857,6 +888,45 @@ var ThousandState = (function (_super) {
         tween = this.game.add.tween(button2);
         tween.to({ y: 405 }, 1500, 'Linear');
         tween.start();
+    };
+    ThousandState.prototype.windowSettingsCreate = function () {
+        this.pause = true;
+        clearInterval(this.timer);
+        this.windowSettings = new Phaser.Group(this.game, this.group);
+        var graphicOverlay = new Phaser.Graphics(this.game, 0, 0);
+        graphicOverlay.beginFill(0x000000, 0.5);
+        graphicOverlay.drawRect(0, 0, this.game.width, this.game.height);
+        graphicOverlay.endFill();
+        var image = new Phaser.Image(this.game, 0, 0, graphicOverlay.generateTexture());
+        image.inputEnabled = true;
+        this.windowSettings.addChild(image);
+        var windowSprite = new Phaser.Sprite(this.game, (this.game.width / 2) - (309 / 2), 180, 'window_settings');
+        this.windowSettings.addChild(windowSprite);
+        var buttonSound;
+        if (sound === true)
+            buttonSound = new Phaser.Button(this.game, (this.game.width / 2) - 70, 285, 'button_settings_sound_on', this.onButtonClick, this);
+        else
+            buttonSound = new Phaser.Button(this.game, (this.game.width / 2) - 70, 285, 'button_settings_sound_off', this.onButtonClick, this);
+        buttonSound.name = 'button_settings_sound';
+        this.windowSettings.addChild(buttonSound);
+        var button = new Phaser.Button(this.game, (this.game.width / 2) - 125, 355, 'button_close', this.onButtonClick, this);
+        button.name = 'button_settings_close';
+        button.onInputOver.add(this.onButtonOver, this);
+        button.onInputOut.add(this.onButtonOut, this);
+        this.windowSettings.addChild(button);
+    };
+    ThousandState.prototype.windowSettingsClose = function () {
+        this.windowSettings.removeChildren();
+        this.group.removeChild(this.windowSettings);
+        this.pause = false;
+        if (this.playerIndex !== 0) {
+            this.timer = setInterval(function () {
+                console.log(this.playerIndex);
+                clearInterval(this.timer);
+                if (this.pause === false)
+                    this.rollDiceAI();
+            }.bind(this), 2500);
+        }
     };
     return ThousandState;
 })(Phaser.State);

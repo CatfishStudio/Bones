@@ -154,7 +154,8 @@ var SevensState = (function (_super) {
         event.kill();
         this.attempt--;
         this.sound1.stop();
-        this.sound2.play();
+        if (sound === true)
+            this.sound2.play();
         if (this.dice1 !== null) {
             this.dice1.kill();
             this.group.removeChild(this.dice1);
@@ -198,7 +199,8 @@ var SevensState = (function (_super) {
         }
     };
     SevensState.prototype.onPanelDiceOver = function (event) {
-        this.sound1.play();
+        if (sound === true)
+            this.sound1.play();
         event.animations.play('dice');
     };
     SevensState.prototype.onPanelDiceOut = function (event) {
@@ -208,7 +210,8 @@ var SevensState = (function (_super) {
     SevensState.prototype.onPanelDiceUp = function (event) {
     };
     SevensState.prototype.onDiceClick = function (event) {
-        this.sound3.play();
+        if (sound === true)
+            this.sound3.play();
         if (event.frame === 10) {
             event.frame = 12;
             this.points += event.diceValue;
@@ -512,7 +515,8 @@ var SevensState = (function (_super) {
     };
     SevensState.prototype.rollDice = function () {
         this.sound1.stop();
-        this.sound2.play();
+        if (sound === true)
+            this.sound2.play();
         var tween;
         var index = this.randomValue(6);
         var newPosX = 25 + ((Math.random() / 0.1) * 10);
@@ -560,7 +564,8 @@ var SevensState = (function (_super) {
         this.group.addChild(button);
     };
     SevensState.prototype.onButtonClick = function (event) {
-        this.sound4.play();
+        if (sound === true)
+            this.sound4.play();
         switch (event.name) {
             case "button_end_game":
                 {
@@ -696,7 +701,8 @@ var SevensState = (function (_super) {
         }
     };
     SevensState.prototype.onFieldDiceClick = function (event) {
-        this.sound3.play();
+        if (sound === true)
+            this.sound3.play();
         if (event.frameName.length === 8) {
             event.frameName = event.frameName + "Y";
             this.points += event.diceValue;

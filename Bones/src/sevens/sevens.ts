@@ -178,7 +178,7 @@ class SevensState extends Phaser.State {
         this.attempt--;
 
         this.sound1.stop();
-        this.sound2.play();
+        if (sound === true) this.sound2.play();
 
         if (this.dice1 !== null) {
             this.dice1.kill();
@@ -229,7 +229,7 @@ class SevensState extends Phaser.State {
     }
 
     onPanelDiceOver(event) {
-        this.sound1.play();
+        if (sound === true) this.sound1.play();
         event.animations.play('dice');
     }
 
@@ -243,7 +243,7 @@ class SevensState extends Phaser.State {
     }
 
     onDiceClick(event) {
-        this.sound3.play();
+        if (sound === true) this.sound3.play();
         if (event.frame === 10) {
             event.frame = 12;
             this.points += event.diceValue;
@@ -552,7 +552,7 @@ class SevensState extends Phaser.State {
 
     rollDice() {
         this.sound1.stop();
-        this.sound2.play();
+        if (sound === true) this.sound2.play();
 
         var tween: Phaser.Tween;
         var index: number = this.randomValue(6);
@@ -607,7 +607,7 @@ class SevensState extends Phaser.State {
     }
 
     onButtonClick(event) {
-        this.sound4.play();
+        if (sound === true) this.sound4.play();
 
         switch (event.name) {
             case "button_end_game":
@@ -759,7 +759,7 @@ class SevensState extends Phaser.State {
     }
 
     onFieldDiceClick(event) {
-        this.sound3.play();
+        if (sound === true) this.sound3.play();
         if (event.frameName.length === 8) {
             event.frameName = event.frameName + "Y";
             this.points += event.diceValue;

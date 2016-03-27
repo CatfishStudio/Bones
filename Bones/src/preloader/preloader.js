@@ -25,6 +25,8 @@ var PreloaderState = (function (_super) {
         this.load.image('button_post', './assets/textures/button_post.png');
         this.load.image('button_restart_game', './assets/textures/button_restart_game.png');
         this.load.image('button_settings', './assets/textures/button_settings.png');
+        this.load.image('button_settings_sound_on', './assets/textures/button_settings_sound_on.png');
+        this.load.image('button_settings_sound_off', './assets/textures/button_settings_sound_off.png');
         this.load.image('button_throw', './assets/textures/button_throw.png');
         this.load.image('button_not_throw', './assets/textures/button_not_throw.png');
         this.load.image('help', './assets/textures/help.png');
@@ -37,6 +39,7 @@ var PreloaderState = (function (_super) {
         this.load.image('money', './assets/textures/money.png');
         this.load.image('panel', './assets/textures/panel.png');
         this.load.image('win', './assets/textures/win_seven.png');
+        this.load.image('window_settings', './assets/textures/window_settings.png');
         this.load.atlas('dice_1_atlas', './assets/atlas/dice_1_atlas.png', './assets/atlas/dice_1_atlas.json');
         this.load.atlas('dice_2_atlas', './assets/atlas/dice_2_atlas.png', './assets/atlas/dice_2_atlas.json');
         this.load.atlas('dice_3_atlas', './assets/atlas/dice_3_atlas.png', './assets/atlas/dice_3_atlas.json');

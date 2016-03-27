@@ -42,7 +42,8 @@ var MenuState = (function (_super) {
         }
     };
     MenuState.prototype.onButtonClick = function (event) {
-        this.soundButton.play();
+        if (sound === true)
+            this.soundButton.play();
         switch (event.name) {
             case "button_7":
                 {
@@ -64,6 +65,34 @@ var MenuState = (function (_super) {
             case "button_help_close":
                 {
                     this.windowHelpClose();
+                    break;
+                }
+            case "button_settings":
+                {
+                    this.windowSettingsCreate();
+                    break;
+                }
+            case "button_settings_close":
+                {
+                    this.windowSettingsClose();
+                    break;
+                }
+            case "button_settings_sound":
+                {
+                    if (sound === true) {
+                        sound = false;
+                        this.windowSettings.removeChild(event);
+                        event = new Phaser.Button(this.game, (this.game.width / 2) - 70, 285, 'button_settings_sound_off', this.onButtonClick, this);
+                        event.name = 'button_settings_sound';
+                        this.windowSettings.addChild(event);
+                    }
+                    else {
+                        sound = true;
+                        this.windowSettings.removeChild(event);
+                        event = new Phaser.Button(this.game, (this.game.width / 2) - 70, 285, 'button_settings_sound_on', this.onButtonClick, this);
+                        event.name = 'button_settings_sound';
+                        this.windowSettings.addChild(event);
+                    }
                     break;
                 }
             default:
@@ -98,6 +127,34 @@ var MenuState = (function (_super) {
     MenuState.prototype.windowHelpClose = function () {
         this.windowHelp.removeChildren();
         this.group.removeChild(this.windowHelp);
+    };
+    MenuState.prototype.windowSettingsCreate = function () {
+        this.windowSettings = new Phaser.Group(this.game, this.group);
+        var graphicOverlay = new Phaser.Graphics(this.game, 0, 0);
+        graphicOverlay.beginFill(0x000000, 0.5);
+        graphicOverlay.drawRect(0, 0, this.game.width, this.game.height);
+        graphicOverlay.endFill();
+        var image = new Phaser.Image(this.game, 0, 0, graphicOverlay.generateTexture());
+        image.inputEnabled = true;
+        this.windowSettings.addChild(image);
+        var windowSprite = new Phaser.Sprite(this.game, (this.game.width / 2) - (309 / 2), 180, 'window_settings');
+        this.windowSettings.addChild(windowSprite);
+        var buttonSound;
+        if (sound === true)
+            buttonSound = new Phaser.Button(this.game, (this.game.width / 2) - 70, 285, 'button_settings_sound_on', this.onButtonClick, this);
+        else
+            buttonSound = new Phaser.Button(this.game, (this.game.width / 2) - 70, 285, 'button_settings_sound_off', this.onButtonClick, this);
+        buttonSound.name = 'button_settings_sound';
+        this.windowSettings.addChild(buttonSound);
+        var button = new Phaser.Button(this.game, (this.game.width / 2) - 125, 355, 'button_close', this.onButtonClick, this);
+        button.name = 'button_settings_close';
+        button.onInputOver.add(this.onButtonOver, this);
+        button.onInputOut.add(this.onButtonOut, this);
+        this.windowSettings.addChild(button);
+    };
+    MenuState.prototype.windowSettingsClose = function () {
+        this.windowSettings.removeChildren();
+        this.group.removeChild(this.windowSettings);
     };
     return MenuState;
 })(Phaser.State);

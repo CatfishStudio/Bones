@@ -133,6 +133,7 @@ var ThousandState = (function (_super) {
             case "button_end_game":
                 {
                     event.inputEnabled = false;
+                    this.endGame("LOST");
                     break;
                 }
             case "button_restart_game":
@@ -140,6 +141,7 @@ var ThousandState = (function (_super) {
                     this.group.removeChildren();
                     this.group = null;
                     this.windowHelp = null;
+                    this.timer = null;
                     this.game.state.restart(true);
                     break;
                 }
@@ -148,6 +150,7 @@ var ThousandState = (function (_super) {
                     this.group.removeChildren();
                     this.group = null;
                     this.windowHelp = null;
+                    this.timer = null;
                     this.game.state.start("MenuState");
                     break;
                 }
@@ -738,6 +741,44 @@ var ThousandState = (function (_super) {
                 tween.start();
             }
         }
+    };
+    ThousandState.prototype.endGame = function (type) {
+        clearInterval(this.timer);
+        var graphicOverlay = new Phaser.Graphics(this.game, 0, 0);
+        graphicOverlay.beginFill(0x000000, 0.5);
+        graphicOverlay.drawRect(0, 0, this.game.width, this.game.height);
+        graphicOverlay.endFill();
+        var image = new Phaser.Image(this.game, 0, 0, graphicOverlay.generateTexture());
+        image.inputEnabled = true;
+        this.group.addChild(image);
+        var window;
+        var tween;
+        if (type === "WIN") {
+            window = new Phaser.Sprite(this.game, (this.game.width / 2) - (410 / 2), -215, 'win');
+        }
+        else {
+            window = new Phaser.Sprite(this.game, (this.game.width / 2) - (410 / 2), -215, 'lost');
+        }
+        this.group.addChild(window);
+        var button1 = new Phaser.Button(this.game, (this.game.width / 2) - 270, 5, 'button_restart_game', this.onButtonClick, this);
+        button1.name = 'button_restart_game';
+        button1.onInputOver.add(this.onButtonOver, this);
+        button1.onInputOut.add(this.onButtonOut, this);
+        this.group.addChild(button1);
+        var button2 = new Phaser.Button(this.game, (this.game.width / 2) + 25, 5, 'button_back_menu', this.onButtonClick, this);
+        button2.name = 'button_back_menu';
+        button2.onInputOver.add(this.onButtonOver, this);
+        button2.onInputOut.add(this.onButtonOut, this);
+        this.group.addChild(button2);
+        tween = this.game.add.tween(window);
+        tween.to({ y: 185 }, 1500, 'Linear');
+        tween.start();
+        tween = this.game.add.tween(button1);
+        tween.to({ y: 405 }, 1500, 'Linear');
+        tween.start();
+        tween = this.game.add.tween(button2);
+        tween.to({ y: 405 }, 1500, 'Linear');
+        tween.start();
     };
     return ThousandState;
 })(Phaser.State);

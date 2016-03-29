@@ -164,6 +164,9 @@
         switch (event.name) {
             case "button_end_game":
                 {
+                    this.pause = true;
+                    clearInterval(this.timer);
+
                     event.inputEnabled = false;
                     this.endGame("LOST");
                     break;
@@ -285,6 +288,9 @@
         switch (event.name) {
             case "button_throw":
                 {
+                    this.onActionButtonOut(event);
+                    this.buttonApply.visible = false;
+                    this.buttonCancel.visible = false;
                     this.rollDice();
                     break;
                 }
@@ -334,8 +340,6 @@
         event.anchor.x += 0.025;
     }
 
-
-
     windowHelpCreate() {
         this.pause = true;
         clearInterval(this.timer);
@@ -368,11 +372,7 @@
         this.pause = false;
 
         if (this.playerIndex !== 0) {
-            this.timer = setInterval(function () {
-                console.log(this.playerIndex);
-                clearInterval(this.timer);
-                if (this.pause === false) this.rollDiceAI();
-            }.bind(this), 2500);
+            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
         }
     }
 
@@ -431,10 +431,7 @@
                             this.diceCountMax = 5;
                             this.messageText.text = "Вы набрали -100 очков. \nВы пропускаете этот ход.";
                             for (var key in this.boxDice) this.boxDice[key][1] = false;
-                            this.timer = setInterval(function () {
-                                clearInterval(this.timer);
-                                if (this.pause === false) this.rollDiceAI();
-                            }.bind(this), 2500);
+                            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
 
                         } else { // Пользователь уже вошел в игру (отнимаем -100 и передаём ход дальше)
                             this.buttonApply.visible = false;
@@ -448,10 +445,7 @@
                             this.diceCountMax = 5;
                             this.messageText.text = "Вы набрали -100 очков. \nВы пропускаете этот ход.";
                             for (var key in this.boxDice) this.boxDice[key][1] = false;
-                            this.timer = setInterval(function () {
-                                clearInterval(this.timer);
-                                if (this.pause === false) this.rollDiceAI();
-                            }.bind(this), 2500);
+                            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                         }
 
                     } else {
@@ -467,6 +461,8 @@
 
                     this.messageText.text = "Вы набрали " + this.score + " очков. \nЖелаете бросить ещё?";
                     if (this.diceCountMax === 0) for (var key in this.boxDice) this.boxDice[key][1] = false;
+                    this.buttonApply.visible = true;
+                    this.buttonCancel.visible = true;
 
                 }
 
@@ -479,10 +475,7 @@
                 this.buttonApply.visible = false;
                 this.buttonCancel.visible = false;
                 for (var key in this.boxDice) this.boxDice[key][1] = false;
-                this.timer = setInterval(function () {
-                    clearInterval(this.timer);
-                    if (this.pause === false) this.rollDiceAI();
-                }.bind(this), 2500);   
+                this.timer = setInterval(this.onTimerComplete.bind(this), 2500);   
             }
         }
     }
@@ -544,10 +537,7 @@
                                 this.buttonApply.visible = false;
                                 this.buttonCancel.visible = false;
                                 for (var key in this.boxDice) this.boxDice[key][1] = false;
-                                this.timer = setInterval(function () {
-                                    clearInterval(this.timer);
-                                    if (this.pause === false) this.rollDiceAI();
-                                }.bind(this), 2500);
+                                this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
 
                             } else {    // ход переходит к пользователю
                                 clearInterval(this.timer);
@@ -573,10 +563,7 @@
                                 this.buttonApply.visible = false;
                                 this.buttonCancel.visible = false;
                                 for (var key in this.boxDice) this.boxDice[key][1] = false;
-                                this.timer = setInterval(function () {
-                                    clearInterval(this.timer);
-                                    if (this.pause === false) this.rollDiceAI();
-                                }.bind(this), 2500);
+                                this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
 
                             } else {    // ход переходит к пользователю
                                 clearInterval(this.timer);
@@ -599,10 +586,7 @@
                             this.diceCountMax = 5;
                             for (var key in this.boxDice) this.boxDice[key][1] = false;
                             this.messageText.text = this.players[this.playerIndex.toString()][0] + " набрал " + this.score + " очков\nи продолжает бросать кости.";
-                            this.timer = setInterval(function () {
-                                clearInterval(this.timer);
-                                if (this.pause === false) this.rollDiceAI();
-                            }.bind(this), 2500);
+                            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                         }
                     }
 
@@ -614,10 +598,7 @@
                         if (this.score < 75) { // ИИ не набрал нужное количество очков, продолжает бросать кости
                                                         
                             this.messageText.text = this.players[this.playerIndex.toString()][0] + " набрал " + this.score + " очков\nи продолжает бросать кости.";
-                            this.timer = setInterval(function () {
-                                clearInterval(this.timer);
-                                if (this.pause === false) this.rollDiceAI();
-                            }.bind(this), 2500);
+                            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
 
                         } else { // ИИ набрал достаточно очков для входа и передаёт ход следующему игроку.
                                                         
@@ -638,10 +619,7 @@
                                     this.buttonApply.visible = false;
                                     this.buttonCancel.visible = false;
                                     for (var key in this.boxDice) this.boxDice[key][1] = false;
-                                    this.timer = setInterval(function () {
-                                        clearInterval(this.timer);
-                                        if (this.pause === false) this.rollDiceAI();
-                                    }.bind(this), 2500);
+                                    this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
 
                                 } else {    // ход переходит к пользователю
                                     clearInterval(this.timer);
@@ -662,20 +640,14 @@
                         if (this.diceCountMax > 2) { // если очки принесли только 1-2 кубика - ИИ продолжает бросать
 
                             this.messageText.text = this.players[this.playerIndex.toString()][0] + " набрал " + this.score + " очков\nи продолжает бросать кости.";
-                            this.timer = setInterval(function () {
-                                clearInterval(this.timer);
-                                if (this.pause === false) this.rollDiceAI();
-                            }.bind(this), 2500);
+                            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
 
                         } else { // если очки принесли 3 и блее кубиков - ИИ решает бросать сам
 
                             if (this.randomValue(1) === 1) { // ИИ кидает еще
 
                                 this.messageText.text = this.players[this.playerIndex.toString()][0] + " набрал " + this.score + " очков\nи продолжает бросать кости.";
-                                this.timer = setInterval(function () {
-                                    clearInterval(this.timer);
-                                    if (this.pause === false) this.rollDiceAI();
-                                }.bind(this), 2500);
+                                this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
 
                             } else { // ИИ отказывается 
 
@@ -703,10 +675,7 @@
                                         this.buttonApply.visible = false;
                                         this.buttonCancel.visible = false;
                                         for (var key in this.boxDice) this.boxDice[key][1] = false;
-                                        this.timer = setInterval(function () {
-                                            clearInterval(this.timer);
-                                            if (this.pause === false) this.rollDiceAI();
-                                        }.bind(this), 2500);
+                                        this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
 
                                     } else {    // ход переходит к пользователю
                                         clearInterval(this.timer);
@@ -735,10 +704,7 @@
                     this.buttonApply.visible = false;
                     this.buttonCancel.visible = false;
                     for (var key in this.boxDice) this.boxDice[key][1] = false;
-                    this.timer = setInterval(function () {
-                        clearInterval(this.timer);
-                        if (this.pause === false) this.rollDiceAI();
-                    }.bind(this), 2500);
+                    this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
 
                 } else {    // ход переходит к пользователю
                     clearInterval(this.timer);
@@ -918,6 +884,12 @@
         }
     }
 
+    onTimerComplete(event) {
+        clearInterval(this.timer);
+        this.timer = null;
+        if (this.pause === false) this.rollDiceAI();
+    }
+
     endGame(type: string) {
         this.pause = true;
         clearInterval(this.timer);
@@ -1001,11 +973,7 @@
         this.pause = false;
 
         if (this.playerIndex !== 0) {
-            this.timer = setInterval(function () {
-                console.log(this.playerIndex);
-                clearInterval(this.timer);
-                if (this.pause === false) this.rollDiceAI();
-            }.bind(this), 2500);
+            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
         }
     }
 }

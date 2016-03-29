@@ -15,5 +15,10 @@ class Game extends Phaser.Game {
 }
 
 window.onload = () => {
+    /*
+    VK.init(function() {
+        apiId: 1234567;
+    });
+     */
     var game = new Game();
 };

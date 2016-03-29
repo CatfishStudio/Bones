@@ -134,6 +134,8 @@ var ThousandState = (function (_super) {
         switch (event.name) {
             case "button_end_game":
                 {
+                    this.pause = true;
+                    clearInterval(this.timer);
                     event.inputEnabled = false;
                     this.endGame("LOST");
                     break;
@@ -240,6 +242,9 @@ var ThousandState = (function (_super) {
         switch (event.name) {
             case "button_throw":
                 {
+                    this.onActionButtonOut(event);
+                    this.buttonApply.visible = false;
+                    this.buttonCancel.visible = false;
                     this.rollDice();
                     break;
                 }
@@ -308,12 +313,7 @@ var ThousandState = (function (_super) {
         this.group.removeChild(this.windowHelp);
         this.pause = false;
         if (this.playerIndex !== 0) {
-            this.timer = setInterval(function () {
-                console.log(this.playerIndex);
-                clearInterval(this.timer);
-                if (this.pause === false)
-                    this.rollDiceAI();
-            }.bind(this), 2500);
+            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
         }
     };
     ThousandState.prototype.rollDice = function () {
@@ -361,11 +361,7 @@ var ThousandState = (function (_super) {
                             this.messageText.text = "Вы набрали -100 очков. \nВы пропускаете этот ход.";
                             for (var key in this.boxDice)
                                 this.boxDice[key][1] = false;
-                            this.timer = setInterval(function () {
-                                clearInterval(this.timer);
-                                if (this.pause === false)
-                                    this.rollDiceAI();
-                            }.bind(this), 2500);
+                            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                         }
                         else {
                             this.buttonApply.visible = false;
@@ -378,11 +374,7 @@ var ThousandState = (function (_super) {
                             this.messageText.text = "Вы набрали -100 очков. \nВы пропускаете этот ход.";
                             for (var key in this.boxDice)
                                 this.boxDice[key][1] = false;
-                            this.timer = setInterval(function () {
-                                clearInterval(this.timer);
-                                if (this.pause === false)
-                                    this.rollDiceAI();
-                            }.bind(this), 2500);
+                            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                         }
                     }
                     else {
@@ -402,6 +394,8 @@ var ThousandState = (function (_super) {
                     if (this.diceCountMax === 0)
                         for (var key in this.boxDice)
                             this.boxDice[key][1] = false;
+                    this.buttonApply.visible = true;
+                    this.buttonCancel.visible = true;
                 }
             }
             else {
@@ -413,11 +407,7 @@ var ThousandState = (function (_super) {
                 this.buttonCancel.visible = false;
                 for (var key in this.boxDice)
                     this.boxDice[key][1] = false;
-                this.timer = setInterval(function () {
-                    clearInterval(this.timer);
-                    if (this.pause === false)
-                        this.rollDiceAI();
-                }.bind(this), 2500);
+                this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
             }
         }
     };
@@ -467,11 +457,7 @@ var ThousandState = (function (_super) {
                                 this.buttonCancel.visible = false;
                                 for (var key in this.boxDice)
                                     this.boxDice[key][1] = false;
-                                this.timer = setInterval(function () {
-                                    clearInterval(this.timer);
-                                    if (this.pause === false)
-                                        this.rollDiceAI();
-                                }.bind(this), 2500);
+                                this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                             }
                             else {
                                 clearInterval(this.timer);
@@ -497,11 +483,7 @@ var ThousandState = (function (_super) {
                                 this.buttonCancel.visible = false;
                                 for (var key in this.boxDice)
                                     this.boxDice[key][1] = false;
-                                this.timer = setInterval(function () {
-                                    clearInterval(this.timer);
-                                    if (this.pause === false)
-                                        this.rollDiceAI();
-                                }.bind(this), 2500);
+                                this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                             }
                             else {
                                 clearInterval(this.timer);
@@ -525,11 +507,7 @@ var ThousandState = (function (_super) {
                             for (var key in this.boxDice)
                                 this.boxDice[key][1] = false;
                             this.messageText.text = this.players[this.playerIndex.toString()][0] + " набрал " + this.score + " очков\nи продолжает бросать кости.";
-                            this.timer = setInterval(function () {
-                                clearInterval(this.timer);
-                                if (this.pause === false)
-                                    this.rollDiceAI();
-                            }.bind(this), 2500);
+                            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                         }
                     }
                 }
@@ -537,11 +515,7 @@ var ThousandState = (function (_super) {
                     if (this.players[this.playerIndex.toString()][3] === false) {
                         if (this.score < 75) {
                             this.messageText.text = this.players[this.playerIndex.toString()][0] + " набрал " + this.score + " очков\nи продолжает бросать кости.";
-                            this.timer = setInterval(function () {
-                                clearInterval(this.timer);
-                                if (this.pause === false)
-                                    this.rollDiceAI();
-                            }.bind(this), 2500);
+                            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                         }
                         else {
                             // сохраняем результат ИИ
@@ -561,11 +535,7 @@ var ThousandState = (function (_super) {
                                     this.buttonCancel.visible = false;
                                     for (var key in this.boxDice)
                                         this.boxDice[key][1] = false;
-                                    this.timer = setInterval(function () {
-                                        clearInterval(this.timer);
-                                        if (this.pause === false)
-                                            this.rollDiceAI();
-                                    }.bind(this), 2500);
+                                    this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                                 }
                                 else {
                                     clearInterval(this.timer);
@@ -584,20 +554,12 @@ var ThousandState = (function (_super) {
                     else {
                         if (this.diceCountMax > 2) {
                             this.messageText.text = this.players[this.playerIndex.toString()][0] + " набрал " + this.score + " очков\nи продолжает бросать кости.";
-                            this.timer = setInterval(function () {
-                                clearInterval(this.timer);
-                                if (this.pause === false)
-                                    this.rollDiceAI();
-                            }.bind(this), 2500);
+                            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                         }
                         else {
                             if (this.randomValue(1) === 1) {
                                 this.messageText.text = this.players[this.playerIndex.toString()][0] + " набрал " + this.score + " очков\nи продолжает бросать кости.";
-                                this.timer = setInterval(function () {
-                                    clearInterval(this.timer);
-                                    if (this.pause === false)
-                                        this.rollDiceAI();
-                                }.bind(this), 2500);
+                                this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                             }
                             else {
                                 // сохраняем результат ИИ
@@ -625,11 +587,7 @@ var ThousandState = (function (_super) {
                                         this.buttonCancel.visible = false;
                                         for (var key in this.boxDice)
                                             this.boxDice[key][1] = false;
-                                        this.timer = setInterval(function () {
-                                            clearInterval(this.timer);
-                                            if (this.pause === false)
-                                                this.rollDiceAI();
-                                        }.bind(this), 2500);
+                                        this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                                     }
                                     else {
                                         clearInterval(this.timer);
@@ -658,11 +616,7 @@ var ThousandState = (function (_super) {
                     this.buttonCancel.visible = false;
                     for (var key in this.boxDice)
                         this.boxDice[key][1] = false;
-                    this.timer = setInterval(function () {
-                        clearInterval(this.timer);
-                        if (this.pause === false)
-                            this.rollDiceAI();
-                    }.bind(this), 2500);
+                    this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
                 }
                 else {
                     clearInterval(this.timer);
@@ -850,6 +804,12 @@ var ThousandState = (function (_super) {
             }
         }
     };
+    ThousandState.prototype.onTimerComplete = function (event) {
+        clearInterval(this.timer);
+        this.timer = null;
+        if (this.pause === false)
+            this.rollDiceAI();
+    };
     ThousandState.prototype.endGame = function (type) {
         this.pause = true;
         clearInterval(this.timer);
@@ -920,12 +880,7 @@ var ThousandState = (function (_super) {
         this.group.removeChild(this.windowSettings);
         this.pause = false;
         if (this.playerIndex !== 0) {
-            this.timer = setInterval(function () {
-                console.log(this.playerIndex);
-                clearInterval(this.timer);
-                if (this.pause === false)
-                    this.rollDiceAI();
-            }.bind(this), 2500);
+            this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
         }
     };
     return ThousandState;

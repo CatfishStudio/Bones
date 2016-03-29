@@ -16,7 +16,7 @@ var SevensState = (function (_super) {
         _super.apply(this, arguments);
         this.score = 0;
         this.points = 0;
-        this.attempt = 7;
+        this.attempt = 0;
         this.columnComplete = 0;
     }
     SevensState.prototype.preload = function () {
@@ -135,6 +135,7 @@ var SevensState = (function (_super) {
         this.group.addChild(this.scoreText);
     };
     SevensState.prototype.createPanelDice = function () {
+        this.attempt = 7;
         var dice;
         var index = 0;
         var sprite;

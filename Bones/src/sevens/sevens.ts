@@ -20,7 +20,7 @@ class SevensState extends Phaser.State {
     scoreText: Phaser.Text;
     points: number = 0;
     pointsText: Phaser.Text;
-    attempt: number = 7;
+    attempt: number = 0;
     columnComplete: number = 0;
     sound1: Phaser.Sound;
     sound2: Phaser.Sound;
@@ -153,6 +153,8 @@ class SevensState extends Phaser.State {
     }
 
     createPanelDice() {
+        this.attempt = 7;
+
         var dice: DiceButton;
         var index: number = 0;
         var sprite: Phaser.Sprite;

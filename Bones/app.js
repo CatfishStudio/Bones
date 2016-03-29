@@ -19,6 +19,11 @@ var Game = (function (_super) {
     return Game;
 })(Phaser.Game);
 window.onload = function () {
+    /*
+    VK.init(function() {
+        apiId: 1234567;
+    });
+     */
     var game = new Game();
 };
 //# sourceMappingURL=app.js.map

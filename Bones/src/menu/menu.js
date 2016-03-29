@@ -95,6 +95,11 @@ var MenuState = (function (_super) {
                     }
                     break;
                 }
+            case "button_ivent":
+                {
+                    //VK.callMethod("showInviteBox");
+                    break;
+                }
             default:
                 break;
         }

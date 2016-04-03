@@ -77,6 +77,11 @@
 
         var icons: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, 'icons');
         this.group.addChild(icons);
+
+        if (avatar !== null) {
+            var ava: Phaser.Sprite = new Phaser.Sprite(this.game, 100, 375, 'avatar');
+            this.group.addChild(ava);
+        }
     }
 
     createMessage() {
@@ -454,6 +459,8 @@
                         } else {
                             this.messageText.text = "Вы набрали " + this.score + " очков. \nЖелаете бросить ещё?";
                             if (this.diceCountMax === 0) for (var key in this.boxDice) this.boxDice[key][1] = false;
+                            this.buttonApply.visible = true;
+                            this.buttonCancel.visible = true;
                         }
                     }
 

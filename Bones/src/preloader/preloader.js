@@ -7,12 +7,18 @@ var PreloaderState = (function (_super) {
     __extends(PreloaderState, _super);
     function PreloaderState() {
         _super.apply(this, arguments);
+        this.progressText = null;
+        this.assetsLoadComplete = false;
     }
     PreloaderState.prototype.create = function () {
         this.stage.backgroundColor = "#FFFFFF";
-        this.load.onLoadStart.add(this.onLoadStart, this);
-        this.load.onFileComplete.add(this.onFileComplete, this);
-        this.load.onLoadComplete.add(this.onLoadComplete, this);
+        this.load.onLoadStart.add(this.onLoadStart.bind(this), this);
+        this.load.onFileComplete.add(this.onFileComplete.bind(this), this);
+        this.load.onLoadComplete.add(this.onLoadComplete.bind(this), this);
+        if (avatar !== null) {
+            this.load.image('avatar', avatar);
+        }
+        this.load.image('preloader', './assets/textures/1a.jpg');
         this.load.image('background', './assets/textures/background.jpg');
         this.load.image('box', './assets/textures/box.jpg');
         this.load.image('button_1000', './assets/textures/button_1000.png');
@@ -56,10 +62,15 @@ var PreloaderState = (function (_super) {
         this.load.start();
     };
     PreloaderState.prototype.onLoadStart = function () {
-        this.progressText = this.game.add.text(0, 0, "File Complete: 0%", { font: "35px Arial", fill: "#ff0000", align: "center" });
     };
     PreloaderState.prototype.onFileComplete = function (progress, cacheKey, success, totalLoaded, totalFiles) {
-        this.progressText.text = "File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles;
+        //this.progressText.text = "File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles;
+        if (cacheKey === "preloader") {
+            this.game.add.sprite(0, 0, 'preloader');
+            this.progressText = this.game.add.text(340, 450, "ЗАГРУЗКА 0%", { font: "25px Monotype Corsiva", fill: "#FFFFAA", align: "center" });
+        }
+        if (this.progressText !== null)
+            this.progressText.text = "ЗАГРУЗКА " + progress + "%";
     };
     PreloaderState.prototype.onLoadComplete = function () {
         this.game.state.start("MenuState");

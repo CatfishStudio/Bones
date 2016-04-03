@@ -4,6 +4,7 @@
 /// <reference path="./src/preloader/preloader.ts" />
 
 var sound: boolean = true;
+var avatar: string = null;
 
 class Game extends Phaser.Game {
     constructor() {
@@ -17,7 +18,12 @@ class Game extends Phaser.Game {
 window.onload = () => {
     /*
     VK.init(function() {
-        apiId: 1234567;
+        apiId: 5380703;
+    });
+
+    VK.api("photos.get", {album_id: 'profile'}, function(data) { 
+        avatar = data.response[data.response.length-1]['src'];
+        var game = new Game();
     });
      */
     var game = new Game();

@@ -76,7 +76,7 @@ var ThousandState = (function (_super) {
             "0": ["Вы", new Phaser.Text(this.game, 50, 548, "Вы", { font: "18px Arial", fill: "#FFFFFF" }), 0, false],
             "1": ["Джек", new Phaser.Text(this.game, 50, 257, "Джек", { font: "18px Arial", fill: "#FFFFFF" }), 0, false],
             "2": ["Барбосса", new Phaser.Text(this.game, 628, 257, "Барбосса", { font: "18px Arial", fill: "#FFFFFF" }), 0, false],
-            "3": ["Анжелика", new Phaser.Text(this.game, 628, 548, "Анжелика", { font: "18px Arial", fill: "#FFFFFF" }), 0, false]
+            "3": ["Анжелика", new Phaser.Text(this.game, 628, 548, "Анжелика", { font: "18px Arial", fill: "#FFFFFF" }), 0, false] // имя, текст, очки, флаг - вошел в игру
         };
         for (var key in this.players) {
             this.players[key][1].text = this.players[key][0] + ": не вступил.";
@@ -230,6 +230,10 @@ var ThousandState = (function (_super) {
                     }
                     break;
                 }
+            case "button_post":
+                {
+					VK.api("wall.post", {message:'Кости - Тысяча\n Я набрал ' + this.score + ' очков и победил!\nПрисоединяйтесь к игре https://vk.com/app5380703', attachments : 'photo-62618339_409463964'});
+                }
             default:
                 break;
         }
@@ -382,7 +386,10 @@ var ThousandState = (function (_super) {
                         }
                     }
                     else {
-                        if (this.score >= 1000) {
+                        var totalScore = this.score + this.players[0][2];
+                        if (this.score >= 1000 || totalScore >= 1000) {
+                            this.score = totalScore;
+                            this.messageText.text = "Вы победили!!!\n Вы набрали " + totalScore + " очков.";
                             this.endGame("WIN");
                         }
                         else {
@@ -402,6 +409,12 @@ var ThousandState = (function (_super) {
                             this.boxDice[key][1] = false;
                     this.buttonApply.visible = true;
                     this.buttonCancel.visible = true;
+                    var totalScore = this.score + this.players[0][2];
+                    if (totalScore >= 1000) {
+                        this.score = totalScore;
+                        this.messageText.text = "Вы победили!!!\n Вы набрали " + totalScore + " очков.";
+                        this.endGame("WIN");
+                    }
                 }
             }
             else {
@@ -505,7 +518,8 @@ var ThousandState = (function (_super) {
                         }
                     }
                     else {
-                        if (this.score >= 1000) {
+                        var totalScore = this.score + this.players[this.playerIndex.toString()][2];
+                        if (this.score >= 1000 || totalScore >= 1000) {
                             this.endGame("LOST");
                         }
                         else {
@@ -558,6 +572,12 @@ var ThousandState = (function (_super) {
                         }
                     }
                     else {
+                        var totalScore = this.score + this.players[this.playerIndex.toString()][2];
+                        if (totalScore >= 1000) {
+                            this.messageText.text = this.players[this.playerIndex.toString()][0] + " набрал " + totalScore + " очков\nи победил!";
+                            this.endGame("LOST");
+                            return;
+                        }
                         if (this.diceCountMax > 2) {
                             this.messageText.text = this.players[this.playerIndex.toString()][0] + " набрал " + this.score + " очков\nи продолжает бросать кости.";
                             this.timer = setInterval(this.onTimerComplete.bind(this), 2500);
@@ -854,6 +874,16 @@ var ThousandState = (function (_super) {
         tween = this.game.add.tween(button2);
         tween.to({ y: 405 }, 1500, 'Linear');
         tween.start();
+        if (type === "WIN") {
+            var button3 = new Phaser.Button(this.game, (this.game.width / 2) - 130, 55, 'button_post', this.onButtonClick, this);
+            button3.name = 'button_post';
+            button3.onInputOver.add(this.onButtonOver, this);
+            button3.onInputOut.add(this.onButtonOut, this);
+            this.group.addChild(button3);
+            tween = this.game.add.tween(button3);
+            tween.to({ y: 460 }, 1500, 'Linear');
+            tween.start();
+        }
     };
     ThousandState.prototype.windowSettingsCreate = function () {
         this.pause = true;

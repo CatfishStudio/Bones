@@ -628,6 +628,10 @@ var SevensState = (function (_super) {
                     this.windowHelpClose();
                     break;
                 }
+            case "button_post":
+                {
+					VK.api("wall.post", { message: 'Кости - Семёрка\n Я набрал ' + this.score + ' очков и победил!\nПрисоединяйтесь к игре https://vk.com/app5380703', attachments: 'photo-62618339_409463964' });
+                }
             default:
                 break;
         }
@@ -753,6 +757,16 @@ var SevensState = (function (_super) {
         tween = this.game.add.tween(button2);
         tween.to({ y: 405 }, 1500, 'Linear');
         tween.start();
+        if (type === "WIN") {
+            var button3 = new Phaser.Button(this.game, (this.game.width / 2) - 130, 55, 'button_post', this.onButtonClick, this);
+            button3.name = 'button_post';
+            button3.onInputOver.add(this.onButtonOver, this);
+            button3.onInputOut.add(this.onButtonOut, this);
+            this.group.addChild(button3);
+            tween = this.game.add.tween(button3);
+            tween.to({ y: 460 }, 1500, 'Linear');
+            tween.start();
+        }
     };
     SevensState.prototype.windowHelpCreate = function () {
         this.windowHelp = new Phaser.Group(this.game, this.group);

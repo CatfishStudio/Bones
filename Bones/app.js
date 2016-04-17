@@ -9,6 +9,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var sound = true;
 var avatar = null;
+var userFirstName = null;
+var userLastName = null;
+var userRatingThousand = 0;
+var userRatingSevens = 0;
 var Game = (function (_super) {
     __extends(Game, _super);
     function Game() {
@@ -25,10 +29,16 @@ window.onload = function () {
         apiId: 5380703;
     });
 
+    VK.api("users.get", function(data) {
+        userFirstName = data.response[0].first_name;
+        userLastName = data.response[0].last_name;
+    });
+
     VK.api("photos.get", {album_id: 'profile'}, function(data) {
         avatar = data.response[data.response.length-1]['src'];
         var game = new Game();
     });
+    
      */
     var game = new Game();
 };

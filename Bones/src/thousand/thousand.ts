@@ -275,7 +275,9 @@
 
             case "button_post":
                 {
-                    // VK.api("wall.post", {message:'Кости - Тысяча\n Я набрал ' + this.score + ' очков и победил!\nПрисоединяйтесь к игре https://vk.com/app5380703', attachments : 'photo-62618339_409463964'});
+                    /*
+                    VK.api("wall.post", {message:'Кости - Тысяча\n Я набрал ' + this.score + ' очков и победил!\nПрисоединяйтесь к игре https://vk.com/app5380703', attachments : 'photo-62618339_409463964'});
+                    */
                 }
 
             default:
@@ -924,8 +926,10 @@
         this.pause = true;
         clearInterval(this.timer);
 
+        userRatingThousand = this.players[0][2];
+
         var graphicOverlay: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
-        graphicOverlay.beginFill(0x000000, 0.5);
+        graphicOverlay.beginFill(0x000000, 0.7);
         graphicOverlay.drawRect(0, 0, this.game.width, this.game.height);
         graphicOverlay.endFill();
 
@@ -936,9 +940,9 @@
         var window: Phaser.Sprite;
         var tween: Phaser.Tween;
         if (type === "WIN") {
-            window = new Phaser.Sprite(this.game, (this.game.width / 2) - (410 / 2), -215, 'win');
+            window = new Phaser.Sprite(this.game, (this.game.width / 2) - (410 / 2), -515, 'win');
         } else {
-            window = new Phaser.Sprite(this.game, (this.game.width / 2) - (410 / 2), -215, 'lost');
+            window = new Phaser.Sprite(this.game, (this.game.width / 2) - (410 / 2), -515, 'lost');
         }
         this.group.addChild(window);
 
@@ -955,13 +959,13 @@
         this.group.addChild(button2);
 
         tween = this.game.add.tween(window);
-        tween.to({ y: 185 }, 1500, 'Linear');
+        tween.to({ y: 85 }, 1500, 'Linear');
         tween.start();
         tween = this.game.add.tween(button1);
-        tween.to({ y: 405 }, 1500, 'Linear');
+        tween.to({ y: 605 }, 1500, 'Linear');
         tween.start();
         tween = this.game.add.tween(button2);
-        tween.to({ y: 405 }, 1500, 'Linear');
+        tween.to({ y: 605 }, 1500, 'Linear');
         tween.start();
 
         if (type === "WIN") {
@@ -972,7 +976,87 @@
             this.group.addChild(button3);
 
             tween = this.game.add.tween(button3);
-            tween.to({ y: 460 }, 1500, 'Linear');
+            tween.to({ y: 660 }, 1500, 'Linear');
+            tween.start();
+        }
+
+        var text: Phaser.Text = this.game.add.text(350, -515, "Тысяча", { font: "48px Monotype Corsiva", fill: "#5C2D15", align: "center" });
+        this.group.addChild(text);
+        tween = this.game.add.tween(text);
+        tween.to({ y: 100 }, 1500, 'Linear');
+        tween.start();
+
+        text = this.game.add.text(345, -465, "Рейтинг игроков", { font: "26px Monotype Corsiva", fill: "#5C2D15", align: "center" });
+        this.group.addChild(text);
+        tween = this.game.add.tween(text);
+        tween.to({ y: 150 }, 1500, 'Linear');
+        tween.start();
+
+        var ratingThousand: any[] = [
+            ["Джек Воробей", 1000, "очков"],
+            ["Уилл Тёрнер", 900, "очков"],
+            ["Элизабет Суонн", 800, "очков"],
+            ["Гектор Барбосса", 700, "очков"],
+            ["Дейви Джонс", 600, "очков"],
+            ["Тиа Дальма", 500, "очков"],
+            ["Джошими Гиббс", 400, "очков"],
+            ["Анжелика", 300, "очков"],
+            ["Джеймс Норингтон", 200, "очков"]
+        ];
+
+        
+        var userName: string = null;
+        if (userFirstName !== null) {
+            if ((userFirstName.length + userLastName.length) > 23) userName = userFirstName;
+            else userName = userFirstName + " " + userLastName;
+        } else userName = "Вы";
+
+        var n: number = 0;
+        var userWentUp: boolean = false;
+        var count: number = ratingThousand.length;
+
+        for (var i = 0; i < count; i++) {
+
+            if (userRatingThousand >= ratingThousand[i][1] && userWentUp === false) {
+                text = this.game.add.text(250, -400 + (20 * n), (n + 1).toString() + " " + userName, { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+                this.group.addChild(text);
+                tween = this.game.add.tween(text);
+                tween.to({ y: 185 + (20 * n) }, 1500, 'Linear');
+                tween.start();
+
+                text = this.game.add.text(450, -400 + (20 * n), userRatingThousand + " очков", { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+                this.group.addChild(text);
+                tween = this.game.add.tween(text);
+                tween.to({ y: 185 + (20 * n) }, 1500, 'Linear');
+                tween.start();
+
+                userWentUp = true;
+                n++;
+            }
+            text = this.game.add.text(250, -400 + (20 * n), (n + 1).toString() + " " + ratingThousand[i][0], { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.group.addChild(text);
+            tween = this.game.add.tween(text);
+            tween.to({ y: 185 + (20 * n) }, 1500, 'Linear');
+            tween.start();
+
+            text = this.game.add.text(450, -400 + (20 * n), ratingThousand[i][1] + " " + ratingThousand[i][2], { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.group.addChild(text);
+            tween = this.game.add.tween(text);
+            tween.to({ y: 185 + (20 * n) }, 1500, 'Linear');
+            tween.start();
+            n++;
+        }
+
+        if (userRatingThousand < ratingThousand[count - 1][1]) {
+            text = this.game.add.text(250, -400 + (20 * n), (n + 1).toString() + " " + userName, { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.group.addChild(text);
+            tween = this.game.add.tween(text);
+            tween.to({ y: 185 + (20 * n) }, 1500, 'Linear');
+            tween.start();
+            text = this.game.add.text(450, -400 + (20 * n), userRatingThousand + " очков", { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.group.addChild(text);
+            tween = this.game.add.tween(text);
+            tween.to({ y: 185 + (20 * n) }, 1500, 'Linear');
             tween.start();
         }
     }

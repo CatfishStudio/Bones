@@ -15,9 +15,9 @@ var PreloaderState = (function (_super) {
         this.load.onLoadStart.add(this.onLoadStart.bind(this), this);
         this.load.onFileComplete.add(this.onFileComplete.bind(this), this);
         this.load.onLoadComplete.add(this.onLoadComplete.bind(this), this);
-		if (avatar !== null) {
+        if (avatar !== null) {
             this.load.image('avatar', avatar);
-		}
+        }
         this.load.image('preloader', './assets/textures/1a.jpg');
         this.load.image('background', './assets/textures/background.jpg');
         this.load.image('box', './assets/textures/box.jpg');
@@ -29,6 +29,7 @@ var PreloaderState = (function (_super) {
         this.load.image('button_help', './assets/textures/button_help.png');
         this.load.image('button_ivent', './assets/textures/button_ivent.png');
         this.load.image('button_post', './assets/textures/button_post.png');
+        this.load.image('button_rating', './assets/textures/button_rating.png');
         this.load.image('button_restart_game', './assets/textures/button_restart_game.png');
         this.load.image('button_settings', './assets/textures/button_settings.png');
         this.load.image('button_settings_sound_on', './assets/textures/button_settings_sound_on.png');
@@ -41,10 +42,13 @@ var PreloaderState = (function (_super) {
         this.load.image('icons', './assets/textures/icons.png');
         this.load.image('logo_menu', './assets/textures/logo_menu.png');
         this.load.image('logo_seven', './assets/textures/logo_seven.png');
-        this.load.image('lost', './assets/textures/lost_seven.png');
+        this.load.image('lost_small', './assets/textures/lost_seven.png');
+        this.load.image('lost', './assets/textures/lost_game.png');
         this.load.image('money', './assets/textures/money.png');
         this.load.image('panel', './assets/textures/panel.png');
-        this.load.image('win', './assets/textures/win_seven.png');
+        this.load.image('rating', './assets/textures/rating.png');
+        this.load.image('win_small', './assets/textures/win_seven.png');
+        this.load.image('win', './assets/textures/win_game.png');
         this.load.image('window_settings', './assets/textures/window_settings.png');
         this.load.atlas('dice_1_atlas', './assets/atlas/dice_1_atlas.png', './assets/atlas/dice_1_atlas.json');
         this.load.atlas('dice_2_atlas', './assets/atlas/dice_2_atlas.png', './assets/atlas/dice_2_atlas.json');

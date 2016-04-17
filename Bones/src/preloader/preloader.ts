@@ -24,6 +24,7 @@
         this.load.image('button_help', './assets/textures/button_help.png');
         this.load.image('button_ivent', './assets/textures/button_ivent.png');
         this.load.image('button_post', './assets/textures/button_post.png');
+        this.load.image('button_rating', './assets/textures/button_rating.png');
         this.load.image('button_restart_game', './assets/textures/button_restart_game.png');
         this.load.image('button_settings', './assets/textures/button_settings.png');
         this.load.image('button_settings_sound_on', './assets/textures/button_settings_sound_on.png');
@@ -36,10 +37,13 @@
         this.load.image('icons', './assets/textures/icons.png');
         this.load.image('logo_menu', './assets/textures/logo_menu.png');
         this.load.image('logo_seven', './assets/textures/logo_seven.png');
-        this.load.image('lost', './assets/textures/lost_seven.png');
+        this.load.image('lost_small', './assets/textures/lost_seven.png');
+        this.load.image('lost', './assets/textures/lost_game.png');
         this.load.image('money', './assets/textures/money.png');
         this.load.image('panel', './assets/textures/panel.png');
-        this.load.image('win', './assets/textures/win_seven.png');
+        this.load.image('rating', './assets/textures/rating.png');
+        this.load.image('win_small', './assets/textures/win_seven.png');
+        this.load.image('win', './assets/textures/win_game.png');
         this.load.image('window_settings', './assets/textures/window_settings.png');
 
 

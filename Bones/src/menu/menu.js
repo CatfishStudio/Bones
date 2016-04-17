@@ -31,7 +31,7 @@ var MenuState = (function (_super) {
         this.group.addChild(logo);
     };
     MenuState.prototype.createButtons = function () {
-        var names = ["button_1000", "button_7", "button_settings", "button_ivent", "button_help"];
+        var names = ["button_1000", "button_7", "button_settings", "button_ivent", "button_help", "button_rating"];
         var button;
         for (var i = 0; i < names.length; i++) {
             button = new Phaser.Button(this.game, (this.game.width / 2) - (250 / 2), 150 + (100 * i), names[i], this.onButtonClick, this);
@@ -77,6 +77,16 @@ var MenuState = (function (_super) {
                     this.windowSettingsClose();
                     break;
                 }
+            case "button_rating":
+                {
+                    this.windowRatingCreate();
+                    break;
+                }
+            case "button_rating_close":
+                {
+                    this.windowRatingClose();
+                    break;
+                }
             case "button_settings_sound":
                 {
                     if (sound === true) {
@@ -97,7 +107,9 @@ var MenuState = (function (_super) {
                 }
             case "button_ivent":
                 {
-                    //VK.callMethod("showInviteBox");
+                    /*
+                    VK.callMethod("showInviteBox");
+                    */
                     break;
                 }
             default:
@@ -160,6 +172,110 @@ var MenuState = (function (_super) {
     MenuState.prototype.windowSettingsClose = function () {
         this.windowSettings.removeChildren();
         this.group.removeChild(this.windowSettings);
+    };
+    MenuState.prototype.windowRatingCreate = function () {
+        this.windowRating = new Phaser.Group(this.game, this.group);
+        var graphicOverlay = new Phaser.Graphics(this.game, 0, 0);
+        graphicOverlay.beginFill(0x000000, 0.5);
+        graphicOverlay.drawRect(0, 0, this.game.width, this.game.height);
+        graphicOverlay.endFill();
+        var image = new Phaser.Image(this.game, 0, 0, graphicOverlay.generateTexture());
+        image.inputEnabled = true;
+        this.windowRating.addChild(image);
+        var helpSprite = new Phaser.Sprite(this.game, (this.game.width / 2) - (486 / 2), 25, 'rating');
+        this.windowRating.addChild(helpSprite);
+        var button = new Phaser.Button(this.game, (this.game.width / 2) - 200, 600, 'button_close', this.onButtonClick, this);
+        button.name = 'button_rating_close';
+        button.onInputOver.add(this.onButtonOver, this);
+        button.onInputOut.add(this.onButtonOut, this);
+        this.windowRating.addChild(button);
+        var text = this.game.add.text(350, 55, "Тысяча", { font: "48px Monotype Corsiva", fill: "#5C2D15", align: "center" });
+        this.windowRating.addChild(text);
+        var ratingThousand = [
+            ["Джек Воробей", 1000, "очков"],
+            ["Уилл Тёрнер", 900, "очков"],
+            ["Элизабет Суонн", 800, "очков"],
+            ["Гектор Барбосса", 700, "очков"],
+            ["Дейви Джонс", 600, "очков"],
+            ["Тиа Дальма", 500, "очков"],
+            ["Джошими Гиббс", 400, "очков"],
+            ["Анжелика", 300, "очков"],
+            ["Джеймс Норингтон", 200, "очков"]
+        ];
+        var userName = null;
+        if (userFirstName !== null) {
+            if ((userFirstName.length + userLastName.length) > 23)
+                userName = userFirstName;
+            else
+                userName = userFirstName + " " + userLastName;
+        }
+        else
+            userName = "Вы";
+        var n = 0;
+        var userWentUp = false;
+        var count = ratingThousand.length;
+        for (var i = 0; i < count; i++) {
+            if (userRatingThousand >= ratingThousand[i][1] && userWentUp === false) {
+                text = this.game.add.text(250, 100 + (20 * n), (n + 1).toString() + " " + userName, { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+                this.windowRating.addChild(text);
+                text = this.game.add.text(450, 100 + (20 * n), userRatingThousand + " очков", { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+                this.windowRating.addChild(text);
+                userWentUp = true;
+                n++;
+            }
+            text = this.game.add.text(250, 100 + (20 * n), (n + 1).toString() + " " + ratingThousand[i][0], { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.windowRating.addChild(text);
+            text = this.game.add.text(450, 100 + (20 * n), ratingThousand[i][1] + " " + ratingThousand[i][2], { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.windowRating.addChild(text);
+            n++;
+        }
+        if (userRatingThousand < ratingThousand[count - 1][1]) {
+            text = this.game.add.text(250, 100 + (20 * n), (n + 1).toString() + " " + userName, { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.windowRating.addChild(text);
+            text = this.game.add.text(450, 100 + (20 * n), userRatingThousand + " очков", { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.windowRating.addChild(text);
+        }
+        text = this.game.add.text(350, 325, "Семёрка", { font: "48px Monotype Corsiva", fill: "#5C2D15", align: "center" });
+        this.windowRating.addChild(text);
+        var ratingSevens = [
+            ["Уилл Тёрнер", 700, "очков"],
+            ["Анжелика", 650, "очков"],
+            ["Джек Воробей", 600, "очков"],
+            ["Джеймс Норингтон", 550, "очков"],
+            ["Джошими Гиббс", 500, "очков"],
+            ["Гектор Барбосса", 450, "очков"],
+            ["Тиа Дальма", 400, "очков"],
+            ["Дейви Джонс", 450, "очков"],
+            ["Элизабет Суонн", 300, "очков"]
+        ];
+        n = 0;
+        userWentUp = false;
+        var count = ratingSevens.length;
+        for (var i = 0; i < count; i++) {
+            if (userRatingSevens >= ratingSevens[i][1] && userWentUp === false) {
+                text = this.game.add.text(250, 375 + (20 * n), (n + 1).toString() + " " + userName, { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+                this.windowRating.addChild(text);
+                text = this.game.add.text(450, 375 + (20 * n), userRatingSevens + " очков", { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+                this.windowRating.addChild(text);
+                userWentUp = true;
+                n++;
+            }
+            text = this.game.add.text(250, 375 + (20 * n), (n + 1).toString() + " " + ratingSevens[i][0], { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.windowRating.addChild(text);
+            text = this.game.add.text(450, 375 + (20 * n), ratingSevens[i][1] + " " + ratingSevens[i][2], { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.windowRating.addChild(text);
+            n++;
+        }
+        if (userRatingSevens < ratingSevens[count - 1][1]) {
+            text = this.game.add.text(250, 375 + (20 * n), (n + 1).toString() + " " + userName, { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.windowRating.addChild(text);
+            text = this.game.add.text(450, 375 + (20 * n), userRatingSevens + " очков", { font: "18px Monotype Corsiva", fill: "#5C2D15", align: "left" });
+            this.windowRating.addChild(text);
+        }
+    };
+    MenuState.prototype.windowRatingClose = function () {
+        this.windowRating.removeChildren();
+        this.group.removeChild(this.windowRating);
     };
     return MenuState;
 })(Phaser.State);

@@ -5,6 +5,10 @@
 
 var sound: boolean = true;
 var avatar: string = null;
+var userFirstName: string = null;
+var userLastName: string = null;
+var userRatingThousand: number = 0;
+var userRatingSevens: number = 0;
 
 class Game extends Phaser.Game {
     constructor() {
@@ -21,10 +25,16 @@ window.onload = () => {
         apiId: 5380703;
     });
 
+    VK.api("users.get", function(data) {
+        userFirstName = data.response[0].first_name;
+        userLastName = data.response[0].last_name;
+    });
+
     VK.api("photos.get", {album_id: 'profile'}, function(data) { 
         avatar = data.response[data.response.length-1]['src'];
         var game = new Game();
     });
+    
      */
     var game = new Game();
 };

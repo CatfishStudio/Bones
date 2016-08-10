@@ -1,0 +1,44 @@
+{"frames": [
+
+{
+	"filename": "dicewin00",
+	"frame": {"x":41,"y":1,"w":38,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":3,"w":38,"h":42},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dicewin01",
+	"frame": {"x":1,"y":1,"w":38,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":1,"w":38,"h":46},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dicewin02",
+	"frame": {"x":81,"y":1,"w":38,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":3,"w":38,"h":42},
+	"sourceSize": {"w":48,"h":48}
+},
+{
+	"filename": "dicewin03",
+	"frame": {"x":121,"y":1,"w":38,"h":38},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":5,"w":38,"h":38},
+	"sourceSize": {"w":48,"h":48}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "dice_win_atlas.png",
+	"format": "RGBA8888",
+	"size": {"w":160,"h":48},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:31d41fdd2fb43dba7396ecb494358fe5:ea5bb73cf6e8d40c7a890b1cdcdd9e1b:0b129342390fb562246a74003b4fab81$"
+}
+}

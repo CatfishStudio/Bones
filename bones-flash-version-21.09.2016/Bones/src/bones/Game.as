@@ -6,6 +6,7 @@ package bones
 	import bones.events.Navigation;
 	import bones.data.Constants;
 	import bones.menu.Menu;
+	import bones.settings.Settings;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -38,9 +39,24 @@ package bones
 				addChild(new Menu());
 			}
 		}
+		
+		private function settings():void
+		{
+			if (getChildByName(Constants.SETTINGS) != null)
+			{
+				removeChild(getChildByName(Constants.SETTINGS));
+				//if (getChildByName(Constants.MK_WINDOW_LEVEL)) _level.timerPause(false);
+			}
+			else
+			{
+				//if (getChildByName(Constants.MK_WINDOW_LEVEL)) _level.timerPause(true);
+				addChild(new Settings());
+			}
+		}
 	
 		private function windowAllClose():void
 		{
+			if (getChildByName(Constants.SETTINGS) != null) removeChild(getChildByName(Constants.SETTINGS));
 			/*
 			if (getChildByName(Constants.WINDOW_BACK_MENU) != null)	removeChild(getChildByName(Constants.WINDOW_BACK_MENU));
 			if (getChildByName(Constants.WINDOW_BACK_STAIRS) != null) removeChild(getChildByName(Constants.WINDOW_BACK_STAIRS));
@@ -48,7 +64,6 @@ package bones
 			if (getChildByName(Constants.WINDOW_LOST) != null)	removeChild(getChildByName(Constants.WINDOW_LOST));
 			if (getChildByName(Constants.WINDOW_VICTORY) != null) removeChild(getChildByName(Constants.WINDOW_VICTORY));
 			if (getChildByName(Constants.WINDOW_END_GAME) != null) removeChild(getChildByName(Constants.WINDOW_END_GAME));
-			if (getChildByName(Constants.SETTINGS) != null) removeChild(getChildByName(Constants.SETTINGS));
 			*/
 		}
 	
@@ -65,10 +80,16 @@ package bones
 				{
 					break;
 				}				
-				case Constants.MENU_BUTTON_SETTINGS:
+				case Constants.BUTTON_SETTINGS:
 				{
+					settings();
 					break;
-				}				
+				}	
+				case Constants.SETTINGS_BUTTON_CLOSE:
+				{
+					settings();
+					break;
+				}
 				case Constants.MENU_BUTTON_IVENT:
 				{
 					break;

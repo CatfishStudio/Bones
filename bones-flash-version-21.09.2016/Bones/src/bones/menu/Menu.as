@@ -19,7 +19,7 @@ package bones.menu
 	public class Menu extends Sprite 
 	{
 		private var button:Button;
-		private var background:Image;
+		private var image:Image;
 		
 		public function Menu() 
 		{
@@ -40,7 +40,7 @@ package bones.menu
 		private function onRemoveFromStage(e:Event):void 
 		{
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemoveFromStage);
-			background.dispose();
+			image.dispose();
 			button.dispose();
 			while (this.numChildren)
 			{
@@ -54,14 +54,14 @@ package bones.menu
 		private function onButtonsClick(e:Event):void 
 		{
 			//trace(Button(e.target).name);
-			dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(event.target).name }));
+			dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 		}
 		
 		private function createBackground():void
 		{
 			var bitmap:Bitmap = new Images.ImgBackground();
-			background = new Image(Texture.fromBitmap(bitmap));
-			addChild(background);
+			image = new Image(Texture.fromBitmap(bitmap));
+			addChild(image);
 			bitmap = null;
 		}
 		
@@ -83,7 +83,7 @@ package bones.menu
 			
 			bitmap = new Images.ImgButtonSettings();
 			button = new Button(Texture.fromBitmap(bitmap));
-			button.name = Constants.MENU_BUTTON_SETTINGS;
+			button.name = Constants.BUTTON_SETTINGS;
 			button.x = (Constants.GAME_WINDOW_WIDTH / 2) - (button.width / 2);
 			button.y = 350;
 			addChild(button);

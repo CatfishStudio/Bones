@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="dice_win_atlas.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="dice_win_00.png"	x="0"	y="37"	width="36"	height="40" frameX="-6" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="dice_win_01.png"	x="0"	y="78"	width="36"	height="44" frameX="-6" frameY="-2" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="dice_win_02.png"	x="37"	y="0"	width="36"	height="40" frameX="-6" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="dice_win_03.png"	x="0"	y="0"	width="36"	height="36" frameX="-6" frameY="-6" frameWidth="48" frameHeight="48"/>
+</TextureAtlas>

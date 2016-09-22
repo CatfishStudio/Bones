@@ -7,6 +7,7 @@ package bones
 	import bones.data.Constants;
 	import bones.menu.Menu;
 	import bones.settings.Settings;
+	import bones.help.Help;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -53,6 +54,18 @@ package bones
 				addChild(new Settings());
 			}
 		}
+		
+		private function help():void
+		{
+			if (getChildByName(Constants.HELP) != null)
+			{
+				removeChild(getChildByName(Constants.HELP));
+			}
+			else
+			{
+				addChild(new Help());
+			}
+		}
 	
 		private function windowAllClose():void
 		{
@@ -96,8 +109,14 @@ package bones
 				}				
 				case Constants.MENU_BUTTON_HELP:
 				{
+					help();
 					break;
-				}				
+				}
+				case Constants.HELP_BUTTON_CLOSE:
+				{
+					help();
+					break;
+				}
 				case Constants.MENU_BUTTON_RATING:
 				{
 					break;

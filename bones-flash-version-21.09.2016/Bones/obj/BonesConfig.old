@@ -32,20 +32,20 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>C:\GIT\Bones\bones-flash-version-21.09.2016\Bones\src</path-element>
-      <path-element>C:\GIT\Bones\bones-flash-version-21.09.2016\Bones\assets</path-element>
-      <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
+      <path-element>D:\GIT\Bones\bones-flash-version-21.09.2016\Bones\src</path-element>
+      <path-element>D:\GIT\Bones\bones-flash-version-21.09.2016\Bones\assets</path-element>
+      <path-element>C:\Program Files\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>C:\GIT\Bones\bones-flash-version-21.09.2016\Bones\lib\starling.swc</path-element>
-      <path-element>C:\GIT\Bones\bones-flash-version-21.09.2016\Bones\assets</path-element>
-      <path-element>C:\GIT\Bones\bones-flash-version-21.09.2016\Bones\assets\sounds</path-element>
-      <path-element>C:\GIT\Bones\bones-flash-version-21.09.2016\Bones\assets\atlas</path-element>
-      <path-element>C:\GIT\Bones\bones-flash-version-21.09.2016\Bones\assets\textures</path-element>
+      <path-element>D:\GIT\Bones\bones-flash-version-21.09.2016\Bones\lib\starling.swc</path-element>
+      <path-element>D:\GIT\Bones\bones-flash-version-21.09.2016\Bones\assets</path-element>
+      <path-element>D:\GIT\Bones\bones-flash-version-21.09.2016\Bones\assets\sounds</path-element>
+      <path-element>D:\GIT\Bones\bones-flash-version-21.09.2016\Bones\assets\atlas</path-element>
+      <path-element>D:\GIT\Bones\bones-flash-version-21.09.2016\Bones\assets\textures</path-element>
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>C:\GIT\Bones\bones-flash-version-21.09.2016\Bones\src\bones\Main.as</path-element>
+    <path-element>D:\GIT\Bones\bones-flash-version-21.09.2016\Bones\src\bones\Main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>60</default-frame-rate>

@@ -21,7 +21,10 @@ package bones.data
 		public static const SETTINGS:String = "settings";
 		public static const SETTINGS_BUTTON_SOUND:String = "settingsButtonSound";
 		public static const SETTINGS_BUTTON_CLOSE:String = "settingsButtonClose";
-
+		
+		public static const HELP:String = "help";
+		public static const HELP_BUTTON_CLOSE:String = "helpButtonClose";
+		
 	}
 
 }

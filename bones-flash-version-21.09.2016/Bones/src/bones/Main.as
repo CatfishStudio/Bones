@@ -1,12 +1,16 @@
 package bones
 {
-	import vk.APIConnection;
-	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	import flash.display3D.Context3DRenderMode;
+	import flash.geom.Rectangle;
 	
 	import starling.core.Starling;
 	import starling.display.Stage;
+	
+	import bones.data.Constants;
 	
 	/**
 	 * ...
@@ -15,7 +19,7 @@ package bones
 	[SWF(width="860", height="730", frameRate="60", backgroundColor="#ffffff", allowFullscreen="true")]
 	public class Main extends Sprite 
 	{
-		private var _starling:Starling;
+		private var starling:Starling;
 		
 		public function Main() 
 		{
@@ -26,7 +30,25 @@ package bones
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
+			
+			initStarling();
+		}
+		
+		private function initStarling():void
+		{
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.addEventListener (Event.RESIZE, resizeListenerFlash);
+			starling = new Starling(Game, stage, null, null, Context3DRenderMode.SOFTWARE);
+			starling.antiAliasing = 1;
+			starling.start();
+		}
+		
+		private function resizeListenerFlash(event:Event):void
+		{
+			Starling.current.viewPort = new Rectangle (0, 0, stage.stageWidth, stage.stageHeight);
+			starling.stage.stageWidth = Constants.GAME_WINDOW_WIDTH;
+			starling.stage.stageHeight = Constants.GAME_WINDOW_HEIGHT;
 		}
 		
 	}

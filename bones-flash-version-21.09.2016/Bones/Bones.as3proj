@@ -5,7 +5,7 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\Bones.swf" />
-    <movie fps="30" />
+    <movie fps="60" />
     <movie width="860" />
     <movie height="730" />
     <movie version="21" />
@@ -16,6 +16,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
+    <class path="assets" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -53,6 +54,10 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="lib\starling.swc" />
+    <element path="assets" />
+    <element path="assets\sounds" />
+    <element path="assets\atlas" />
+    <element path="assets\textures" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
@@ -68,7 +73,44 @@
   </intrinsics>
   <!-- Assets to embed into the output SWF -->
   <library>
-    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+    <asset path="assets\atlas\dice_1_atlas.png" />
+    <asset path="assets\atlas\dice_2_atlas.png" />
+    <asset path="assets\atlas\dice_3_atlas.png" />
+    <asset path="assets\atlas\dice_4_atlas.png" />
+    <asset path="assets\atlas\dice_5_atlas.png" />
+    <asset path="assets\atlas\dice_6_atlas.png" />
+    <asset path="assets\atlas\dice_black_atlas.png" />
+    <asset path="assets\atlas\dice_blue_atlas.png" />
+    <asset path="assets\atlas\dice_win_atlas.png" />
+    <asset path="assets\sounds\sound1.mp3" />
+    <asset path="assets\sounds\sound2.mp3" />
+    <asset path="assets\sounds\sound3.mp3" />
+    <asset path="assets\sounds\sound4.mp3" />
+    <asset path="assets\textures\background.png" />
+    <asset path="assets\textures\button_1000.png" />
+    <asset path="assets\textures\button_7.png" />
+    <asset path="assets\textures\button_back_menu.png" />
+    <asset path="assets\textures\button_close.png" />
+    <asset path="assets\textures\button_end_game.png" />
+    <asset path="assets\textures\button_help.png" />
+    <asset path="assets\textures\button_ivent.png" />
+    <asset path="assets\textures\button_not_throw.png" />
+    <asset path="assets\textures\button_post.png" />
+    <asset path="assets\textures\button_rating.png" />
+    <asset path="assets\textures\button_restart_game.png" />
+    <asset path="assets\textures\button_settings.png" />
+    <asset path="assets\textures\button_settings_sound_off.png" />
+    <asset path="assets\textures\button_settings_sound_on.png" />
+    <asset path="assets\textures\button_throw.png" />
+    <asset path="assets\textures\help.png" />
+    <asset path="assets\textures\help_sevens.png" />
+    <asset path="assets\textures\help_thousand.png" />
+    <asset path="assets\textures\lost_game.png" />
+    <asset path="assets\textures\rating.png" />
+    <asset path="assets\textures\sevens.png" />
+    <asset path="assets\textures\thousand.png" />
+    <asset path="assets\textures\win_game.png" />
+    <asset path="assets\textures\window_settings.png" />
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>

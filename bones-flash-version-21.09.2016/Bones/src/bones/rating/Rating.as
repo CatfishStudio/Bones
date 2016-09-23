@@ -15,7 +15,7 @@ package bones.rating
 	import bones.events.Navigation;
 	import bones.data.Constants;
 	import bones.data.Images;
-	
+	import bones.data.Data;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -94,11 +94,47 @@ package bones.rating
 		
 		private function ratingShow():void
 		{
-			var textFormat:TextFormat = new TextFormat("Monotype Corsiva",48,0x5C2D15,"left","left")
-			textField = new TextField(200, 50, "Тысяча", textFormat);
-			textField.x = (Constants.GAME_WINDOW_WIDTH / 2) - (textField.width / 2.5);
+			var textFormat:TextFormat = new TextFormat("Monotype Corsiva", 48, 0x5C2D15, "center", "center");
+			textField = new TextField(image.width, 50, "Тысяча", textFormat);
+			textField.x = image.x;
 			textField.y = 55;
 			addChild(textField);
+			
+			textFormat = new TextFormat("Monotype Corsiva", 16, 0x5C2D15, "left", "center");
+			var i:Number = 0;
+			for (i = 0; i < Data.ratingThousand.length; i++){
+				
+				textField = new TextField(image.width, 25, (String)(i+1) + " " + Data.ratingThousand[i][0], textFormat);
+				textField.x = image.x + 50;
+				textField.y = 100 + (25 * i);
+				addChild(textField);
+				textField = new TextField(image.width, 25, Data.ratingThousand[i][1] + " " + Data.ratingThousand[i][2], textFormat);
+				textField.x = image.x + 250;
+				textField.y = 100 + (25 * i);
+				addChild(textField);
+			}
+			
+			textFormat = new TextFormat("Monotype Corsiva", 48, 0x5C2D15, "center", "center");
+			textField = new TextField(image.width, 50, "Семёрка", textFormat);
+			textField.x = image.x;
+			textField.y = 320;
+			addChild(textField);
+			
+			textFormat = new TextFormat("Monotype Corsiva", 16, 0x5C2D15, "left", "center");
+			for (i = 0; i < Data.ratingSevens.length; i++){
+				
+				textField = new TextField(image.width, 25, (String)(i+1) + " " + Data.ratingSevens[i][0], textFormat);
+				textField.x = image.x + 50;
+				textField.y = 375 + (25 * i);
+				addChild(textField);
+				textField = new TextField(image.width, 25, Data.ratingSevens[i][1] + " " + Data.ratingSevens[i][2], textFormat);
+				textField.x = image.x + 250;
+				textField.y = 375 + (25 * i);
+				addChild(textField);
+			}
+			
+			textFormat = null;
+			i = null;
 		}
 		
 		private function onButtonsClick(e:Event):void 

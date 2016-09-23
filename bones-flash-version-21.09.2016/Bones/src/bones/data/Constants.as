@@ -25,6 +25,8 @@ package bones.data
 		public static const HELP:String = "help";
 		public static const HELP_BUTTON_CLOSE:String = "helpButtonClose";
 		
+		public static const RATING:String = "rating";
+		public static const RATING_BUTTON_CLOSE:String = "ratingButtonClose";
 	}
 
 }

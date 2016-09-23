@@ -48,6 +48,10 @@ package bones.help
 			button.dispose();
 			image.dispose();
 			quad.dispose();
+			while (this.numChildren) {
+				this.removeChildren(0, -1, true);
+			}
+			this.removeFromParent(true);
 			super.dispose();
 			System.gc();
 		}
@@ -76,8 +80,8 @@ package bones.help
 			var bitmap:Bitmap = new Images.ImgButtonClose();
 			button = new Button(Texture.fromBitmap(bitmap));
 			button.name = Constants.HELP_BUTTON_CLOSE;
-			button.x = (Constants.GAME_WINDOW_WIDTH / 2) - (button.width / 1.5);
-			button.y = image.height - 100;
+			button.x = (Constants.GAME_WINDOW_WIDTH / 2) - (button.width / 1.15);
+			button.y = image.height - 50;
 			addChild(button);
 			
 			bitmap = null;

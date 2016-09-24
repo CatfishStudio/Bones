@@ -13,7 +13,7 @@
 	<SubTexture name="dice_07"	x="42"	y="94"	width="39"	height="42" frameX="-5" frameY="-5" frameWidth="48" frameHeight="48"/>
 	<SubTexture name="dice_08"	x="0"	y="94"	width="41"	height="41" frameX="-3" frameY="-4" frameWidth="48" frameHeight="48"/>
 	<SubTexture name="dice_09"	x="0"	y="178"	width="39"	height="46" frameX="-4" frameY="-1" frameWidth="48" frameHeight="48"/>
-	<SubTexture name="dice_10"	x="42"	y="137"	width="36"	height="40" frameX="-6" frameY="-5" frameWidth="48" frameHeight="48"/>
-	<SubTexture name="dice_r"	x="80"	y="137"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
-	<SubTexture name="dice_y"	x="80"	y="180"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="dice"	x="42"	y="137"	width="36"	height="40" frameX="-6" frameY="-5" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="r_dice"	x="80"	y="137"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="y_dice"	x="80"	y="180"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
 </TextureAtlas>

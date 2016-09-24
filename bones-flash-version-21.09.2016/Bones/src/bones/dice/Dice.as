@@ -18,7 +18,7 @@ package bones.dice
 		public function Dice(_x:int, _y:int) 
 		{
 			Atlases.setTextureAtlasEmbeddedAsset(Atlases.AtlasDice1, Atlases.XmlAtlasDice1);
-			super(Atlases.textureAtlas.getTextures("dice_"), 12);
+			super(Atlases.textureAtlasAnimation.getTextures("dice_"), 12);
 			
 			x = _x;
 			y = _y;

@@ -3,9 +3,14 @@ package bones.sevens
 	import flash.system.*;
 	import flash.display.Bitmap;
 	
+	import starling.core.Starling;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.display.Button;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -15,6 +20,7 @@ package bones.sevens
 	import bones.events.Navigation;
 	import bones.data.Constants;
 	import bones.data.Images;
+	import bones.data.Atlases;
 	import bones.data.Data;
 	import bones.dice.Dice;
 	/**
@@ -26,7 +32,7 @@ package bones.sevens
 		private var button:Button;
 		private var image:Image;
 		private var textField:TextField;
-		private var dice:Dice;
+		private var moveClip:MovieClip;
 		
 		public function Sevens() 
 		{
@@ -51,7 +57,7 @@ package bones.sevens
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			button.dispose();
 			image.dispose();
-			dice.dispose();
+			moveClip.dispose();
 			//textField.dispose();
 			while (this.numChildren) {
 				this.removeChildren(0, -1, true);
@@ -112,9 +118,47 @@ package bones.sevens
 		
 		private function createDices():void
 		{
-			dice = new Dice(0, 0);
-			addChild(dice);
+			/*
+			for (var i:int = 0; i < 7; i++){
+				var dice:Dice = new Dice(45 + (50 * i), Constants.GAME_WINDOW_HEIGHT - 75);
+				dice.name = "dice" + i.toString();
+				addChild(dice);
+				dice.dispose();
+				dice = null;
+			}
+			*/
+			
+			Atlases.setTextureAtlasEmbeddedAsset(Atlases.AtlasDice1, Atlases.XmlAtlasDice1);
+			
+			moveClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("dice_"), 12);
+			moveClip.x = 45;
+			moveClip.y = Constants.GAME_WINDOW_HEIGHT - 80;
+			moveClip.stop();
+			moveClip.addEventListener(TouchEvent.TOUCH, onTouch);
+			addChild(moveClip);
+			Starling.juggler.add(moveClip);
+			
+			moveClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("dice_"), 12);
+			moveClip.x = 160;
+			moveClip.y = Constants.GAME_WINDOW_HEIGHT - 80;
+			moveClip.stop();
+			moveClip.addEventListener(TouchEvent.TOUCH, onTouch);
+			addChild(moveClip);			
+			Starling.juggler.add(moveClip);
+
 		}
+		
+		private function onTouch(e:TouchEvent):void 
+		{
+			if (e.getTouch(this, TouchPhase.HOVER)){
+				trace('HOVER');
+			}
+			if (e.getTouch(this, TouchPhase.MOVED)){
+				trace('MOVED');
+			}
+			moveClip.play();
+		}
+		
 		
 	}
 

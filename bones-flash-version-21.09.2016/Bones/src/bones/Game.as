@@ -5,11 +5,14 @@ package bones
 	
 	import bones.events.Navigation;
 	import bones.data.Constants;
+	import bones.data.Sounds;
 	import bones.menu.Menu;
 	import bones.settings.Settings;
 	import bones.help.Help;
 	import bones.rating.Rating;
-	import bones.data.Sounds;
+	import bones.sevens.Sevens;
+	import bones.sevens.SevensHelp;
+	import bones.sevens.SevensEndGame;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -38,7 +41,7 @@ package bones
 			if (getChildByName(Constants.MENU) != null) {
 				removeChild(getChildByName(Constants.MENU));
 			}else{
-				windowAllClose();
+				//windowAllClose();
 				addChild(new Menu());
 			}
 		}
@@ -83,6 +86,46 @@ package bones
 				addChild(new Rating());
 			}
 		}
+		
+		private function sevens():void
+		{
+			Sounds.PlaySound(Sounds.Sound3);
+			if (getChildByName(Constants.SEVENS) != null)
+			{
+				removeChild(getChildByName(Constants.SEVENS));
+			}
+			else
+			{
+				addChild(new Sevens());
+			}
+		}
+		
+		private function sevensHelp():void
+		{
+			Sounds.PlaySound(Sounds.Sound4);
+			if (getChildByName(Constants.SEVENS_HELP) != null)
+			{
+				removeChild(getChildByName(Constants.SEVENS_HELP));
+			}
+			else
+			{
+				addChild(new SevensHelp());
+			}
+		}
+		
+		private function sevensEndGame():void
+		{
+			Sounds.PlaySound(Sounds.Sound4);
+			if (getChildByName(Constants.SEVENS_END_GAME) != null)
+			{
+				removeChild(getChildByName(Constants.SEVENS_END_GAME));
+			}
+			else
+			{
+				addChild(new SevensEndGame());
+			}
+		}
+		
 	
 		private function windowAllClose():void
 		{
@@ -105,11 +148,44 @@ package bones
 				case Constants.MENU_BUTTON_THOUSAND:
 				{
 					break;
-				}				
+				}		
+				// SEVENS ----------------------
 				case Constants.MENU_BUTTON_SEVENS:
 				{
+					sevens();
+					menu();
 					break;
-				}				
+				}
+				case Constants.SEVENS_BUTTON_END_GAME:
+				{
+					sevensEndGame();
+					break;
+				}
+				case Constants.SEVENS_BUTTON_HELP:
+				{
+					sevensHelp();
+					break;
+				}
+				case Constants.SEVENS_HELP_BUTTON_CLOSE:
+				{
+					sevensHelp();
+					break;
+				}
+				case Constants.SEVENS_END_GAME_BUTTON_RESTART_GAME:
+				{
+					sevensEndGame();
+					sevens();
+					sevens();
+					break;
+				}
+				case Constants.SEVENS_END_GAME_BUTTON_BACK_MENU:
+				{
+					sevensEndGame();
+					sevens();
+					menu();
+					break;
+				}
+				//------------------------------
 				case Constants.BUTTON_SETTINGS:
 				{
 					settings();

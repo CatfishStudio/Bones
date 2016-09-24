@@ -27,6 +27,17 @@ package bones.data
 		
 		public static const RATING:String = "rating";
 		public static const RATING_BUTTON_CLOSE:String = "ratingButtonClose";
+		
+		public static const SEVENS:String = "sevens";
+		public static const SEVENS_BUTTON_HELP:String = "sevensButtonHelp";
+		public static const SEVENS_BUTTON_END_GAME:String = "sevensButtonEndGame";
+		
+		public static const SEVENS_HELP:String = "sevensHelp";
+		public static const SEVENS_HELP_BUTTON_CLOSE:String = "sevensHelpButtonClose";
+		
+		public static const SEVENS_END_GAME:String = "sevensEndGame";
+		public static const SEVENS_END_GAME_BUTTON_BACK_MENU:String = "sevensEndGameButtonBackMenu";
+		public static const SEVENS_END_GAME_BUTTON_RESTART_GAME:String = "sevensEndGameButtonRestartGame";
 	}
 
 }

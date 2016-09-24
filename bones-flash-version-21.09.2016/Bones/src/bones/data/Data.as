@@ -30,8 +30,8 @@ package bones.data
             ["Уильям Кидд", 300, "очков"]
 		];
 		
-		public static var userRatingThousand:Number = 0;
-		public static var userRatingSevens:Number = 0;
+		public static var userRatingThousand:int = 0;
+		public static var userRatingSevens:int = 0;
 		public static var userFirstName:String;
 		public static var userLastName:String;
 	}

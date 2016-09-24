@@ -117,8 +117,8 @@ package bones.sevens
 			
 			textFormat = new TextFormat("Monotype Corsiva", 18, 0x5C2D15, "left", "center");
 			var userWentUp:Boolean = false;
-			var n:Number = 0;
-			for (var i:Number = 0; i < Data.ratingSevens.length; i++){
+			var n:int = 0;
+			for (var i:int = 0; i < Data.ratingSevens.length; i++){
 				if (Data.userRatingSevens >= Data.ratingSevens[i][1] && userWentUp == false) {
 					setText(200, n, userName, Data.userRatingSevens, "очков", textFormat);
 					userWentUp = true;

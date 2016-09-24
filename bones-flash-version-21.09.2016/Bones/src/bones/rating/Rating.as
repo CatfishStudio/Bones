@@ -107,8 +107,8 @@ package bones.rating
 			
 			textFormat = new TextFormat("Monotype Corsiva", 16, 0x5C2D15, "left", "center");
 			var userWentUp:Boolean = false;
-			var n:Number = 0;
-			var i:Number = 0;
+			var n:int = 0;
+			var i:int = 0;
 			for (i = 0; i < Data.ratingThousand.length; i++){
 				if (Data.userRatingThousand >= Data.ratingThousand[i][1] && userWentUp == false) {
 					setText(100, n, userName, Data.userRatingThousand, "очков", textFormat);

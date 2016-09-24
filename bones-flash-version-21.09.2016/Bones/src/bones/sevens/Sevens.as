@@ -16,6 +16,7 @@ package bones.sevens
 	import bones.data.Constants;
 	import bones.data.Images;
 	import bones.data.Data;
+	import bones.dice.Dice;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -104,6 +105,11 @@ package bones.sevens
 			addChild(button);
 			
 			bitmap = null;
+		}
+		
+		private function createDices():void
+		{
+			
 		}
 		
 	}

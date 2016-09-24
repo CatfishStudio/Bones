@@ -14,7 +14,7 @@ package bones.settings
 	import bones.data.Constants;
 	import bones.data.Images;
 	import bones.Config;
-	
+	import bones.data.Sounds;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -122,11 +122,13 @@ package bones.settings
 			switch(Button(e.target).name){
 				case Constants.SETTINGS_BUTTON_SOUND:
 				{
+					Sounds.PlaySound(Sounds.Sound3);
 					updateSettings();
 					break;
 				}
 				case Constants.SETTINGS_BUTTON_CLOSE:
 				{
+					Sounds.PlaySound(Sounds.Sound4);
 					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 					break;
 				}

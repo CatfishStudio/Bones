@@ -9,6 +9,7 @@ package bones
 	import bones.settings.Settings;
 	import bones.help.Help;
 	import bones.rating.Rating;
+	import bones.data.Sounds;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -44,6 +45,7 @@ package bones
 		
 		private function settings():void
 		{
+			Sounds.PlaySound(Sounds.Sound4);
 			if (getChildByName(Constants.SETTINGS) != null)
 			{
 				removeChild(getChildByName(Constants.SETTINGS));
@@ -58,6 +60,7 @@ package bones
 		
 		private function help():void
 		{
+			Sounds.PlaySound(Sounds.Sound4);
 			if (getChildByName(Constants.HELP) != null)
 			{
 				removeChild(getChildByName(Constants.HELP));
@@ -70,6 +73,7 @@ package bones
 		
 		private function rating():void
 		{
+			Sounds.PlaySound(Sounds.Sound4);
 			if (getChildByName(Constants.RATING) != null)
 			{
 				removeChild(getChildByName(Constants.RATING));

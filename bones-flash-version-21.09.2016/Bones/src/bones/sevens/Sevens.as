@@ -26,6 +26,7 @@ package bones.sevens
 		private var button:Button;
 		private var image:Image;
 		private var textField:TextField;
+		private var dice:Dice;
 		
 		public function Sevens() 
 		{
@@ -42,6 +43,7 @@ package bones.sevens
 			name = Constants.SEVENS;
 			createBackground();
 			createButtons();
+			createDices();
 		}
 		
 		private function onRemovedFromStage(e:Event):void 
@@ -49,6 +51,7 @@ package bones.sevens
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			button.dispose();
 			image.dispose();
+			dice.dispose();
 			//textField.dispose();
 			while (this.numChildren) {
 				this.removeChildren(0, -1, true);
@@ -109,7 +112,8 @@ package bones.sevens
 		
 		private function createDices():void
 		{
-			
+			dice = new Dice(0, 0);
+			addChild(dice);
 		}
 		
 	}

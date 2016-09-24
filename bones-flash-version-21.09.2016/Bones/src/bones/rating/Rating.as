@@ -94,6 +94,11 @@ package bones.rating
 		
 		private function ratingShow():void
 		{
+			var userName:String = "Вы";
+			if (Data.userFirstName != null) {
+				userName = Data.userFirstName + " " + Data.userLastName;
+			}
+			
 			var textFormat:TextFormat = new TextFormat("Monotype Corsiva", 48, 0x5C2D15, "center", "center");
 			textField = new TextField(image.width, 50, "Тысяча", textFormat);
 			textField.x = image.x;
@@ -101,40 +106,59 @@ package bones.rating
 			addChild(textField);
 			
 			textFormat = new TextFormat("Monotype Corsiva", 16, 0x5C2D15, "left", "center");
+			var userWentUp:Boolean = false;
+			var n:Number = 0;
 			var i:Number = 0;
 			for (i = 0; i < Data.ratingThousand.length; i++){
-				
-				textField = new TextField(image.width, 25, (String)(i+1) + " " + Data.ratingThousand[i][0], textFormat);
-				textField.x = image.x + 50;
-				textField.y = 100 + (25 * i);
-				addChild(textField);
-				textField = new TextField(image.width, 25, Data.ratingThousand[i][1] + " " + Data.ratingThousand[i][2], textFormat);
-				textField.x = image.x + 250;
-				textField.y = 100 + (25 * i);
-				addChild(textField);
+				if (Data.userRatingThousand >= Data.ratingThousand[i][1] && userWentUp == false) {
+					setText(100, n, userName, Data.userRatingThousand, "очков", textFormat);
+					userWentUp = true;
+					n++;
+				}
+				setText(100, n, Data.ratingThousand[i][0], Data.ratingThousand[i][1], Data.ratingThousand[i][2], textFormat);
+				n++;
+			}
+			
+			if (userWentUp == false){
+				setText(100, n, userName, Data.userRatingThousand, "очков", textFormat);
 			}
 			
 			textFormat = new TextFormat("Monotype Corsiva", 48, 0x5C2D15, "center", "center");
-			textField = new TextField(image.width, 50, "Семёрка", textFormat);
+			textField = new TextField(image.width, 55, "Семёрка", textFormat);
 			textField.x = image.x;
 			textField.y = 320;
 			addChild(textField);
 			
 			textFormat = new TextFormat("Monotype Corsiva", 16, 0x5C2D15, "left", "center");
+			userWentUp = false;
+			n = 0;
 			for (i = 0; i < Data.ratingSevens.length; i++){
-				
-				textField = new TextField(image.width, 25, (String)(i+1) + " " + Data.ratingSevens[i][0], textFormat);
-				textField.x = image.x + 50;
-				textField.y = 375 + (25 * i);
-				addChild(textField);
-				textField = new TextField(image.width, 25, Data.ratingSevens[i][1] + " " + Data.ratingSevens[i][2], textFormat);
-				textField.x = image.x + 250;
-				textField.y = 375 + (25 * i);
-				addChild(textField);
+				if (Data.userRatingSevens >= Data.ratingSevens[i][1] && userWentUp == false) {
+					setText(375, n, userName, Data.userRatingSevens, "очков", textFormat);
+					userWentUp = true;
+					n++;
+				}
+				setText(375, n, Data.ratingSevens[i][0], Data.ratingSevens[i][1], Data.ratingSevens[i][2], textFormat);
+				n++;
 			}
 			
+			if (userWentUp == false){
+				setText(375, n, userName, Data.userRatingThousand, "очков", textFormat);
+			}
+			
+			userName = null;
 			textFormat = null;
-			i = null;
+		}
+		
+		private function setText(y:Number, n:Number, name:String, score:Number, text:String, textFormat:TextFormat):void {
+			textField = new TextField(image.width, 25, (String)(n+1) + " " + name, textFormat);
+			textField.x = image.x + 50;
+			textField.y = y + (20 * n);
+			addChild(textField);
+			textField = new TextField(image.width, 25, score + " " + text, textFormat);
+			textField.x = image.x + 250;
+			textField.y = y + (20 * n);
+			addChild(textField);
 		}
 		
 		private function onButtonsClick(e:Event):void 

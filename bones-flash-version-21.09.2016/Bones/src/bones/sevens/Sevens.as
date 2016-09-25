@@ -1,12 +1,13 @@
 package bones.sevens 
 {
+	import adobe.utils.CustomActions;
 	import flash.system.*;
 	import flash.display.Bitmap;
 	
-	
-	import starling.core.Starling;
-	import starling.display.MovieClip;
 	import starling.display.Sprite;
+	import starling.core.Starling;
+	import starling.animation.Tween;
+	import starling.display.MovieClip;
 	import starling.display.Button;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -26,6 +27,7 @@ package bones.sevens
 	import bones.data.Sounds;
 	import bones.data.Data;
 	import bones.data.Utils;
+	import bones.dice.Dice;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -35,9 +37,10 @@ package bones.sevens
 		private var button:Button;
 		private var image:Image;
 		private var textField:TextField;
-		//private var moveClip:MovieClip;
-		private var dices:Vector.<MovieClip> = new Vector.<MovieClip>();
-		private var rollDices:Vector.<MovieClip> = new Vector.<MovieClip>();
+		private var tween:Tween;
+		private var dices:Vector.<MovieClip>;
+		private var rollDices:Vector.<MovieClip>;
+		public  var field:Vector.<Vector.<Dice>>;
 		
 		public function Sevens() 
 		{
@@ -55,6 +58,7 @@ package bones.sevens
 			createBackground();
 			createButtons();
 			createDices();
+			createField();
 			rollDice();
 		}
 		
@@ -127,6 +131,8 @@ package bones.sevens
 		
 		private function createDices():void
 		{
+			dices = new Vector.<MovieClip>();
+			
 			var movieClip:MovieClip;
 			var i:int;
 			for (i = 0; i < 7; i++){
@@ -184,11 +190,28 @@ package bones.sevens
 			}
 		}
 		
+		private function createField():void
+		{
+			field = new Vector.<Vector.<Dice>>();
+			for (var i:int = 0; i < 5; i++) {
+				var newRow:Vector.<Dice> = new Vector.<Dice>();
+				for (var j:int = 0; j < 10; j++) {
+					newRow.push(new Dice());
+					newRow[j].x = 300 + (45 * i);
+					newRow[j].y = 180 + (42 * j);
+					addChild(newRow[j]);
+					
+				}
+				field.push(newRow);
+			}
+		}
+		
 		private function rollDice():void
 		{
 			var movieClip:MovieClip;
 			var i:int;
 			var value:int;
+			rollDices = new Vector.<MovieClip>()
 			for (i = 0; i < 2; i++){
 				value = Utils.getRandomInt(1, 7);
 				movieClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("anim_dice_"), 12);
@@ -198,9 +221,34 @@ package bones.sevens
 				rollDices.push(movieClip);
 				addChild(rollDices[i]);
 				Starling.juggler.add(rollDices[i]);
+				
+				tween = new Tween(rollDices[i], 1.0);
+				tween.moveTo(100 + (150 * i), 100 + (150 * i));
+				tween.onComplete = rollDiceComplete;
+				Starling.juggler.add(tween);
 			}
 			
-
+			
+		}
+		
+		private function rollDiceComplete():void 
+		{
+			
+			Starling.juggler.removeTweens(tween);
+			for (var i:int = 0; i < rollDices.length; i++) {
+				/*
+				sprite = new Sprite();
+				sprite.x = rollDices[i].x;
+				sprite.y = rollDices[i].y;
+				addChild(sprite);
+				*/
+				
+				rollDices[i].stop();
+				Starling.juggler.removeTweens(rollDices[i]);
+				rollDices[i].dispose();
+			}
+			rollDices = null;
+			
 		}
 		
 	}

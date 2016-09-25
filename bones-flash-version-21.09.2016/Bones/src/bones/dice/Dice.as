@@ -20,6 +20,7 @@ package bones.dice
 	public class Dice extends Sprite 
 	{
 		private var image:Image;
+		private var data:Array = [];
 		
 		public function Dice() 
 		{

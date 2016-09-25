@@ -40,7 +40,8 @@ package bones.sevens
 		private var tween:Tween;
 		private var dices:Vector.<MovieClip>;
 		private var rollDices:Vector.<MovieClip>;
-		public  var field:Vector.<Vector.<Dice>>;
+		private var field:Vector.<Vector.<Dice>>;
+		private var additionalDice:Vector.<Dice>;
 		
 		public function Sevens() 
 		{
@@ -208,12 +209,19 @@ package bones.sevens
 		
 		private function rollDice():void
 		{
-			var movieClip:MovieClip;
 			var i:int;
-			var value:int;
+			if(additionalDice != null){
+				for (i = 0; i < additionalDice.length; i++) {
+					removeChild(additionalDice[i]);
+					additionalDice[i].dispose();
+					additionalDice[i] = null;
+				}
+			}
+			additionalDice = null;
+			
+			var movieClip:MovieClip;
 			rollDices = new Vector.<MovieClip>()
 			for (i = 0; i < 2; i++){
-				value = Utils.getRandomInt(1, 7);
 				movieClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("anim_dice_"), 12);
 				movieClip.play(); 
 				movieClip.x = 0 + (50 * i);
@@ -233,22 +241,24 @@ package bones.sevens
 		
 		private function rollDiceComplete():void 
 		{
-			
+			additionalDice = new Vector.<Dice>();
 			Starling.juggler.removeTweens(tween);
-			for (var i:int = 0; i < rollDices.length; i++) {
-				/*
-				sprite = new Sprite();
-				sprite.x = rollDices[i].x;
-				sprite.y = rollDices[i].y;
-				addChild(sprite);
-				*/
+			var value:int;
+			var i:int;
+			for (i = 0; i < rollDices.length; i++) {
+				value = Utils.getRandomInt(1, 7);
+				
+				additionalDice.push(new Dice());
+				additionalDice[i].x = rollDices[i].x;
+				additionalDice[i].y = rollDices[i].y;
+				addChild(additionalDice[i]);
 				
 				rollDices[i].stop();
 				Starling.juggler.removeTweens(rollDices[i]);
+				removeChild(rollDices[i]);
 				rollDices[i].dispose();
 			}
 			rollDices = null;
-			
 		}
 		
 	}

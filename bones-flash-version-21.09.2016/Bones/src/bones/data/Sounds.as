@@ -34,6 +34,11 @@ package bones.data
 				sound.play();
 			}
 		}
+		
+		public static function StopSound():void
+		{
+			
+		}
 	}
 
 }

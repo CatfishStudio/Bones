@@ -3,10 +3,12 @@ package bones.sevens
 	import flash.system.*;
 	import flash.display.Bitmap;
 	
+	
 	import starling.core.Starling;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.display.Button;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -21,8 +23,9 @@ package bones.sevens
 	import bones.data.Constants;
 	import bones.data.Images;
 	import bones.data.Atlases;
+	import bones.data.Sounds;
 	import bones.data.Data;
-	import bones.dice.Dice;
+	import bones.data.Utils;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -32,7 +35,9 @@ package bones.sevens
 		private var button:Button;
 		private var image:Image;
 		private var textField:TextField;
-		private var moveClip:MovieClip;
+		//private var moveClip:MovieClip;
+		private var dices:Vector.<MovieClip> = new Vector.<MovieClip>();
+		private var rollDices:Vector.<MovieClip> = new Vector.<MovieClip>();
 		
 		public function Sevens() 
 		{
@@ -50,6 +55,7 @@ package bones.sevens
 			createBackground();
 			createButtons();
 			createDices();
+			rollDice();
 		}
 		
 		private function onRemovedFromStage(e:Event):void 
@@ -57,8 +63,11 @@ package bones.sevens
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			button.dispose();
 			image.dispose();
-			moveClip.dispose();
 			//textField.dispose();
+			for (var i:int = 0; i < dices.length; i++) {
+				Starling.juggler.removeTweens(dices[i]);
+				dices[i].dispose();
+			}
 			while (this.numChildren) {
 				this.removeChildren(0, -1, true);
 			}
@@ -118,47 +127,81 @@ package bones.sevens
 		
 		private function createDices():void
 		{
-			/*
-			for (var i:int = 0; i < 7; i++){
-				var dice:Dice = new Dice(45 + (50 * i), Constants.GAME_WINDOW_HEIGHT - 75);
-				dice.name = "dice" + i.toString();
-				addChild(dice);
-				dice.dispose();
-				dice = null;
+			var movieClip:MovieClip;
+			var i:int;
+			for (i = 0; i < 7; i++){
+				movieClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("anim_dice_"), 12);
+				movieClip.stop(); 
+				movieClip.addEventListener(TouchEvent.TOUCH, onTouch);
+				dices.push(movieClip);
+				Starling.juggler.add(dices[i]);
 			}
-			*/
 			
-			Atlases.setTextureAtlasEmbeddedAsset(Atlases.AtlasDice1, Atlases.XmlAtlasDice1);
+			dices[0].x = 45;
+			dices[0].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(dices[0]);
 			
-			moveClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("dice_"), 12);
-			moveClip.x = 45;
-			moveClip.y = Constants.GAME_WINDOW_HEIGHT - 80;
-			moveClip.stop();
-			moveClip.addEventListener(TouchEvent.TOUCH, onTouch);
-			addChild(moveClip);
-			Starling.juggler.add(moveClip);
+			dices[1].x = 160;
+			dices[1].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(dices[1]);
 			
-			moveClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("dice_"), 12);
-			moveClip.x = 160;
-			moveClip.y = Constants.GAME_WINDOW_HEIGHT - 80;
-			moveClip.stop();
-			moveClip.addEventListener(TouchEvent.TOUCH, onTouch);
-			addChild(moveClip);			
-			Starling.juggler.add(moveClip);
-
+			dices[2].x = 280;
+			dices[2].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(dices[2]);
+			
+			dices[3].x = 400;
+			dices[3].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(dices[3]);
+			
+			dices[4].x = 520;
+			dices[4].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(dices[4]);
+			
+			dices[5].x = 640;
+			dices[5].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(dices[5]);
+			
+			dices[6].x = 760;
+			dices[6].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(dices[6]);
+			
 		}
 		
 		private function onTouch(e:TouchEvent):void 
 		{
-			if (e.getTouch(this, TouchPhase.HOVER)){
-				trace('HOVER');
+			//e.getTouch(e.target as DisplayObject, TouchPhase.HOVER) ? (e.target as MovieClip).play() : (e.target as MovieClip).stop();
+			if (e.getTouch(e.target as DisplayObject, TouchPhase.HOVER)){
+				(e.target as MovieClip).play();
+				//Sounds.PlaySound(Sounds.Sound1);
+			}else{
+				(e.target as MovieClip).stop();
+				//Sounds.StopSound();
 			}
-			if (e.getTouch(this, TouchPhase.MOVED)){
-				trace('MOVED');
+			if (e.getTouch(e.target as DisplayObject, TouchPhase.BEGAN)){
+				(e.target as MovieClip).visible = false;
+				//Sounds.StopSound();
+				rollDice();
 			}
-			moveClip.play();
 		}
 		
+		private function rollDice():void
+		{
+			var movieClip:MovieClip;
+			var i:int;
+			var value:int;
+			for (i = 0; i < 2; i++){
+				value = Utils.getRandomInt(1, 7);
+				movieClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("anim_dice_"), 12);
+				movieClip.play(); 
+				movieClip.x = 0 + (50 * i);
+				movieClip.y = 0 + (50 * i);
+				rollDices.push(movieClip);
+				addChild(rollDices[i]);
+				Starling.juggler.add(rollDices[i]);
+			}
+			
+
+		}
 		
 	}
 

@@ -111,6 +111,8 @@
     <asset path="assets\textures\thousand.png" />
     <asset path="assets\textures\win_game.png" />
     <asset path="assets\textures\window_settings.png" />
+    <asset path="assets\atlas\anim.png" />
+    <asset path="assets\atlas\dice.png" />
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>

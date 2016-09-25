@@ -6,6 +6,7 @@ package bones
 	import bones.events.Navigation;
 	import bones.data.Constants;
 	import bones.data.Sounds;
+	import bones.data.Atlases;
 	import bones.menu.Menu;
 	import bones.settings.Settings;
 	import bones.help.Help;
@@ -31,8 +32,15 @@ package bones
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			addEventListener(Navigation.CHANGE_SCREEN, onChangeScreen);
 			
-			//initGameTextureAtlas();
+			initGameTextureAtlas();
 			menu();
+		}
+		
+		private function initGameTextureAtlas():void 
+		{
+			Atlases.setTextureAtlasEmbeddedAsset(Atlases.AtlasAnim, Atlases.XmlAtlasAnim);
+			Atlases.setTextureAtlasFromBitmap(Atlases.AtlasDice, Atlases.XmlAtlasDice);
+			
 		}
 		
 		

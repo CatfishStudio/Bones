@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="anim.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="anim_dice11.png"	x="158"	y="215"	width="36"	height="40" frameX="-6" frameY="-5" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice11r.png"	x="158"	y="172"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice11y.png"	x="158"	y="129"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice22.png"	x="160"	y="86"	width="36"	height="40" frameX="-6" frameY="-5" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice22r.png"	x="122"	y="43"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice22y.png"	x="121"	y="86"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice33.png"	x="198"	y="41"	width="36"	height="40" frameX="-6" frameY="-5" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice33r.png"	x="123"	y="0"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice33y.png"	x="84"	y="0"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice44.png"	x="195"	y="215"	width="36"	height="40" frameX="-6" frameY="-5" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice44r.png"	x="82"	y="94"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice44y.png"	x="80"	y="180"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice55.png"	x="42"	y="137"	width="36"	height="40" frameX="-6" frameY="-5" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice55r.png"	x="119"	y="137"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice55y.png"	x="119"	y="180"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice66.png"	x="197"	y="166"	width="36"	height="40" frameX="-6" frameY="-5" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice66r.png"	x="80"	y="137"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice66y.png"	x="83"	y="43"	width="38"	height="42" frameX="-5" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice_01.png"	x="0"	y="47"	width="42"	height="46" frameX="-5" frameY="-0" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice_02.png"	x="40"	y="178"	width="39"	height="44" frameX="-6" frameY="-1" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice_03.png"	x="0"	y="0"	width="43"	height="46" frameX="-3" frameY="-2" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice_04.png"	x="44"	y="0"	width="39"	height="42" frameX="-5" frameY="-5" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice_05.png"	x="0"	y="94"	width="41"	height="41" frameX="-4" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice_06.png"	x="0"	y="178"	width="39"	height="46" frameX="-4" frameY="-0" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice_07.png"	x="42"	y="94"	width="39"	height="42" frameX="-5" frameY="-5" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice_08.png"	x="0"	y="136"	width="41"	height="41" frameX="-3" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="anim_dice_09.png"	x="43"	y="47"	width="39"	height="46" frameX="-4" frameY="-1" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="win_dice_00.png"	x="161"	y="43"	width="36"	height="40" frameX="-6" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="win_dice_01.png"	x="197"	y="84"	width="36"	height="44" frameX="-6" frameY="-2" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="win_dice_02.png"	x="162"	y="0"	width="36"	height="40" frameX="-6" frameY="-4" frameWidth="48" frameHeight="48"/>
+	<SubTexture name="win_dice_03.png"	x="197"	y="129"	width="36"	height="36" frameX="-6" frameY="-6" frameWidth="48" frameHeight="48"/>
+</TextureAtlas>

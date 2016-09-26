@@ -1,6 +1,5 @@
 package bones.sevens 
 {
-	import adobe.utils.CustomActions;
 	import flash.system.*;
 	import flash.display.Bitmap;
 	
@@ -297,8 +296,7 @@ package bones.sevens
 		private function onDiceTouch(e:TouchEvent):void 
 		{
 			if (e.getTouch(e.target as DisplayObject, TouchPhase.BEGAN) && canClick){
-				//(e.target as Dice).select();
-				trace(e.target)
+				((e.target as Image).parent as Dice).select();
 			}
 		}
 		

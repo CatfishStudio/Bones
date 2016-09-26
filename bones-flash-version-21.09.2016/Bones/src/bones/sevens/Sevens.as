@@ -38,10 +38,13 @@ package bones.sevens
 		private var image:Image;
 		private var textField:TextField;
 		private var tween:Tween;
-		private var dices:Vector.<MovieClip>;
-		private var rollDices:Vector.<MovieClip>;
-		private var field:Vector.<Vector.<Dice>>;
-		private var additionalDice:Vector.<Dice>;
+		
+		private var animDices:Vector.<MovieClip>;
+		private var animRollDices:Vector.<MovieClip>;
+		private var fieldDices:Vector.<Vector.<Dice>>;
+		private var additionalDices:Vector.<Dice>;
+		
+		private var canClick:Boolean = true;
 		
 		public function Sevens() 
 		{
@@ -56,6 +59,8 @@ package bones.sevens
 			addEventListener(Event.TRIGGERED, onButtonsClick);
 			
 			name = Constants.SEVENS;
+			canClick = true;
+			
 			createBackground();
 			createButtons();
 			createDices();
@@ -69,9 +74,9 @@ package bones.sevens
 			button.dispose();
 			image.dispose();
 			//textField.dispose();
-			for (var i:int = 0; i < dices.length; i++) {
-				Starling.juggler.removeTweens(dices[i]);
-				dices[i].dispose();
+			for (var i:int = 0; i < animDices.length; i++) {
+				Starling.juggler.removeTweens(animDices[i]);
+				animDices[i].dispose();
 			}
 			while (this.numChildren) {
 				this.removeChildren(0, -1, true);
@@ -132,7 +137,7 @@ package bones.sevens
 		
 		private function createDices():void
 		{
-			dices = new Vector.<MovieClip>();
+			animDices = new Vector.<MovieClip>();
 			
 			var movieClip:MovieClip;
 			var i:int;
@@ -140,37 +145,37 @@ package bones.sevens
 				movieClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("anim_dice_"), 12);
 				movieClip.stop(); 
 				movieClip.addEventListener(TouchEvent.TOUCH, onTouch);
-				dices.push(movieClip);
-				Starling.juggler.add(dices[i]);
+				animDices.push(movieClip);
+				Starling.juggler.add(animDices[i]);
 			}
 			
-			dices[0].x = 45;
-			dices[0].y = Constants.GAME_WINDOW_HEIGHT - 80;
-			addChild(dices[0]);
+			animDices[0].x = 45;
+			animDices[0].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(animDices[0]);
 			
-			dices[1].x = 160;
-			dices[1].y = Constants.GAME_WINDOW_HEIGHT - 80;
-			addChild(dices[1]);
+			animDices[1].x = 160;
+			animDices[1].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(animDices[1]);
 			
-			dices[2].x = 280;
-			dices[2].y = Constants.GAME_WINDOW_HEIGHT - 80;
-			addChild(dices[2]);
+			animDices[2].x = 280;
+			animDices[2].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(animDices[2]);
 			
-			dices[3].x = 400;
-			dices[3].y = Constants.GAME_WINDOW_HEIGHT - 80;
-			addChild(dices[3]);
+			animDices[3].x = 400;
+			animDices[3].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(animDices[3]);
 			
-			dices[4].x = 520;
-			dices[4].y = Constants.GAME_WINDOW_HEIGHT - 80;
-			addChild(dices[4]);
+			animDices[4].x = 520;
+			animDices[4].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(animDices[4]);
 			
-			dices[5].x = 640;
-			dices[5].y = Constants.GAME_WINDOW_HEIGHT - 80;
-			addChild(dices[5]);
+			animDices[5].x = 640;
+			animDices[5].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(animDices[5]);
 			
-			dices[6].x = 760;
-			dices[6].y = Constants.GAME_WINDOW_HEIGHT - 80;
-			addChild(dices[6]);
+			animDices[6].x = 760;
+			animDices[6].y = Constants.GAME_WINDOW_HEIGHT - 80;
+			addChild(animDices[6]);
 			
 		}
 		
@@ -184,7 +189,8 @@ package bones.sevens
 				(e.target as MovieClip).stop();
 				//Sounds.StopSound();
 			}
-			if (e.getTouch(e.target as DisplayObject, TouchPhase.BEGAN)){
+			if (e.getTouch(e.target as DisplayObject, TouchPhase.BEGAN) && canClick){
+				canClick = false;
 				(e.target as MovieClip).visible = false;
 				//Sounds.StopSound();
 				rollDice();
@@ -193,7 +199,7 @@ package bones.sevens
 		
 		private function createField():void
 		{
-			field = new Vector.<Vector.<Dice>>();
+			fieldDices = new Vector.<Vector.<Dice>>();
 			for (var i:int = 0; i < 5; i++) {
 				var newRow:Vector.<Dice> = new Vector.<Dice>();
 				for (var j:int = 0; j < 10; j++) {
@@ -203,35 +209,35 @@ package bones.sevens
 					addChild(newRow[j]);
 					
 				}
-				field.push(newRow);
+				fieldDices.push(newRow);
 			}
 		}
 		
 		private function rollDice():void
 		{
 			var i:int;
-			if(additionalDice != null){
-				for (i = 0; i < additionalDice.length; i++) {
-					removeChild(additionalDice[i]);
-					additionalDice[i].dispose();
-					additionalDice[i] = null;
+			if(additionalDices != null){
+				for (i = 0; i < additionalDices.length; i++) {
+					removeChild(additionalDices[i]);
+					additionalDices[i].dispose();
+					additionalDices[i] = null;
 				}
 			}
-			additionalDice = null;
+			additionalDices = null;
 			
 			var movieClip:MovieClip;
-			rollDices = new Vector.<MovieClip>()
+			animRollDices = new Vector.<MovieClip>()
 			for (i = 0; i < 2; i++){
 				movieClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("anim_dice_"), 12);
 				movieClip.play(); 
-				movieClip.x = 0 + (50 * i);
-				movieClip.y = 0 + (50 * i);
-				rollDices.push(movieClip);
-				addChild(rollDices[i]);
-				Starling.juggler.add(rollDices[i]);
+				movieClip.x = 25 - (50 * Utils.getRandomInt(1, 4));
+				movieClip.y = 400 - (50 * Utils.getRandomInt(1, 4));
+				animRollDices.push(movieClip);
+				addChild(animRollDices[i]);
+				Starling.juggler.add(animRollDices[i]);
 				
-				tween = new Tween(rollDices[i], 1.0);
-				tween.moveTo(100 + (150 * i), 100 + (150 * i));
+				tween = new Tween(animRollDices[i], 1.0);
+				tween.moveTo(50 + (50 * Utils.getRandomInt(1, 4)), 300 - (50 * Utils.getRandomInt(1, 4)));
 				tween.onComplete = rollDiceComplete;
 				Starling.juggler.add(tween);
 			}
@@ -241,24 +247,25 @@ package bones.sevens
 		
 		private function rollDiceComplete():void 
 		{
-			additionalDice = new Vector.<Dice>();
+			additionalDices = new Vector.<Dice>();
 			Starling.juggler.removeTweens(tween);
 			var value:int;
 			var i:int;
-			for (i = 0; i < rollDices.length; i++) {
+			for (i = 0; i < animRollDices.length; i++) {
 				value = Utils.getRandomInt(1, 7);
 				
-				additionalDice.push(new Dice());
-				additionalDice[i].x = rollDices[i].x;
-				additionalDice[i].y = rollDices[i].y;
-				addChild(additionalDice[i]);
+				additionalDices.push(new Dice());
+				additionalDices[i].x = animRollDices[i].x;
+				additionalDices[i].y = animRollDices[i].y;
+				addChild(additionalDices[i]);
 				
-				rollDices[i].stop();
-				Starling.juggler.removeTweens(rollDices[i]);
-				removeChild(rollDices[i]);
-				rollDices[i].dispose();
+				animRollDices[i].stop();
+				Starling.juggler.removeTweens(animRollDices[i]);
+				removeChild(animRollDices[i]);
+				animRollDices[i].dispose();
 			}
-			rollDices = null;
+			animRollDices = null;
+			canClick = true;
 		}
 		
 	}

@@ -44,6 +44,14 @@ package bones.sevens
 		private var fieldDices:Vector.<Vector.<Dice>>;
 		private var additionalDices:Vector.<Dice>;
 		
+		private var diceValues:Array = [
+			[[1, 5, 4, 6], [1, 3, 4, 2], [1, 6, 4, 5], [1, 2, 4, 3]],
+            [[2, 5, 3, 6], [2, 1, 3, 4], [2, 6, 3, 5], [2, 4, 3, 1]],
+            [[3, 5, 2, 6], [3, 4, 2, 1], [3, 6, 2, 5], [3, 1, 2, 4]],
+            [[4, 5, 1, 6], [4, 2, 1, 3], [4, 6, 1, 5], [4, 3, 1, 2]],
+            [[5, 1, 6, 4], [5, 2, 6, 3], [5, 4, 6, 1], [5, 3, 6, 2]],
+            [[6, 1, 5, 4], [6, 3, 5, 2], [6, 4, 5, 1], [6, 2, 5, 3]]
+		];
 		private var canClick:Boolean = true;
 		
 		public function Sevens() 
@@ -74,10 +82,27 @@ package bones.sevens
 			button.dispose();
 			image.dispose();
 			//textField.dispose();
-			for (var i:int = 0; i < animDices.length; i++) {
-				Starling.juggler.removeTweens(animDices[i]);
-				animDices[i].dispose();
+			tween = null;
+			var i:int;
+			if(animDices != null){
+				for (i = 0; i < animDices.length; i++) {
+					Starling.juggler.removeTweens(animDices[i]);
+					animDices[i].dispose();
+				}
+				animDices = null;
 			}
+			
+			if(animRollDices != null){
+				for (i = 0; i < animRollDices.length; i++) {
+					Starling.juggler.removeTweens(animRollDices[i]);
+					animRollDices[i].dispose();
+				}
+				animRollDices = null;
+			}
+			fieldDices = null;
+			additionalDices = null;
+			diceValues = null;
+			
 			while (this.numChildren) {
 				this.removeChildren(0, -1, true);
 			}
@@ -203,11 +228,11 @@ package bones.sevens
 			for (var i:int = 0; i < 5; i++) {
 				var newRow:Vector.<Dice> = new Vector.<Dice>();
 				for (var j:int = 0; j < 10; j++) {
-					newRow.push(new Dice());
+					newRow.push(new Dice(diceValues[Utils.getRandomInt(0,6)][Utils.getRandomInt(0,4)], Utils.getRandomInt(0,2)));
 					newRow[j].x = 300 + (45 * i);
 					newRow[j].y = 180 + (42 * j);
+					newRow[j].addEventListener(TouchEvent.TOUCH, onDiceTouch);
 					addChild(newRow[j]);
-					
 				}
 				fieldDices.push(newRow);
 			}
@@ -254,9 +279,10 @@ package bones.sevens
 			for (i = 0; i < animRollDices.length; i++) {
 				value = Utils.getRandomInt(1, 7);
 				
-				additionalDices.push(new Dice());
+				additionalDices.push(new Dice(diceValues[Utils.getRandomInt(0,6)][Utils.getRandomInt(0,4)], Utils.getRandomInt(0,2)));
 				additionalDices[i].x = animRollDices[i].x;
 				additionalDices[i].y = animRollDices[i].y;
+				additionalDices[i].addEventListener(TouchEvent.TOUCH, onDiceTouch);
 				addChild(additionalDices[i]);
 				
 				animRollDices[i].stop();
@@ -266,6 +292,14 @@ package bones.sevens
 			}
 			animRollDices = null;
 			canClick = true;
+		}
+		
+		private function onDiceTouch(e:TouchEvent):void 
+		{
+			if (e.getTouch(e.target as DisplayObject, TouchPhase.BEGAN) && canClick){
+				//(e.target as Dice).select();
+				trace(e.target)
+			}
 		}
 		
 	}

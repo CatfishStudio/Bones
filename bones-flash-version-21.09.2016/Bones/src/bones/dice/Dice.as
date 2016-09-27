@@ -77,10 +77,8 @@ package bones.dice
 			if (indexDice > 3) indexDice = 0;
 			nextIndexDice = indexDice + 1;
 			if (nextIndexDice > 3) nextIndexDice = 0;
-			var frame:String;
-			if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
-			else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
-			image.texture = Atlases.textureAtlas.getTexture(frame);
+			
+			notHighlight();
 			
 			tween = new Tween(this, 0.15);
 			tween.moveTo(this.x, (this.y + 42));
@@ -99,14 +97,10 @@ package bones.dice
 			var frame:String;
 			if (selected){
 				selected = false;
-				if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
-				else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
-				image.texture = Atlases.textureAtlas.getTexture(frame);
+				notHighlight();
 			}else{
 				selected = true;
-				if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + "Y.png";
-				else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + "Y.png";
-				image.texture = Atlases.textureAtlas.getTexture(frame);
+				yellowHighlight();
 			}
 			frame = null;
 		}
@@ -137,6 +131,29 @@ package bones.dice
 			return type;
 		}
 		
+		public function redHighlight():void{
+			var frame:String;
+			if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + "R.png";
+			else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + "R.png";
+			image.texture = Atlases.textureAtlas.getTexture(frame);
+			frame = null;
+		}
+		
+		public function yellowHighlight():void{
+			var frame:String;
+			if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + "Y.png";
+			else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + "Y.png";
+			image.texture = Atlases.textureAtlas.getTexture(frame);
+			frame = null;
+		}
+		
+		public function notHighlight():void{
+			var frame:String;
+			if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
+			else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
+			image.texture = Atlases.textureAtlas.getTexture(frame);
+			frame = null;
+		}
 	}
 
 }

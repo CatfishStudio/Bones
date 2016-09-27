@@ -2,6 +2,8 @@ package bones.sevens
 {
 	import flash.system.*;
 	import flash.display.Bitmap;
+	import flash.utils.Timer;
+	import flash.events.TimerEvent;
 	
 	import starling.display.Sprite;
 	import starling.core.Starling;
@@ -38,6 +40,7 @@ package bones.sevens
 		private var textField1:TextField;
 		private var textField2:TextField;
 		private var tween:Tween;
+		private var timer:Timer
 		
 		private var animDices:Vector.<MovieClip>;
 		private var animRollDices:Vector.<MovieClip>;
@@ -351,7 +354,7 @@ package bones.sevens
 				removeCombination();
 			}else if (result > 7){
 				textField1.text = "Сумма кубиков: " + result.toString();
-				
+				redCombination();
 			}else if (result < 7){
 				textField1.text = "Сумма кубиков: " + result.toString();
 			}
@@ -394,7 +397,52 @@ package bones.sevens
 		
 		private function redCombination():void
 		{
+			canClick = false;
+			var i:int;
+			var j:int;
+			var count:int = additionalDices.length;
+			for (i = 0; i < count; i++){
+				if (additionalDices[i] == null) continue;
+				if (additionalDices[i].getSelect()){
+					additionalDices[i].redHighlight();
+				}
+			}
+			count = fieldDices.length;
+			for (i = 0; i < count; i++){
+				if (fieldDices[i][fieldDices[i].length - 1].getSelect()){
+					fieldDices[i][fieldDices[i].length - 1].redHighlight();
+				}
+			}
 			
+			timer = new Timer(1000, 1);
+			//timer.addEventListener(TimerEvent.TIMER, onTick); 
+            timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+            timer.start(); 
+			
+		}
+		
+		private function onTimerComplete(e:TimerEvent):void 
+		{
+			timer = null;
+			var i:int;
+			var j:int;
+			var count:int = additionalDices.length;
+			for (i = 0; i < count; i++){
+				if (additionalDices[i] == null) continue;
+				if (additionalDices[i].getSelect()){
+					additionalDices[i].notHighlight();
+					additionalDices[i].select();
+				}
+			}
+			count = fieldDices.length;
+			for (i = 0; i < count; i++){
+				if (fieldDices[i][fieldDices[i].length - 1].getSelect()){
+					fieldDices[i][fieldDices[i].length - 1].notHighlight();
+					fieldDices[i][fieldDices[i].length - 1].select();
+				}
+			}
+			canClick = true;
+			textField1.text = "Сумма кубиков: ";
 		}
 		
 	}

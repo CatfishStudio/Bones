@@ -44,6 +44,7 @@ package bones.dice
 		
 		private function onRemoveStage(e:Event):void 
 		{
+			removeChild(image);
 			image.dispose();
 			image = null;
 			if (tween != null)

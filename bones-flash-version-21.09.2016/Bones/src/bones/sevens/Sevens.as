@@ -35,7 +35,8 @@ package bones.sevens
 	{
 		private var button:Button;
 		private var image:Image;
-		private var textField:TextField;
+		private var textField1:TextField;
+		private var textField2:TextField;
 		private var tween:Tween;
 		
 		private var animDices:Vector.<MovieClip>;
@@ -52,6 +53,7 @@ package bones.sevens
             [[6, 1, 5, 4], [6, 3, 5, 2], [6, 4, 5, 1], [6, 2, 5, 3]]
 		];
 		private var canClick:Boolean = true;
+		private var score:int;
 		
 		public function Sevens() 
 		{
@@ -67,8 +69,10 @@ package bones.sevens
 			
 			name = Constants.SEVENS;
 			canClick = true;
+			score = 0;
 			
 			createBackground();
+			createBoard();
 			createButtons();
 			createDices();
 			createField();
@@ -80,7 +84,8 @@ package bones.sevens
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			button.dispose();
 			image.dispose();
-			//textField.dispose();
+			textField1.dispose();
+			textField2.dispose();
 			tween = null;
 			var i:int;
 			if(animDices != null){
@@ -140,6 +145,24 @@ package bones.sevens
 			bitmap = null;
 		}
 		
+		private function createBoard():void
+		{
+			var textFormat:TextFormat = new TextFormat("Arial", 18, 0xFFFFFF, "left", "center");
+			textFormat.bold = true;
+			textField1 = new TextField(200, 60, "Сумма кубиков: ", textFormat);
+			textField1.x = 625;
+			textField1.y = 515;
+			addChild(textField1);
+			
+			textFormat.bold = false;
+			textField2 = new TextField(200, 60, "Ваши очки: " + score.toString(), textFormat);
+			textField2.x = 625;
+			textField2.y = 555;
+			addChild(textField2);
+			
+			textFormat = null;
+		}
+		
 		private function createButtons():void
 		{
 			var bitmap:Bitmap = new Images.ImgButtonHelp();
@@ -168,7 +191,7 @@ package bones.sevens
 			for (i = 0; i < 7; i++){
 				movieClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("anim_dice_"), 12);
 				movieClip.stop(); 
-				movieClip.addEventListener(TouchEvent.TOUCH, onTouch);
+				movieClip.addEventListener(TouchEvent.TOUCH, onTouchRoll);
 				animDices.push(movieClip);
 				Starling.juggler.add(animDices[i]);
 			}
@@ -203,7 +226,7 @@ package bones.sevens
 			
 		}
 		
-		private function onTouch(e:TouchEvent):void 
+		private function onTouchRoll(e:TouchEvent):void 
 		{
 			//e.getTouch(e.target as DisplayObject, TouchPhase.HOVER) ? (e.target as MovieClip).play() : (e.target as MovieClip).stop();
 			if (e.getTouch(e.target as DisplayObject, TouchPhase.HOVER)){
@@ -230,6 +253,7 @@ package bones.sevens
 					newRow.push(new Dice(diceValues[Utils.getRandomInt(0,6)][Utils.getRandomInt(0,4)], Utils.getRandomInt(0,2)));
 					newRow[j].x = 300 + (45 * i);
 					newRow[j].y = 180 + (42 * j);
+					if (j == 9) newRow[j].diceEnable();
 					newRow[j].addEventListener(TouchEvent.TOUCH, onDiceTouch);
 					addChild(newRow[j]);
 				}
@@ -242,6 +266,7 @@ package bones.sevens
 			var i:int;
 			if(additionalDices != null){
 				for (i = 0; i < additionalDices.length; i++) {
+					if (additionalDices[i] == null) continue;
 					removeChild(additionalDices[i]);
 					additionalDices[i].dispose();
 					additionalDices[i] = null;
@@ -278,9 +303,10 @@ package bones.sevens
 			for (i = 0; i < animRollDices.length; i++) {
 				value = Utils.getRandomInt(1, 7);
 				
-				additionalDices.push(new Dice(diceValues[Utils.getRandomInt(0,6)][Utils.getRandomInt(0,4)], Utils.getRandomInt(0,2)));
+				additionalDices.push(new Dice(diceValues[Utils.getRandomInt(0,6)][Utils.getRandomInt(0,4)], 0));
 				additionalDices[i].x = animRollDices[i].x;
 				additionalDices[i].y = animRollDices[i].y;
+				additionalDices[i].diceEnable();
 				additionalDices[i].addEventListener(TouchEvent.TOUCH, onDiceTouch);
 				addChild(additionalDices[i]);
 				
@@ -296,8 +322,79 @@ package bones.sevens
 		private function onDiceTouch(e:TouchEvent):void 
 		{
 			if (e.getTouch(e.target as DisplayObject, TouchPhase.BEGAN) && canClick){
-				((e.target as Image).parent as Dice).select();
+				var dice:Dice = ((e.target as Image).parent as Dice);
+				if (dice.getEnable()){
+					dice.select();
+					checkCombination();
+				}
 			}
+		}
+		
+		private function checkCombination():void
+		{
+			var result:int = 0;
+			var i:int;
+			var count:int = additionalDices.length;
+			for (i = 0; i < count; i++){
+				if (additionalDices[i] == null) continue;
+				if (additionalDices[i].getSelect()) result += additionalDices[i].getValue();
+			}
+			count = fieldDices.length;
+			for (i = 0; i < count; i++){
+				if (fieldDices[i][fieldDices[i].length - 1] == null) continue;
+				if (fieldDices[i][fieldDices[i].length - 1].getSelect()) result += fieldDices[i][fieldDices[i].length - 1].getValue();
+			}
+			
+			
+			if (result == 7){
+				textField1.text = "Сумма кубиков: " + result.toString();
+				removeCombination();
+			}else if (result > 7){
+				textField1.text = "Сумма кубиков: " + result.toString();
+				
+			}else if (result < 7){
+				textField1.text = "Сумма кубиков: " + result.toString();
+			}
+		}
+		
+		private function removeCombination():void
+		{
+			var i:int;
+			var j:int;
+			var count:int = additionalDices.length;
+			for (i = 0; i < count; i++){
+				if (additionalDices[i] == null) continue;
+				if (additionalDices[i].getSelect()){
+					removeChild(additionalDices[i]);
+					additionalDices[i].dispose();
+					additionalDices[i] = null;
+				}
+			}
+			if (additionalDices[0] == null && additionalDices[additionalDices.length - 1] === null)
+			{
+				rollDice();
+			}
+			count = fieldDices.length;
+			for (i = 0; i < count; i++){
+				if (fieldDices[i][fieldDices[i].length - 1].getSelect()){
+					removeChild(fieldDices[i][fieldDices[i].length - 1]);
+					fieldDices[i][fieldDices[i].length - 1].dispose();
+					fieldDices[i][fieldDices[i].length - 1] = null;
+					fieldDices[i].pop();
+					
+					for (j = fieldDices[i].length-1; j >= 0; j--){
+						fieldDices[i][j].moveDown();
+						if (j == fieldDices[i].length - 1) fieldDices[i][j].diceEnable();
+					}
+				}
+			}
+			
+			textField1.text = "Сумма кубиков: ";
+		}
+		
+		private function redCombination():void
+		{
+			
 		}
 		
 	}

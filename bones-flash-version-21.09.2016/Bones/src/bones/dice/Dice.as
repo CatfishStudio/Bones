@@ -25,6 +25,7 @@ package bones.dice
 		private var indexDice:int;
 		private var nextIndexDice:int;
 		private var selected:Boolean;
+		private var enable:Boolean;
 		
 		public function Dice(_diceValues:Array, _type:int) 
 		{
@@ -52,7 +53,9 @@ package bones.dice
 			selected = false;
 			indexDice = 0;
 			nextIndexDice = indexDice + 1;
-			var frame:String = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
+			var frame:String;
+			if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
+			else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
 			image = new Image(Atlases.textureAtlas.getTexture(frame));
 			addChild(image);
 			
@@ -65,7 +68,9 @@ package bones.dice
 			if (indexDice > 3) indexDice = 0;
 			nextIndexDice = indexDice + 1;
 			if (nextIndexDice > 3) nextIndexDice = 0;
-			var frame:String = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
+			var frame:String;
+			if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
+			else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
 			image.texture = Atlases.textureAtlas.getTexture(frame);
 			y += 42;
 		}
@@ -75,11 +80,13 @@ package bones.dice
 			var frame:String;
 			if (selected){
 				selected = false;
-				frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
+				if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
+				else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
 				image.texture = Atlases.textureAtlas.getTexture(frame);
 			}else{
 				selected = true;
-				frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + "Y.png";
+				if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + "Y.png";
+				else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + "Y.png";
 				image.texture = Atlases.textureAtlas.getTexture(frame);
 			}
 			frame = null;
@@ -88,6 +95,17 @@ package bones.dice
 		public function getSelect():Boolean
 		{
 			return selected;
+		}
+		
+		public function diceEnable():void
+		{
+			if (enable) enable = false;
+			else enable = true;
+		}
+		
+		public function getEnable():Boolean
+		{
+			return enable;
 		}
 		
 		public function getValue():int
@@ -99,6 +117,7 @@ package bones.dice
 		{
 			return type;
 		}
+		
 	}
 
 }

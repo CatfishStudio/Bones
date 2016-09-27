@@ -10,6 +10,8 @@ package bones.dice
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	
 	import bones.data.Atlases;
 	
@@ -20,12 +22,14 @@ package bones.dice
 	public class Dice extends Sprite 
 	{
 		private var image:Image;
+		private var tween:Tween;
 		private var diceValues:Array = [];
 		private var type:int;
 		private var indexDice:int;
 		private var nextIndexDice:int;
 		private var selected:Boolean;
 		private var enable:Boolean;
+		
 		
 		public function Dice(_diceValues:Array, _type:int) 
 		{
@@ -42,6 +46,11 @@ package bones.dice
 		{
 			image.dispose();
 			image = null;
+			if (tween != null)
+			{	
+				Starling.juggler.remove(tween);
+				tween = null;
+			}
 			diceValues = null;
 			super.dispose();
 			System.gc();
@@ -72,7 +81,17 @@ package bones.dice
 			if (type == 0) frame = "dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
 			else frame = "blue_dice" + diceValues[indexDice] + "0" +  diceValues[indexDice] + diceValues[nextIndexDice] + ".png";
 			image.texture = Atlases.textureAtlas.getTexture(frame);
-			y += 42;
+			
+			tween = new Tween(this, 0.15);
+			tween.moveTo(this.x, (this.y + 42));
+			tween.onComplete = tweenComplete;
+			Starling.juggler.add(tween);
+		}
+		
+		private function tweenComplete():void 
+		{
+			Starling.juggler.remove(tween);
+			tween = null;
 		}
 		
 		public function select():void

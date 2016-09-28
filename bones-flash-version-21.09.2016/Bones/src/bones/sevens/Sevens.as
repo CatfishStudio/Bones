@@ -46,7 +46,7 @@ package bones.sevens
 		
 		private var animDices:Vector.<MovieClip>;
 		private var animRollDices:Vector.<MovieClip>;
-		private var animRedDice:MovieClip;
+		private var animRedDices:Vector.<MovieClip>;
 		private var fieldDices:Vector.<Vector.<Dice>>;
 		private var additionalDices:Vector.<Dice>;
 		private var completeColumns:Vector.<RedDice>;
@@ -127,6 +127,15 @@ package bones.sevens
 				animRollDices = null;
 			}
 			
+			if (animRedDices != null){
+				for (i = 0; i < animRedDices.length; i++){
+					removeChild(animRedDices[i]);
+					animRedDices[i].dispose();
+					animRedDices[i] = null;
+				}
+				animRedDices = null;
+			}
+			
 			if (fieldDices != null){
 				for (i = 0; i < fieldDices.length; i++){
 					for (j = 0; j < fieldDices[i].length; j++){
@@ -163,11 +172,6 @@ package bones.sevens
 			}
 			
 			diceValues = null;
-			
-			if(animRedDice != null){
-				animRedDice.dispose();
-				animRedDice = null;
-			}
 			
 			while (this.numChildren) {
 				this.removeChildren(0, -1, true);
@@ -527,33 +531,42 @@ package bones.sevens
 		{
 			if (completeColumns[column].visible === false){
 				canClick = false;
-				movieClip = new MovieClip(Atlases.textureAtlasAnimation.getTextures("win_dice_"), 12);
-				movieClip.x = completeColumns[column].x;
-				movieClip.y = 180;
-				movieClip.name = column.toString();
-				movieClip.play(); 
-				addChild(movieClip);
-				Starling.juggler.add(movieClip);
 				
-				tween = new Tween(movieClip, 1.0);
+				if (animRedDices == null) animRedDices = new Vector.<MovieClip>();
+				
+				animRedDices.push(new MovieClip(Atlases.textureAtlasAnimation.getTextures("win_dice_"), 12));
+				animRedDices[animRedDices.length - 1].x = completeColumns[column].x;
+				animRedDices[animRedDices.length - 1].y = 180;
+				animRedDices[animRedDices.length - 1].name = column.toString();
+				animRedDices[animRedDices.length - 1].play();
+				addChild(animRedDices[animRedDices.length - 1]);
+				Starling.juggler.add(animRedDices[animRedDices.length - 1]);
+				
+				tween = new Tween(animRedDices[animRedDices.length-1], 1.0);
 				tween.moveTo(completeColumns[column].x, completeColumns[column].y);
 				tween.onComplete = tweenRedDiceComplete;
 				Starling.juggler.add(tween);
+				
 			}
 		}
 		
 		private function tweenRedDiceComplete():void 
 		{
-			canClick = true;
-			
 			Starling.juggler.remove(tween);
 			tween = null;
 			
-			completeColumns[int(movieClip.name)].visible = true;
-			removeChild(movieClip);
-			Starling.juggler.add(movieClip);
-			movieClip.dispose();
-			movieClip = null;
+			var i:int;
+			for (i = 0; i < animRedDices.length; i++){
+				animRedDices[i].stop();
+				removeChild(animRedDices[i]);
+				Starling.juggler.remove(animRedDices[i]);
+				completeColumns[int(animRedDices[i].name)].visible = true;
+				animRedDices[i].dispose();
+				animRedDices[i] = null;
+			}
+			animRedDices = null;
+			canClick = true;
+			
 		}
 		
 		

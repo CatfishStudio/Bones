@@ -358,6 +358,7 @@ package bones.sevens
 		{
 			Sounds.PlaySound(Sounds.Sound2);
 			canClick = false;
+			
 			var i:int;
 			if(additionalDices != null){
 				for (i = 0; i < additionalDices.length; i++) {
@@ -411,8 +412,11 @@ package bones.sevens
 				animRollDices[i].dispose();
 			}
 			animRollDices = null;
-			canClick = true;
+			
+			resetCombination();
 			checkGameOver();
+			
+			canClick = true;
 		}
 		
 		private function onDiceTouch(e:TouchEvent):void 
@@ -478,10 +482,7 @@ package bones.sevens
 					additionalDices[i] = null;
 				}
 			}
-			if (additionalDices[0] == null && additionalDices[additionalDices.length - 1] === null)
-			{
-				rollDice();
-			}
+			
 			count = fieldDices.length;
 			for (i = 0; i < count; i++){
 				if (fieldDices[i].length == 0) continue;
@@ -501,6 +502,11 @@ package bones.sevens
 						}
 					}
 				}
+			}
+			
+			if (additionalDices[0] == null && additionalDices[additionalDices.length - 1] === null)
+			{
+				rollDice();
 			}
 			
 			checkGameOver();
@@ -554,6 +560,34 @@ package bones.sevens
 				}
 			}
 			canClick = true;
+			textField1.text = "Сумма кубиков: ";
+		}
+		
+		private function resetCombination():void
+		{
+			var i:int;
+			var j:int;
+			var count:int
+			if(additionalDices != null){
+				count = additionalDices.length;
+				for (i = 0; i < count; i++){
+					if (additionalDices[i] == null) continue;
+					if (additionalDices[i].getSelect()){
+						additionalDices[i].notHighlight();
+						additionalDices[i].select();
+					}
+				}
+			}
+			if(fieldDices != null){
+				count = fieldDices.length;
+				for (i = 0; i < count; i++){
+					if (fieldDices[i][fieldDices[i].length - 1] == null) continue;
+					if (fieldDices[i][fieldDices[i].length - 1].getSelect()){
+						fieldDices[i][fieldDices[i].length - 1].notHighlight();
+						fieldDices[i][fieldDices[i].length - 1].select();
+					}
+				}
+			}
 			textField1.text = "Сумма кубиков: ";
 		}
 		

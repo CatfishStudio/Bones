@@ -10,6 +10,7 @@ package bones.data
 		public static const GAME_WINDOW_HEIGHT:int = 730;
 		
 		public static const BUTTON_SETTINGS:String = "buttonSettings";
+		public static const BUTTON_POST:String = "buttonPost";
 		
 		public static const MENU:String = "menu";		
 		public static const MENU_BUTTON_THOUSAND:String = "menuButtonThousand";
@@ -30,7 +31,7 @@ package bones.data
 		
 		public static const SEVENS:String = "sevens";
 		public static const SEVENS_LOST:String = "sevensLost";
-		public static const SEVENS_WON:String = "sevensWon";
+		public static const SEVENS_WIN:String = "sevensWin";
 		public static const SEVENS_BUTTON_HELP:String = "sevensButtonHelp";
 		public static const SEVENS_BUTTON_END_GAME:String = "sevensButtonEndGame";
 		
@@ -40,6 +41,9 @@ package bones.data
 		public static const SEVENS_END_GAME:String = "sevensEndGame";
 		public static const SEVENS_END_GAME_BUTTON_BACK_MENU:String = "sevensEndGameButtonBackMenu";
 		public static const SEVENS_END_GAME_BUTTON_RESTART_GAME:String = "sevensEndGameButtonRestartGame";
+		public static const SEVENS_WIN_GAME_BUTTON_BACK_MENU:String = "sevensWinGameButtonBackMenu";
+		public static const SEVENS_WIN_GAME_BUTTON_RESTART_GAME:String = "sevensWinGameButtonRestartGame";
+		
 	}
 
 }

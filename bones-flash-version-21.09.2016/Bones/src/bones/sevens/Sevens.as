@@ -190,7 +190,8 @@ package bones.sevens
 			switch(Button(e.target).name){
 				case Constants.SEVENS_BUTTON_HELP:
 				{
-					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
+					//dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
+					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.SEVENS_WIN }));
 					break;
 				}
 				case Constants.SEVENS_BUTTON_END_GAME:
@@ -673,6 +674,7 @@ package bones.sevens
 			if (completeColumns[0].visible && completeColumns[1].visible && completeColumns[2].visible && completeColumns[3].visible && completeColumns[4].visible) {
 				trace('[SAVENS]: game over - win!');
 				Data.userRatingSevens = score;
+				dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.SEVENS_WIN }));
 				return;
 			}
 			

@@ -14,6 +14,7 @@ package bones
 	import bones.sevens.Sevens;
 	import bones.sevens.SevensHelp;
 	import bones.sevens.SevensEndGame;
+	import bones.sevens.SevensWinGame;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -134,6 +135,19 @@ package bones
 			}
 		}
 		
+		private function sevensWinGame():void
+		{
+			Sounds.PlaySound(Sounds.Sound4);
+			if (getChildByName(Constants.SEVENS_WIN) != null)
+			{
+				removeChild(getChildByName(Constants.SEVENS_WIN));
+			}
+			else
+			{
+				addChild(new SevensWinGame());
+			}
+		}
+		
 	
 		private function windowAllClose():void
 		{
@@ -169,9 +183,9 @@ package bones
 					sevensEndGame();
 					break;
 				}
-				case Constants.SEVENS_WON:
+				case Constants.SEVENS_WIN:
 				{
-					
+					sevensWinGame();
 					break;
 				}
 				case Constants.SEVENS_BUTTON_END_GAME:
@@ -199,6 +213,20 @@ package bones
 				case Constants.SEVENS_END_GAME_BUTTON_BACK_MENU:
 				{
 					sevensEndGame();
+					sevens();
+					menu();
+					break;
+				}
+				case Constants.SEVENS_WIN_GAME_BUTTON_RESTART_GAME:
+				{
+					sevensWinGame();
+					sevens();
+					sevens();
+					break;
+				}
+				case Constants.SEVENS_WIN_GAME_BUTTON_BACK_MENU:
+				{
+					sevensWinGame();
 					sevens();
 					menu();
 					break;

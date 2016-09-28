@@ -62,6 +62,7 @@ package bones.sevens
 		private var canClick:Boolean = true;
 		private var score:int;
 		private var redScore:Array = [10, 20, 35, 60, 100];
+		private var gameOver:Boolean = false;
 		
 		
 		public function Sevens() 
@@ -77,6 +78,7 @@ package bones.sevens
 			addEventListener(Event.TRIGGERED, onButtonsClick);
 			
 			name = Constants.SEVENS;
+			gameOver = false;
 			canClick = true;
 			score = 0;
 			
@@ -196,7 +198,10 @@ package bones.sevens
 				case Constants.SEVENS_BUTTON_END_GAME:
 				{
 					Data.userRatingSevens = score;
-					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
+					if (gameOver == false){
+						gameOver = true;
+						dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
+					}
 					break;
 				}
 				default:
@@ -296,15 +301,21 @@ package bones.sevens
 			
 		}
 		
+		private var rollPlay:Boolean = false;
 		private function onTouchRoll(e:TouchEvent):void 
 		{
 			//e.getTouch(e.target as DisplayObject, TouchPhase.HOVER) ? (e.target as MovieClip).play() : (e.target as MovieClip).stop();
 			if (e.getTouch(e.target as DisplayObject, TouchPhase.HOVER)){
-				(e.target as MovieClip).play();
-				
+				if (rollPlay == false){
+					rollPlay = true;
+					(e.target as MovieClip).play();
+					Sounds.MusicInit(Sounds.Sound1);
+					Sounds.PlayMusic();
+				}
 			}else{
 				(e.target as MovieClip).stop();
-				
+				Sounds.StopMusic();
+				rollPlay = false;
 			}
 			if (e.getTouch(e.target as DisplayObject, TouchPhase.BEGAN) && canClick){
 				(e.target as MovieClip).visible = false;
@@ -345,6 +356,7 @@ package bones.sevens
 		
 		private function rollDice():void
 		{
+			Sounds.PlaySound(Sounds.Sound2);
 			canClick = false;
 			var i:int;
 			if(additionalDices != null){
@@ -406,6 +418,7 @@ package bones.sevens
 		private function onDiceTouch(e:TouchEvent):void 
 		{
 			if (e.getTouch(e.target as DisplayObject, TouchPhase.BEGAN) && canClick){
+				Sounds.PlaySound(Sounds.Sound3);
 				var dice:Dice = ((e.target as Image).parent as Dice);
 				if (dice.getEnable()){
 					dice.select();
@@ -681,7 +694,10 @@ package bones.sevens
 			if (checkPossibleCombination() == false){
 				trace('[SAVENS]: game over - lost!');
 				Data.userRatingSevens = score;
-				dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.SEVENS_LOST }));
+				if (gameOver == false){
+					gameOver = true;
+					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.SEVENS_LOST }));
+				}
 			}
 		}
 		

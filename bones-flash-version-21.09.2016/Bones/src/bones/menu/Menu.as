@@ -35,6 +35,8 @@ package bones.menu
 			name = Constants.MENU;
 			createBackground();
 			createButtons();
+			
+			trace('[MENU]: added to stage');
 		}
 		
 		private function onRemoveFromStage(e:Event):void 
@@ -49,6 +51,8 @@ package bones.menu
 			this.removeFromParent(true);
 			super.dispose();
 			System.gc();
+			
+			trace('[MENU]: removed from stage');
 		}
 		
 		private function onButtonsClick(e:Event):void 

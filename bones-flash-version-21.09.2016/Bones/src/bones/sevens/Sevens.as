@@ -87,6 +87,8 @@ package bones.sevens
 			createField();
 			createCompleteColumns();
 			rollDice();
+			
+			trace('[SEVENS]: added to stage');
 		}
 		
 		private function onRemovedFromStage(e:Event):void 
@@ -179,6 +181,8 @@ package bones.sevens
 			this.removeFromParent(true);
 			super.dispose();
 			System.gc();
+			
+			trace('[SEVENS]: removed from stage');
 		}
 		
 		private function onButtonsClick(e:Event):void 
@@ -302,7 +306,6 @@ package bones.sevens
 				
 			}
 			if (e.getTouch(e.target as DisplayObject, TouchPhase.BEGAN) && canClick){
-				canClick = false;
 				(e.target as MovieClip).visible = false;
 				rollDice();
 			}
@@ -341,6 +344,7 @@ package bones.sevens
 		
 		private function rollDice():void
 		{
+			canClick = false;
 			var i:int;
 			if(additionalDices != null){
 				for (i = 0; i < additionalDices.length; i++) {

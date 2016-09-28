@@ -61,7 +61,7 @@ package bones.sevens
 		];
 		private var canClick:Boolean = true;
 		private var score:int;
-		
+		private var redScore:Array = [10, 20, 35, 60, 100];
 		
 		
 		public function Sevens() 
@@ -415,23 +415,31 @@ package bones.sevens
 		
 		private function checkCombination():void
 		{
+			var dices:Vector.<Dice> = new Vector.<Dice>();
 			var result:int = 0;
 			var i:int;
 			var count:int = additionalDices.length;
 			for (i = 0; i < count; i++){
 				if (additionalDices[i] == null) continue;
-				if (additionalDices[i].getSelect()) result += additionalDices[i].getValue();
+				if (additionalDices[i].getSelect()){
+					result += additionalDices[i].getValue();
+					dices.push(additionalDices[i]);
+				}
 			}
 			count = fieldDices.length;
 			for (i = 0; i < count; i++){
 				if (fieldDices[i].length == 0) continue;
 				if (fieldDices[i][fieldDices[i].length - 1] == null) continue;
-				if (fieldDices[i][fieldDices[i].length - 1].getSelect()) result += fieldDices[i][fieldDices[i].length - 1].getValue();
+				if (fieldDices[i][fieldDices[i].length - 1].getSelect()){
+					result += fieldDices[i][fieldDices[i].length - 1].getValue();
+					dices.push(fieldDices[i][fieldDices[i].length - 1]);
+				}
 			}
 			
 			
 			if (result == 7){
 				textField1.text = "Сумма кубиков: " + result.toString();
+				addScore(dices);
 				removeCombination();
 			}else if (result > 7){
 				textField1.text = "Сумма кубиков: " + result.toString();
@@ -439,6 +447,8 @@ package bones.sevens
 			}else if (result < 7){
 				textField1.text = "Сумма кубиков: " + result.toString();
 			}
+			
+			dices = null;
 		}
 		
 		private function removeCombination():void
@@ -538,6 +548,8 @@ package bones.sevens
 			if (completeColumns[column].visible === false){
 				canClick = false;
 				
+				addRedScore();
+				
 				if (animRedDices == null) animRedDices = new Vector.<MovieClip>();
 				
 				animRedDices.push(new MovieClip(Atlases.textureAtlasAnimation.getTextures("win_dice_"), 12));
@@ -575,6 +587,36 @@ package bones.sevens
 			checkGameOver();
 		}
 		
+		private function addScore(dices:Vector.<Dice>):void
+		{
+			var countBlack:int = 0;
+			var countBlue:int = 0;
+			var i:int;
+			for (i = 0; i < dices.length; i++){
+				if (dices[i].getType() == 0) countBlack++;
+				if (dices[i].getType() == 1) countBlue++;
+			}
+			
+			if (countBlue > 0 && countBlack == 0){
+				if (countBlue == 2) score += 30;
+				else if (countBlue > 2) score += 50;
+			}else if (countBlue == 0 && countBlack > 0){
+				if (countBlack == 2) score += 7;
+				else if (countBlack == 3) score += 15;
+				else if (countBlack > 3) score += 30;
+			}else if (countBlue > 0 && countBlack > 0){
+				score += 7;
+			}
+			
+			textField2.text = "Ваши очки: " + score.toString();
+		}
+		
+		private function addRedScore():void
+		{
+			score += redScore.shift();
+			textField2.text = "Ваши очки: " + score.toString();
+		}
+		
 		private function checkPossibleCombination():Boolean
 		{
 			var attempt:int = 0;
@@ -592,6 +634,7 @@ package bones.sevens
             var lastRow: int;
 			for (i = 0; i < fieldDices.length; i++){
 				lastRow = fieldDices[i].length - 1;
+				if (lastRow < 0) continue;
 				if (fieldDices[i][lastRow] != null) values.push(fieldDices[i][lastRow].getValue());
 			}
 			
@@ -627,13 +670,16 @@ package bones.sevens
 		
 		private function checkGameOver():void
 		{
-			if (completeColumns[0].visible && completeColumns[1].visible && completeColumns[2].visible && completeColumns[3].visible) {
+			if (completeColumns[0].visible && completeColumns[1].visible && completeColumns[2].visible && completeColumns[3].visible && completeColumns[4].visible) {
 				trace('[SAVENS]: game over - win!');
+				Data.userRatingSevens = score;
 				return;
 			}
 			
 			if (checkPossibleCombination() == false){
 				trace('[SAVENS]: game over - lost!');
+				Data.userRatingSevens = score;
+				dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.SEVENS_LOST }));
 			}
 		}
 		

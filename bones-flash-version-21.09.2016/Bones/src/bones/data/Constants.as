@@ -29,6 +29,8 @@ package bones.data
 		public static const RATING_BUTTON_CLOSE:String = "ratingButtonClose";
 		
 		public static const SEVENS:String = "sevens";
+		public static const SEVENS_LOST:String = "sevensLost";
+		public static const SEVENS_WON:String = "sevensWon";
 		public static const SEVENS_BUTTON_HELP:String = "sevensButtonHelp";
 		public static const SEVENS_BUTTON_END_GAME:String = "sevensButtonEndGame";
 		

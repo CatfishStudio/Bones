@@ -164,6 +164,16 @@ package bones
 					menu();
 					break;
 				}
+				case Constants.SEVENS_LOST:
+				{
+					sevensEndGame();
+					break;
+				}
+				case Constants.SEVENS_WON:
+				{
+					
+					break;
+				}
 				case Constants.SEVENS_BUTTON_END_GAME:
 				{
 					sevensEndGame();

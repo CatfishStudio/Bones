@@ -44,6 +44,7 @@ package bones.data
 		public static const SEVENS_WIN_GAME_BUTTON_BACK_MENU:String = "sevensWinGameButtonBackMenu";
 		public static const SEVENS_WIN_GAME_BUTTON_RESTART_GAME:String = "sevensWinGameButtonRestartGame";
 		
+		public static const THOUSAND:String = "thousand";
 	}
 
 }

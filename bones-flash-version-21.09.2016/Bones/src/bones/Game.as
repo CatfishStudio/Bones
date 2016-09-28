@@ -15,6 +15,7 @@ package bones
 	import bones.sevens.SevensHelp;
 	import bones.sevens.SevensEndGame;
 	import bones.sevens.SevensWinGame;
+	import bones.thousand.Thousand;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -148,6 +149,18 @@ package bones
 			}
 		}
 		
+		private function thousand():void
+		{
+			Sounds.PlaySound(Sounds.Sound3);
+			if (getChildByName(Constants.THOUSAND) != null)
+			{
+				removeChild(getChildByName(Constants.THOUSAND));
+			}
+			else
+			{
+				addChild(new Thousand());
+			}
+		}
 	
 		private function windowAllClose():void
 		{
@@ -167,10 +180,14 @@ package bones
 		{
 			switch(event.data.id)
 			{
+				// THOUSAND --------------------
 				case Constants.MENU_BUTTON_THOUSAND:
 				{
+					thousand();
+					menu();
 					break;
-				}		
+				}	
+				//------------------------------
 				// SEVENS ----------------------
 				case Constants.MENU_BUTTON_SEVENS:
 				{
@@ -264,6 +281,11 @@ package bones
 				case Constants.RATING_BUTTON_CLOSE:
 				{
 					rating();
+					break;
+				}
+				case Constants.BUTTON_POST:
+				{
+					// POST !!!
 					break;
 				}
 				default:

@@ -43,7 +43,9 @@ package bones.menu
 		{
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemoveFromStage);
 			image.dispose();
+			image = null;
 			button.dispose();
+			button = null;
 			while (this.numChildren)
 			{
 				this.removeChildren(0, -1, true);

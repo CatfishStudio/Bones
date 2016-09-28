@@ -129,7 +129,7 @@ package bones.sevens
 			}
 			
 			if (userWentUp == false){
-				setText(200, n, userName, Data.userRatingThousand, "очков", textFormat);
+				setText(200, n, userName, Data.userRatingSevens, "очков", textFormat);
 			}
 			
 			userName = null;

@@ -190,12 +190,12 @@ package bones.sevens
 			switch(Button(e.target).name){
 				case Constants.SEVENS_BUTTON_HELP:
 				{
-					//dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
-					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.SEVENS_WIN }));
+					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 					break;
 				}
 				case Constants.SEVENS_BUTTON_END_GAME:
 				{
+					Data.userRatingSevens = score;
 					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 					break;
 				}
@@ -369,7 +369,7 @@ package bones.sevens
 				Starling.juggler.add(animRollDices[i]);
 				
 				tween = new Tween(animRollDices[i], 1.0);
-				tween.moveTo(50 + (50 * Utils.getRandomInt(1, 4)), 300 - (50 * Utils.getRandomInt(1, 4)));
+				tween.moveTo(50 + (100 * i), 300 - (50 * Utils.getRandomInt(1, 4)));
 				tween.onComplete = rollDiceComplete;
 				Starling.juggler.add(tween);
 			}

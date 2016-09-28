@@ -83,7 +83,7 @@ package bones.sevens
 			createBackground();
 			createBoard();
 			createButtons();
-			createDices();
+			createAttemptDices();
 			createField();
 			createCompleteColumns();
 			rollDice();
@@ -252,7 +252,7 @@ package bones.sevens
 			bitmap = null;
 		}
 		
-		private function createDices():void
+		private function createAttemptDices():void
 		{
 			animDices = new Vector.<MovieClip>();
 			
@@ -399,6 +399,7 @@ package bones.sevens
 			}
 			animRollDices = null;
 			canClick = true;
+			checkGameOver();
 		}
 		
 		private function onDiceTouch(e:TouchEvent):void 
@@ -478,6 +479,7 @@ package bones.sevens
 				}
 			}
 			
+			checkGameOver();
 			textField1.text = "Сумма кубиков: ";
 		}
 		
@@ -570,9 +572,70 @@ package bones.sevens
 			}
 			animRedDices = null;
 			canClick = true;
-			
+			checkGameOver();
 		}
 		
+		private function checkPossibleCombination():Boolean
+		{
+			var attempt:int = 0;
+			var i:int;
+			for (i = 0; i < animDices.length; i++){
+				if (animDices[i].visible) attempt++;
+			}
+			
+			if (attempt > 0){
+				return true;
+			}
+			
+			var values: Array = [];
+			
+            var lastRow: int;
+			for (i = 0; i < fieldDices.length; i++){
+				lastRow = fieldDices[i].length - 1;
+				if (fieldDices[i][lastRow] != null) values.push(fieldDices[i][lastRow].getValue());
+			}
+			
+			if (additionalDices != null){
+				for (i = 0; i < additionalDices.length; i++){
+					if (additionalDices[i] != null) values.push(additionalDices[i].getValue());
+				}
+			}
+			
+			values.sort(function (valueA:int, valueB:int){
+				return valueB - valueA;
+			});
+			
+			var value:int;
+			var j:int;
+			for (i = 0; i < values.length; i++){
+				value = values[i];
+				for (j = 0; j < values.length; j++){
+					if (i != j){
+						if ((value + values[j]) == 7) { 
+							return true;
+						}else if ((value + values[j]) < 7) {
+							value += values[j];
+						}else if ((value + values[j]) > 7) {
+							value = values[i];
+						}
+					}
+				}
+			}
+			
+			return false;
+		}
+		
+		private function checkGameOver():void
+		{
+			if (completeColumns[0].visible && completeColumns[1].visible && completeColumns[2].visible && completeColumns[3].visible) {
+				trace('[SAVENS]: game over - win!');
+				return;
+			}
+			
+			if (checkPossibleCombination() == false){
+				trace('[SAVENS]: game over - lost!');
+			}
+		}
 		
 	}
 

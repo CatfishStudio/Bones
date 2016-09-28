@@ -45,6 +45,23 @@ package bones.data
 		public static const SEVENS_WIN_GAME_BUTTON_RESTART_GAME:String = "sevensWinGameButtonRestartGame";
 		
 		public static const THOUSAND:String = "thousand";
+		public static const THOUSAND_LOST:String = "thousandLost";
+		public static const THOUSAND_WIN:String = "thousand";
+		public static const THOUSAND_BUTTON_HELP:String = "thousandButtonHelp";
+		public static const THOUSAND_BUTTON_END_GAME:String = "thousandButtonEndGame";
+		
+		public static const THOUSAND_HELP:String = "thousandHelp";
+		public static const THOUSAND_HELP_BUTTON_CLOSE:String = "thousandHelpButtonClose";
+		
+		public static const THOUSAND_END_GAME:String = "thousandEndGame";
+		public static const THOUSAND_END_GAME_BUTTON_BACK_MENU:String = "thousandEndGameButtonBackMenu";
+		public static const THOUSAND_END_GAME_RESTART_GAME:String = "thousandEndGameRestartGame";
+		public static const THOUSAND_WIN_GAME_BUTTON_BACK_MENU:String = "thousandWinGameButtonBackMenu";
+		public static const THOUSAND_WIN_GAME_RESTART_GAME:String = "thousandWinGameRestartGame";
+		
+		
+		
+		
 	}
 
 }

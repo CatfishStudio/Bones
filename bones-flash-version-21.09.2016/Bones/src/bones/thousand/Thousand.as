@@ -30,7 +30,7 @@ package bones.thousand
 	
 	/**
 	 * ...
-	 * @author ...
+	 * @author Catfish Studio
 	 */
 	public class Thousand extends Sprite 
 	{

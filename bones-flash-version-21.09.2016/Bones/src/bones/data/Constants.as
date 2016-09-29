@@ -55,9 +55,9 @@ package bones.data
 		
 		public static const THOUSAND_END_GAME:String = "thousandEndGame";
 		public static const THOUSAND_END_GAME_BUTTON_BACK_MENU:String = "thousandEndGameButtonBackMenu";
-		public static const THOUSAND_END_GAME_RESTART_GAME:String = "thousandEndGameRestartGame";
+		public static const THOUSAND_END_GAME_BUTTON_RESTART_GAME:String = "thousandEndGameRestartGame";
 		public static const THOUSAND_WIN_GAME_BUTTON_BACK_MENU:String = "thousandWinGameButtonBackMenu";
-		public static const THOUSAND_WIN_GAME_RESTART_GAME:String = "thousandWinGameRestartGame";
+		public static const THOUSAND_WIN_GAME_BUTTON_RESTART_GAME:String = "thousandWinGameRestartGame";
 		
 		
 		

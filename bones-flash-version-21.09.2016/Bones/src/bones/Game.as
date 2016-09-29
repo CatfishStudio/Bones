@@ -16,6 +16,8 @@ package bones
 	import bones.sevens.SevensEndGame;
 	import bones.sevens.SevensWinGame;
 	import bones.thousand.Thousand;
+	import bones.thousand.ThousandEndGame;
+	import bones.thousand.ThousandHelp;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -161,6 +163,32 @@ package bones
 				addChild(new Thousand());
 			}
 		}
+		
+		private function thousandHelp():void
+		{
+			Sounds.PlaySound(Sounds.Sound4);
+			if (getChildByName(Constants.THOUSAND_HELP) != null)
+			{
+				removeChild(getChildByName(Constants.THOUSAND_HELP));
+			}
+			else
+			{
+				addChild(new ThousandHelp());
+			}
+		}
+		
+		private function thousandEndGame():void
+		{
+			Sounds.PlaySound(Sounds.Sound4);
+			if (getChildByName(Constants.THOUSAND_END_GAME) != null)
+			{
+				removeChild(getChildByName(Constants.THOUSAND_END_GAME));
+			}
+			else
+			{
+				addChild(new ThousandEndGame());
+			}
+		}
 	
 		private function windowAllClose():void
 		{
@@ -186,7 +214,60 @@ package bones
 					thousand();
 					menu();
 					break;
-				}	
+				}
+				case Constants.THOUSAND_LOST:
+				{
+					thousandEndGame();
+					break;
+				}
+				case Constants.THOUSAND_WIN:
+				{
+					// WIN !!!!!!!!!!!!
+					break;
+				}
+				case Constants.THOUSAND_BUTTON_END_GAME:
+				{
+					thousandEndGame();
+					break;
+				}
+				case Constants.THOUSAND_BUTTON_HELP:
+				{
+					thousandHelp();
+					break;
+				}
+				case Constants.THOUSAND_HELP_BUTTON_CLOSE:
+				{
+					thousandHelp();
+					break;
+				}
+				case Constants.THOUSAND_END_GAME_BUTTON_RESTART_GAME:
+				{
+					thousandEndGame();
+					thousand();
+					thousand();
+					break;
+				}
+				case Constants.THOUSAND_END_GAME_BUTTON_BACK_MENU:
+				{
+					thousandEndGame();
+					thousand();
+					menu();
+					break;
+				}
+				case Constants.THOUSAND_WIN_GAME_BUTTON_RESTART_GAME:
+				{
+					////////////////sevensWinGame();
+					thousand();
+					thousand();
+					break;
+				}
+				case Constants.THOUSAND_WIN_GAME_BUTTON_BACK_MENU:
+				{
+					//////////////////sevensWinGame();
+					thousand();
+					menu();
+					break;
+				}
 				//------------------------------
 				// SEVENS ----------------------
 				case Constants.MENU_BUTTON_SEVENS:

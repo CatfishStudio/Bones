@@ -18,6 +18,7 @@ package bones
 	import bones.thousand.Thousand;
 	import bones.thousand.ThousandEndGame;
 	import bones.thousand.ThousandHelp;
+	import bones.thousand.ThousandWinGame;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -190,6 +191,19 @@ package bones
 			}
 		}
 	
+		private function thousandWinGame():void
+		{
+			Sounds.PlaySound(Sounds.Sound4);
+			if (getChildByName(Constants.THOUSAND_WIN) != null)
+			{
+				removeChild(getChildByName(Constants.THOUSAND_WIN));
+			}
+			else
+			{
+				addChild(new ThousandWinGame());
+			}
+		}
+		
 		private function windowAllClose():void
 		{
 			if (getChildByName(Constants.SETTINGS) != null) removeChild(getChildByName(Constants.SETTINGS));
@@ -222,7 +236,7 @@ package bones
 				}
 				case Constants.THOUSAND_WIN:
 				{
-					// WIN !!!!!!!!!!!!
+					thousandWinGame();
 					break;
 				}
 				case Constants.THOUSAND_BUTTON_END_GAME:
@@ -256,14 +270,14 @@ package bones
 				}
 				case Constants.THOUSAND_WIN_GAME_BUTTON_RESTART_GAME:
 				{
-					////////////////sevensWinGame();
+					thousandWinGame();
 					thousand();
 					thousand();
 					break;
 				}
 				case Constants.THOUSAND_WIN_GAME_BUTTON_BACK_MENU:
 				{
-					//////////////////sevensWinGame();
+					thousandWinGame();
 					thousand();
 					menu();
 					break;

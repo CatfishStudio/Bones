@@ -1,4 +1,4 @@
-package bones.sevens 
+package bones.thousand 
 {
 	import flash.system.*;
 	import flash.display.Bitmap;
@@ -24,7 +24,7 @@ package bones.sevens
 	 * ...
 	 * @author Catfish Studio
 	 */
-	public class SevensWinGame extends Sprite 
+	public class ThousandWinGame extends Sprite 
 	{
 		private var sprite:Sprite;
 		private var button:Button;
@@ -33,7 +33,7 @@ package bones.sevens
 		private var tween:Tween;
 		private var textField:TextField;
 		
-		public function SevensWinGame() 
+		public function ThousandWinGame() 
 		{
 			super();
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
@@ -45,7 +45,7 @@ package bones.sevens
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			addEventListener(Event.TRIGGERED, onButtonsClick);
 			
-			name = Constants.SEVENS_WIN;
+			name = Constants.THOUSAND_WIN;
 			createQuad();
 			createBackground();
 			createRating();
@@ -104,7 +104,7 @@ package bones.sevens
 			}
 			
 			var textFormat:TextFormat = new TextFormat("Monotype Corsiva", 48, 0x5C2D15, "center", "center");
-			textField = new TextField(image.width, 60, "Семёрка", textFormat);
+			textField = new TextField(image.width, 60, "Тысяча", textFormat);
 			textField.x = image.x;
 			textField.y = 100;
 			sprite.addChild(textField);
@@ -118,23 +118,22 @@ package bones.sevens
 			textFormat = new TextFormat("Monotype Corsiva", 18, 0x5C2D15, "left", "center");
 			var userWentUp:Boolean = false;
 			var n:int = 0;
-			for (var i:int = 0; i < Data.ratingSevens.length; i++){
-				if (Data.userRatingSevens >= Data.ratingSevens[i][1] && userWentUp == false) {
-					setText(200, n, userName, Data.userRatingSevens, "очков", textFormat);
+			for (var i:int = 0; i < Data.ratingThousand.length; i++){
+				if (Data.userRatingThousand >= Data.ratingThousand[i][1] && userWentUp == false) {
+					setText(200, n, userName, Data.userRatingThousand, "очков", textFormat);
 					userWentUp = true;
 					n++;
 				}
-				setText(200, n, Data.ratingSevens[i][0], Data.ratingSevens[i][1], Data.ratingSevens[i][2], textFormat);
+				setText(200, n, Data.ratingThousand[i][0], Data.ratingThousand[i][1], Data.ratingThousand[i][2], textFormat);
 				n++;
 			}
 			
 			if (userWentUp == false){
-				setText(200, n, userName, Data.userRatingSevens, "очков", textFormat);
+				setText(200, n, userName, Data.userRatingThousand, "очков", textFormat);
 			}
 			
 			userName = null;
 			textFormat = null;
-			
 		}
 		
 		private function setText(y:Number, n:Number, name:String, score:Number, text:String, textFormat:TextFormat):void {
@@ -153,14 +152,14 @@ package bones.sevens
 		{
 			var bitmap:Bitmap = new Images.ImgButtonRestartGame();
 			button = new Button(Texture.fromBitmap(bitmap));
-			button.name = Constants.SEVENS_WIN_GAME_BUTTON_RESTART_GAME;
+			button.name = Constants.THOUSAND_WIN_GAME_BUTTON_RESTART_GAME;
 			button.x = image.x - (button.width / 4);
 			button.y = image.height + 55;
 			sprite.addChild(button);
 			
 			bitmap = new Images.ImgButtonBackMenu();
 			button = new Button(Texture.fromBitmap(bitmap));
-			button.name = Constants.SEVENS_WIN_GAME_BUTTON_BACK_MENU;
+			button.name = Constants.THOUSAND_WIN_GAME_BUTTON_BACK_MENU;
 			button.x = image.width + 55;
 			button.y = image.height + 55;
 			sprite.addChild(button);
@@ -191,12 +190,12 @@ package bones.sevens
 		private function onButtonsClick(e:Event):void 
 		{
 			switch(Button(e.target).name){
-				case Constants.SEVENS_WIN_GAME_BUTTON_RESTART_GAME:
+				case Constants.THOUSAND_WIN_GAME_BUTTON_RESTART_GAME:
 				{
 					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 					break;
 				}
-				case Constants.SEVENS_WIN_GAME_BUTTON_BACK_MENU:
+				case Constants.THOUSAND_WIN_GAME_BUTTON_BACK_MENU:
 				{
 					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 					break;
@@ -212,6 +211,7 @@ package bones.sevens
 				}
 			}
 		}
+		
 		
 	}
 

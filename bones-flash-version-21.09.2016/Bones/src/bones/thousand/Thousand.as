@@ -34,7 +34,11 @@ package bones.thousand
 	 */
 	public class Thousand extends Sprite 
 	{
+		private var gameOver:Boolean;
+		private var score:int;
+		
 		private var image:Image;
+		private var button:Button;
 		
 		public function Thousand() 
 		{
@@ -49,7 +53,11 @@ package bones.thousand
 			addEventListener(Event.TRIGGERED, onButtonsClick);
 			name = Constants.THOUSAND;
 			
+			gameOver = false;
+			score = 0;
+			
 			createBackground();
+			createButtons();
 			
 			trace('[THOUSAND]: added to stage');
 		}
@@ -59,6 +67,10 @@ package bones.thousand
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			image.dispose();
 			image = null;
+			button.dispose();
+			button = null;
+			
+			
 			
 			while (this.numChildren) {
 				this.removeChildren(0, -1, true);
@@ -72,20 +84,24 @@ package bones.thousand
 		
 		private function onButtonsClick(e:Event):void 
 		{
-			/*
 			switch(Button(e.target).name){
-				case Constants.SEVENS_BUTTON_HELP:
+				case Constants.THOUSAND_BUTTON_HELP:
 				{
 					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 					break;
 				}
-				case Constants.SEVENS_BUTTON_END_GAME:
+				case Constants.THOUSAND_BUTTON_END_GAME:
 				{
-					Data.userRatingSevens = score;
+					Data.userRatingThousand = score;
 					if (gameOver == false){
 						gameOver = true;
 						dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 					}
+					break;
+				}
+				case Constants.BUTTON_SETTINGS:
+				{
+					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 					break;
 				}
 				default:
@@ -93,7 +109,6 @@ package bones.thousand
 					break;
 				}
 			}
-			*/
 		}
 				
 		private function createBackground():void
@@ -105,6 +120,34 @@ package bones.thousand
 			addChild(image);
 			bitmap = null;
 		}
+		
+		private function createButtons():void
+		{
+			var bitmap:Bitmap = new Images.ImgButtonEndGame();
+			button = new Button(Texture.fromBitmap(bitmap));
+			button.name = Constants.THOUSAND_BUTTON_END_GAME;
+			button.x = 15;
+			button.y = Constants.GAME_WINDOW_HEIGHT - 60;
+			addChild(button);
+			
+			bitmap = new Images.ImgButtonSettings();
+			button = new Button(Texture.fromBitmap(bitmap));
+			button.name = Constants.BUTTON_SETTINGS;
+			button.x = (Constants.GAME_WINDOW_WIDTH / 2) - (button.width / 2);
+			button.y = Constants.GAME_WINDOW_HEIGHT - 60;
+			addChild(button);
+			
+			bitmap = new Images.ImgButtonHelp();
+			button = new Button(Texture.fromBitmap(bitmap));
+			button.name = Constants.THOUSAND_BUTTON_HELP;
+			button.x = (Constants.GAME_WINDOW_WIDTH - button.width - 15);
+			button.y = Constants.GAME_WINDOW_HEIGHT - 60;
+			addChild(button);
+			
+			bitmap = null;
+		}
+		
+		
 		
 	}
 

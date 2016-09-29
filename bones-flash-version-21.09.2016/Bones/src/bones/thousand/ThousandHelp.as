@@ -36,7 +36,7 @@ package bones.thousand
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			addEventListener(Event.TRIGGERED, onButtonsClick);
 			
-			name = Constants.SEVENS_HELP;
+			name = Constants.THOUSAND_HELP;
 			createQuad();
 			createBackground();
 			createButtons();
@@ -81,7 +81,7 @@ package bones.thousand
 			button = new Button(Texture.fromBitmap(bitmap));
 			button.name = Constants.THOUSAND_HELP_BUTTON_CLOSE;
 			button.x = (Constants.GAME_WINDOW_WIDTH / 2) - (button.width / 1.15);
-			button.y = image.height - 50;
+			button.y = image.height - 45;
 			addChild(button);
 			
 			bitmap = null;

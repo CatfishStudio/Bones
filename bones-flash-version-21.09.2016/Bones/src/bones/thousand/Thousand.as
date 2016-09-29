@@ -142,10 +142,16 @@ package bones.thousand
 				}
 				case "buttonApply":
 				{
+					buttonApply.visible = false;
+					buttonCancel.visible = false;
+					rollDice();
 					break;
 				}
 				case "buttonCancel":
 				{
+					buttonApply.visible = false;
+					buttonCancel.visible = false;
+					onButtonCancel();
 					break;
 				}
 				default:
@@ -262,6 +268,37 @@ package bones.thousand
 			}
 		}
 		
+		private function onButtonCancel():void
+		{
+			if (players[0][3] == true) {// если пользователь уже вошел в игру
+				players[0][2] += score;
+				(players[0][1] as TextField).text = players[0][0] + ": " + players[0][2];
+			}else{ // пользователь ещё не вошел в игру
+				if (score >= 75){ // пользователь набрал необходимое количество очков для входа
+					players[0][2] += score;
+					(players[0][1] as TextField).text = players[0][0] + ": " + players[0][2];
+					players[0][3] = true;
+				}
+			}
+			
+			if (players[0][2] >= 1000){
+				endGame("WIN");
+			}else{
+				score = 0;
+				playerIndex++;
+				diceCountMax = 5;
+				var i:int;
+				for (i = 0; i < boxDice.length; i++){
+					boxDice[i][1] = false;
+				}
+			}
+		}
+		
+		
+		private function rollDice():void
+		{
+			
+		}
 		
 	}
 

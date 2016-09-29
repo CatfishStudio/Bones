@@ -71,6 +71,7 @@ package bones.thousand
 			createButtons();
 			createMessage();
 			createPlayers();
+			createDice();
 			
 			trace('[THOUSAND]: added to stage');
 		}
@@ -78,6 +79,17 @@ package bones.thousand
 		private function onRemovedFromStage(e:Event):void 
 		{
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+			
+			var i:int;
+			if (players != null){
+				for (i = 0; i < players.length; i++){
+					removeChild((players[i][1] as TextField));
+					(players[i][1] as TextField).dispose();
+					players[i][1] = null;
+				}
+				players = null;
+			}
+			
 			while (this.numChildren) {
 				this.removeChildren(0, -1, true);
 			}
@@ -94,9 +106,10 @@ package bones.thousand
 			buttonCancel.dispose();
 			buttonCancel = null;
 			boxDice = null;
-			players = null;
-			timer.stop();
-			timer = null;			
+			if(timer != null){
+				timer.stop();
+				timer = null;		
+			}
 			
 			this.removeFromParent(true);
 			super.dispose();
@@ -125,6 +138,14 @@ package bones.thousand
 				case Constants.BUTTON_SETTINGS:
 				{
 					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
+					break;
+				}
+				case "buttonApply":
+				{
+					break;
+				}
+				case "buttonCancel":
+				{
 					break;
 				}
 				default:
@@ -167,6 +188,22 @@ package bones.thousand
 			button.y = Constants.GAME_WINDOW_HEIGHT - 60;
 			addChild(button);
 			
+			bitmap = new Images.ImgButtonThrow();
+			buttonApply = new Button(Texture.fromBitmap(bitmap));
+			buttonApply.name = "buttonApply";
+			buttonApply.scale = 0.7;
+			buttonApply.x = 250;
+			buttonApply.y = 200;
+			addChild(buttonApply);
+			
+			bitmap = new Images.ImgButtonNotThrow();
+			buttonCancel = new Button(Texture.fromBitmap(bitmap));
+			buttonCancel.name = "buttonCancel";
+			buttonCancel.scale = 0.7;
+			buttonCancel.x = 435;
+			buttonCancel.y = 200;
+			addChild(buttonCancel);
+			
 			bitmap = null;
 		}
 		
@@ -202,6 +239,30 @@ package bones.thousand
 				addChild((players[i][1] as TextField));
 			}
 		}
+		
+		private function createDice():void
+		{
+			this.pause = false;
+			diceCountMax = 5;
+			boxDice = [
+				[1, false, 305, 595, new Sprite()],
+				[2, false, 355, 595, new Sprite()],
+				[3, false, 405, 595, new Sprite()],
+				[4, false, 455, 595, new Sprite()],
+				[5, false, 505, 595, new Sprite()],
+			];
+			
+			var i:int;
+			for (i = 0; i < boxDice.length; i++){
+				image = new Image(Atlases.textureAtlas.getTexture("anim_dice" + (String)(i+1) + (String)(i+1) + ".png"));
+				(boxDice[i][4] as Sprite).x = boxDice[i][2];
+				(boxDice[i][4] as Sprite).y = boxDice[i][3];
+				(boxDice[i][4] as Sprite).addChild(image);
+				addChild((boxDice[i][4] as Sprite));
+			}
+		}
+		
+		
 	}
 
 }

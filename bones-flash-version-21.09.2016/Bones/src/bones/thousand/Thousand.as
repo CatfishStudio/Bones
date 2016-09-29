@@ -34,11 +34,22 @@ package bones.thousand
 	 */
 	public class Thousand extends Sprite 
 	{
-		private var gameOver:Boolean;
-		private var score:int;
-		
 		private var image:Image;
 		private var button:Button;
+		
+		private var gameOver:Boolean;
+		
+		
+		private var messageText:TextField;
+		private var buttonApply:Button;
+		private var buttonCancel:Button;
+		private var boxDice:Array;
+		private var players:Array
+		private var diceCountMax:int;
+		private var score:int;
+		private var playerIndex:int;
+		private var timer:Timer;
+		private var pause:Boolean;
 		
 		public function Thousand() 
 		{
@@ -58,6 +69,8 @@ package bones.thousand
 			
 			createBackground();
 			createButtons();
+			createMessage();
+			createPlayers();
 			
 			trace('[THOUSAND]: added to stage');
 		}
@@ -65,16 +78,26 @@ package bones.thousand
 		private function onRemovedFromStage(e:Event):void 
 		{
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+			while (this.numChildren) {
+				this.removeChildren(0, -1, true);
+			}
+			
 			image.dispose();
 			image = null;
 			button.dispose();
 			button = null;
 			
+			messageText.dispose();
+			messageText = null;
+			buttonApply.dispose();
+			buttonApply = null;
+			buttonCancel.dispose();
+			buttonCancel = null;
+			boxDice = null;
+			players = null;
+			timer.stop();
+			timer = null;			
 			
-			
-			while (this.numChildren) {
-				this.removeChildren(0, -1, true);
-			}
 			this.removeFromParent(true);
 			super.dispose();
 			System.gc();
@@ -148,7 +171,37 @@ package bones.thousand
 		}
 		
 		
+		private function createMessage():void
+		{
+			var textFormat:TextFormat = new TextFormat("Arial", 18, 0xFFFFFF, "center", "center");
+			messageText = new TextField(300, 100, "Чтобы вступить в игру. Вам необходимо набрать 75 очков!", textFormat);
+			messageText.x = 280;
+			messageText.y = 100;
+			addChild(messageText);
+			textFormat = null;
+		}
 		
+		private function createPlayers():void
+		{
+			var textFormat:TextFormat = new TextFormat("Arial", 18, 0xFFFFFF, "left", "center");
+			
+			score = 0;
+			playerIndex = 0;
+			players = [
+				["Вы", new TextField(200, 50, "Вы", textFormat), 0, false, 45, 533],
+				["Джек", new TextField(200, 50, "Джек", textFormat), 0, false, 45, 240],
+				["Барбосса", new TextField(200, 50, "Барбосса", textFormat), 0, false, 628, 240],
+				["Анжелика", new TextField(200, 50, "Анжелика", textFormat), 0, false, 628, 533]
+			];
+			
+			var i:int;
+			for (i = 0; i < players.length; i++){
+				(players[i][1] as TextField).text += ": не вступил.";
+				(players[i][1] as TextField).x = players[i][4];
+				(players[i][1] as TextField).y = players[i][5];
+				addChild((players[i][1] as TextField));
+			}
+		}
 	}
 
 }

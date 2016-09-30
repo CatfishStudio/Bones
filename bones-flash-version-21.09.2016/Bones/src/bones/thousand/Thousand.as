@@ -38,6 +38,8 @@ package bones.thousand
 		private var button:Button;
 		
 		private var gameOver:Boolean;
+		private var tween:Tween;
+		private var animDices:Vector.<MovieClip>;
 		
 		
 		private var messageText:TextField;
@@ -90,6 +92,25 @@ package bones.thousand
 				players = null;
 			}
 			
+			if (boxDice != null){
+				for (i = 0; i < boxDice.length; i++){
+					removeChild(boxDice[i][4]);
+					(boxDice[i][4] as Sprite).removeChildren(0, -1, true);
+					(boxDice[i][4] as Sprite).dispose();
+					boxDice[i][4] = null;
+				}
+				boxDice = null;
+			}
+			
+			if (animDices != null){
+				for (i = 0; i < animDices.length; i++){
+					removeChild(animDices[i]);
+					animDices[i].dispose();
+					animDices[i] = null;
+				}
+				animDices = null;
+			}
+			
 			while (this.numChildren) {
 				this.removeChildren(0, -1, true);
 			}
@@ -105,7 +126,7 @@ package bones.thousand
 			buttonApply = null;
 			buttonCancel.dispose();
 			buttonCancel = null;
-			boxDice = null;
+			
 			if(timer != null){
 				timer.stop();
 				timer = null;		
@@ -258,13 +279,24 @@ package bones.thousand
 				[5, false, 505, 595, new Sprite()],
 			];
 			
+			animDices = new Vector.<MovieClip>();
+			
 			var i:int;
 			for (i = 0; i < boxDice.length; i++){
-				image = new Image(Atlases.textureAtlas.getTexture("anim_dice" + (String)(i+1) + (String)(i+1) + ".png"));
+				image = new Image(Atlases.textureAtlas.getTexture("anim_dice" + (String)(i + 1) + (String)(i + 1) + ".png"));
 				(boxDice[i][4] as Sprite).x = boxDice[i][2];
 				(boxDice[i][4] as Sprite).y = boxDice[i][3];
 				(boxDice[i][4] as Sprite).addChild(image);
 				addChild((boxDice[i][4] as Sprite));
+				
+				animDices.push(new MovieClip(Atlases.textureAtlasAnimation.getTextures("anim_dice_"), 12))
+				animDices[i].name = i.toString();
+				animDices[i].stop();
+				animDices[i].visible = false;
+				animDices[i].x = boxDice[i][2];
+				animDices[i].y = boxDice[i][3];
+				addChild(animDices[i]);
+				Starling.juggler.add(animDices[i]);
 			}
 		}
 		
@@ -291,15 +323,185 @@ package bones.thousand
 				for (i = 0; i < boxDice.length; i++){
 					boxDice[i][1] = false;
 				}
+				rollDiceAI();
 			}
 		}
 		
 		
 		private function rollDice():void
 		{
+			Sounds.PlaySound(Sounds.Sound2);
+			
+			var i:int;
+			var index:int;
+			var newPosX:int;
+			var newPosY:int;
+			
+			if (diceCountMax == 0) diceCountMax = 5;
+			
+			for (i = 0; i < boxDice.length; i++){
+				if (boxDice[i][1] == false){
+					index = Utils.getRandomInt(1, 7); // 1,2,3,4,5,6
+					newPosX = 250 + (Math.random() / 0.1) * (i * 8);
+					newPosY = 250 + (Math.random() / 0.1) * (i * 5);
+					
+					(boxDice[i][4] as Sprite).removeChildren(0, -1, true);
+					image = new Image(Atlases.textureAtlas.getTexture("anim_dice" + index.toString() + index.toString() + ".png"));
+					(boxDice[i][4] as Sprite).addChild(image);
+					(boxDice[i][4] as Sprite).x = newPosX;
+					(boxDice[i][4] as Sprite).y = newPosY;
+					(boxDice[i][4] as Sprite).visible = false;
+					boxDice[i][0] = index;
+					
+					animDices[i].x = boxDice[i][2];
+					animDices[i].y = boxDice[i][3];
+					animDices[i].play();
+					animDices[i].visible = true;
+					
+					tween = new Tween(animDices[i], 1.0);
+					tween.moveTo(newPosX, newPosY);
+					tween.onComplete = tweenBoxDiceComplete;
+					Starling.juggler.add(tween);
+				}
+				
+			}
+		}
+		
+		private function tweenBoxDiceComplete():void 
+		{
+			/*
+			Starling.juggler.remove(tween);
+			tween = null;
+			var i:int;
+			for (i = 0; i < animDices.length; i++){
+				animDices[i].stop();
+				animDices[i].visible = false;
+				(boxDice[i][4] as Sprite).visible = true;
+			}
+			*/
+			diceCountMax--;
+			
+			if (diceCountMax == 0){
+				diceCountMax = 5;
+				if()
+				
+				
+			}
+
+		}
+		
+		private function rollDiceAI():void
+		{
 			
 		}
 		
+		private function checkScoreDice():Boolean
+		{
+			var result: Boolean = false;
+			if (checkDice5() == true){
+				result = true;
+			}else{
+				if (checkDice4() == true){
+					checkDice1();
+					result = true;
+				}else{
+					if (checkDice3() == true){
+						checkDice1();
+						result = true;
+					}else{
+						if (checkDice1() == true) result = true;
+					}
+				}
+			}
+			return result;
+		}
+		
+		private function checkDice5():Boolean
+		{
+			var i:int;
+			var dice: Array = [];
+			/* Поиск уникальной комбинации */
+			for (i = 0; i < boxDice.length; i++){
+				if (boxDice[i][1] === false) dice.push(boxDice[i][0]);
+				else diceCountMax--;
+			}
+			
+			dice.sort(function (valueA:int, valueB:int):int{
+				return valueA - valueB;
+			});
+			
+			if (dice.length == 5){
+				if (dice[0] == 1 && dice[1] == 2 && dice[2] == 3 && dice[3] == 4 && dice[4] == 5){
+					score -= 100; // возможен БАГ!!!!!!!!!!!
+					selectDice("ALL");
+					diceCountMax -= 5;
+					return true;
+				}
+				if (dice[0] == 2 && dice[1] == 3 && dice[2] == 4 && dice[3] == 5 && dice[4] == 6){
+					score += 200;
+					selectDice("ALL");
+					diceCountMax -= 5;
+					return true;
+				}
+				if (dice[0] == dice[1] && dice[0] == dice[2] && dice[0] == dice[3] && dice[0] == dice[4]) {
+					score += 1000;
+					selectDice("ALL");
+					diceCountMax -= 5;
+					return true;
+				}
+			}else{
+				return false;
+			}
+			
+		}
+		
+		private function checkDice4():Boolean
+		{
+			var i:int;
+			var j:int;
+			var dice: Array = [];
+			/* Поиск одинаковых значений кубиков */
+			for (i = 0; i < boxDice.length; i++){
+				if (boxDice[i][1] == false){
+					for (j = 0; j < boxDice.length; j++){
+						if (i != j && boxDice[j][1] == false && boxDice[i][0] == boxDice[j][0]){
+							dice.push(j);
+						}
+					}
+					if (dice.length == 3){
+						dice.push(i);
+						if (boxDice[i][0] == 1) score += 100;
+						if (boxDice[i][0] == 2) score += 200;
+						if (boxDice[i][0] == 3) score += 300;
+						if (boxDice[i][0] == 4) score += 400;
+						if (boxDice[i][0] == 5) score += 500;
+						if (boxDice[i][0] == 6) score += 600;
+						selectDice(dice);
+						diceCountMax -= 4;
+						return true;
+					} else {
+						dice = [];
+					}
+				}
+			}
+			return false;
+		}
+		
+		private function checkDice3():Boolean
+		{
+			
+		}
+		
+		private function checkDice1():Boolean
+		{
+			
+		}
+		
+		
+		private function endGame(type:String):void
+		{
+			
+		}
 	}
 
 }

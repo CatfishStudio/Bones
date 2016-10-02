@@ -149,7 +149,7 @@ package bones.thousand
 				}
 				case Constants.THOUSAND_BUTTON_END_GAME:
 				{
-					Data.userRatingThousand = score;
+					Data.userRatingThousand = players[0][2];
 					if (gameOver == false){
 						gameOver = true;
 						dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
@@ -253,9 +253,9 @@ package bones.thousand
 			playerIndex = 0;
 			players = [
 				["Вы", new TextField(200, 50, "Вы", textFormat), 0, false, 45, 533],
-				["Джек", new TextField(200, 50, "Джек", textFormat), 0, false, 45, 240],
-				["Барбосса", new TextField(200, 50, "Барбосса", textFormat), 0, false, 628, 240],
-				["Анжелика", new TextField(200, 50, "Анжелика", textFormat), 0, false, 628, 533]
+				["Морган", new TextField(200, 50, "Джек", textFormat), 0, false, 45, 240],
+				["Анжелика", new TextField(200, 50, "Барбосса", textFormat), 0, false, 628, 240],
+				["Тэтч", new TextField(200, 50, "Анжелика", textFormat), 0, false, 628, 533]
 			];
 			
 			var i:int;
@@ -360,14 +360,14 @@ package bones.thousand
 					
 					tween = new Tween(animDices[i], 1.0);
 					tween.moveTo(newPosX, newPosY);
-					tween.onComplete = tweenBoxDiceComplete;
+					tween.onComplete = onRollDiceTweenComplete;
 					Starling.juggler.add(tween);
 				}
 				
 			}
 		}
 		
-		private function tweenBoxDiceComplete():void 
+		private function onRollDiceTweenComplete():void 
 		{
 			/*
 			Starling.juggler.remove(tween);
@@ -379,20 +379,364 @@ package bones.thousand
 				(boxDice[i][4] as Sprite).visible = true;
 			}
 			*/
+			var i:int;
+			var totalScore:int;
 			diceCountMax--;
-			
 			if (diceCountMax == 0){
+				
+				Starling.juggler.remove(tween);
+				tween = null;
+				for (i = 0; i < animDices.length; i++){
+					animDices[i].stop();
+					animDices[i].visible = false;
+					(boxDice[i][4] as Sprite).visible = true;
+				}
+				
 				diceCountMax = 5;
-				if()
-				
-				
+				if (checkScoreDice() == true) { // что-то выпало
+					if (diceCountMax == 0) { // если все кости принесли очки
+						if (score < 0) { // если выпали 1,2,3,4,5 и у игрока -100 очков
+							if (players[0][3] == false){ // Пользователь еще не вошел в игре (передаем ход дальше)
+								buttonApply.visible = false;
+								buttonCancel.visible = false;
+								score = 0;
+								playerIndex++;
+								diceCountMax = 5;
+								messageText.text = "Вы набрали -100 очков. Вы пропускаете этот ход.";
+								for (i = 0; i < boxDice.length; i++){
+									boxDice[i][1] = false;
+								}
+								timer = new Timer(2500, 1);
+								timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+								timer.start(); 
+							}else{ // Пользователь уже вошел в игру (отнимаем -100 и передаём ход дальше)
+								buttonApply.visible = false;
+								buttonCancel.visible = false;
+								players[0][2] -= 100;
+								(players[0][1] as TextField).text = players[0][0] + ": " + players[0][2];
+								score = 0;
+								playerIndex++;
+								diceCountMax = 5;
+								messageText.text = "Вы набрали -100 очков. Вы пропускаете этот ход.";
+								for (i = 0; i < boxDice.length; i++){
+									boxDice[i][1] = false;
+								}
+								timer = new Timer(2500, 1);
+								timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+								timer.start(); 
+							}
+						}else{ // score > 0
+							totalScore = score + players[0][2];
+							if (score >= 1000 || totalScore >= 1000) {
+								score = totalScore;
+								messageText.text = "Вы победили!!!\n Вы набрали " + totalScore + " очков.";
+								endGame("WIN");
+							}else{
+								messageText.text = "Вы набрали " + score + " очков. \nЖелаете бросить ещё?";
+								if (diceCountMax == 0){
+									for (i = 0; i < boxDice.length; i++){
+										boxDice[i][1] = false;
+									}
+									buttonApply.visible = true;
+									buttonCancel.visible = true;
+								}
+							}
+						}
+					}else{
+						messageText.text = "Вы набрали " + score + " очков. \nЖелаете бросить ещё?";
+						if (diceCountMax == 0){
+							for (i = 0; i < boxDice.length; i++){
+								boxDice[i][1] = false;
+							}
+						}
+						buttonApply.visible = true;
+						buttonCancel.visible = true;
+						
+						totalScore = score + players[0][2];
+						if (totalScore >= 1000){
+							score = totalScore;
+							messageText.text = "Вы победили!!!\n Вы набрали " + totalScore + " очков.";
+							endGame("WIN");
+						}
+					}
+				} else{ // ничего не выпало
+					score = 0;
+					playerIndex++;
+					diceCountMax = 5;
+					messageText.text = "Вам ничего не выпало. Ход переходит к " + players[playerIndex][0] + ".";
+					buttonApply.visible = false;
+					buttonCancel.visible = false;
+					for (i = 0; i < boxDice.length; i++){
+						boxDice[i][1] = false;
+					}
+					timer = new Timer(2500, 1);
+					timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+					timer.start(); 
+				}
 			}
-
+		}
+		
+		private function onTimerComplete(e:TimerEvent):void 
+		{
+			timer.stop();
+			timer = null;
+			if (pause == false) rollDiceAI();
 		}
 		
 		private function rollDiceAI():void
 		{
+			Sounds.PlaySound(Sounds.Sound2);
 			
+			var i:int;
+			var index:int;
+			var newPosX:int;
+			var newPosY:int;
+			
+			if (diceCountMax === 0) diceCountMax = 5;
+			
+			for (i = 0; i < boxDice.length; i++){
+				if (boxDice[i][1] == false){
+					index = Utils.getRandomInt(1, 7); // 1,2,3,4,5,6
+					newPosX = 250 + (Math.random() / 0.1) * (i * 8);
+					newPosY = 250 + (Math.random() / 0.1) * (i * 5);
+					
+					(boxDice[i][4] as Sprite).removeChildren(0, -1, true);
+					image = new Image(Atlases.textureAtlas.getTexture("anim_dice" + index.toString() + index.toString() + ".png"));
+					
+					(boxDice[i][4] as Sprite).addChild(image);
+					(boxDice[i][4] as Sprite).x = newPosX;
+					(boxDice[i][4] as Sprite).y = newPosY;
+					(boxDice[i][4] as Sprite).visible = false;
+					boxDice[i][0] = index;
+					
+					tween = new Tween(animDices[i], 1.0);
+					tween.moveTo(newPosX, newPosY);
+					tween.onComplete = onRollDiceAITweenComplete;
+					Starling.juggler.add(tween);
+				}
+			}
+		}
+		
+		private function onRollDiceAITweenComplete():void 
+		{
+			var i:int;
+			var totalScore:int;
+			diceCountMax--;
+			
+			if (diceCountMax == 0){
+				diceCountMax = 5;
+				if (checkScoreDice() == true){ // что-то выпало (checkScoreDice изменяет значение diceCountMax)
+					if (diceCountMax === 0) { // если все кости принесли очки
+						if (score < 0) { // если выпали 1,2,3,4,5 и у игрока -100 очков
+							if (players[playerIndex][3] == false) { // ИИ еще не вошел в игре (передаем ход дальше)
+								if (playerIndex < 3){// ход переходит к следующему ИИ игроку
+									playerIndex++;
+									score = 0;
+									diceCountMax = 5;
+									messageText.text = players[playerIndex - 1][0] + " получил -100 очков.\nХод переходит к " + this.players[playerIndex][0];
+									buttonApply.visible = false;
+									buttonCancel.visible = false;
+									for (i = 0; i < boxDice.length; i++){
+										boxDice[i][1] = false;
+									}
+									timer = new Timer(2500, 1);
+									timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+									timer.start(); 
+								}else{ // ход переходит к пользователю
+									if (timer != null) timer.stop();
+									messageText.text = players[playerIndex][0] + " получил -100 очков.\nХод переходит к Вам.";
+									score = 0;
+									playerIndex = 0;
+									diceCountMax = 5;
+									buttonApply.visible = true;
+									buttonCancel.visible = true;
+									for (i = 0; i < boxDice.length; i++){
+										boxDice[i][1] = false;
+									}
+								}
+							}else{ // ИИ уже вошел в игру (отнимаем -100 и передаём ход дальше)
+								players[playerIndex][2] -= 100;
+								(players[playerIndex][1] as TextField).text = players[playerIndex][0] + ": " + players[playerIndex][2];
+								
+								if (playerIndex < 3) { // ход переходит к следующему ИИ игроку
+									playerIndex++;
+									score = 0;
+									diceCountMax = 5;
+									messageText.text = players[playerIndex - 1][0] + " получил -100 очков.\nХод переходит к " + players[playerIndex][0];
+									buttonApply.visible = false;
+									buttonCancel.visible = false;
+									for (i = 0; i < boxDice.length; i++){
+										boxDice[i][1] = false;
+									}
+									timer = new Timer(2500, 1);
+									timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+									timer.start(); 
+								} else { // ход переходит к пользователю
+									if (timer != null) timer.stop();
+									messageText.text = players[playerIndex][0] + " получил -100 очков.\nХод переходит к Вам.";
+									score = 0;
+									playerIndex = 0;
+									diceCountMax = 5;
+									buttonApply.visible = true;
+									buttonCancel.visible = true;
+									for (i = 0; i < boxDice.length; i++){
+										boxDice[i][1] = false;
+									}
+								}
+								
+							}
+						}else{ // score > 0
+							totalScore = score + players[playerIndex][2];
+							if (score >= 1000 || totalScore >= 1000) {
+								endGame("LOST");
+							}else{
+								diceCountMax = 5;
+								for (i = 0; i < boxDice.length; i++){
+									boxDice[i][1] = false;
+								}
+								messageText.text = players[playerIndex][0] + " набрал " + score + " очков\nи продолжает бросать кости.";
+								timer = new Timer(2500, 1);
+								timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+								timer.start(); 
+							}
+						}
+						
+					}else{ // если еще остались кости которые не принесли очки
+						if (players[playerIndex][3] == false){ // ИИ еще не вошел в игру
+							if (score < 75) { // ИИ не набрал нужное количество очков, продолжает бросать кости
+								messageText.text = players[playerIndex][0] + " набрал " + score + " очков\nи продолжает бросать кости.";
+								timer = new Timer(2500, 1);
+								timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+								timer.start(); 
+							}else{ // ИИ набрал достаточно очков для входа и передаёт ход следующему игроку.
+								players[playerIndex][2] += score;
+								(players[playerIndex][1] as TextField).text = players[playerIndex][0] + ": " + players[playerIndex][2];
+								players[playerIndex][3] = true;
+								
+								if (players[playerIndex][2] >= 1000){
+									endGame("LOST");
+								}else{
+									
+									if (playerIndex < 3) { // ход переходит к следующему ИИ игроку
+										playerIndex++;
+										messageText.text = players[playerIndex - 1][0] + " набрал " + score + " очков.\nХод переходит к " + players[playerIndex][0];
+										score = 0;
+										diceCountMax = 5;
+										buttonApply.visible = false;
+										buttonCancel.visible = false;
+										for (i = 0; i < boxDice.length; i++){
+											boxDice[i][1] = false;
+										}
+										timer = new Timer(2500, 1);
+										timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+										timer.start(); 
+									}else{ // ход переходит к пользователю
+										if (timer != null) timer.stop();
+										messageText.text = players[playerIndex][0] + " набрала " + score + " очков.\nХод переходит к Вам.";
+										score = 0;
+										playerIndex = 0;
+										diceCountMax = 5;
+										buttonApply.visible = true;
+										buttonCancel.visible = true;
+										for (i = 0; i < boxDice.length; i++){
+											boxDice[i][1] = false;
+										}
+									}
+								}
+							}
+						}else{ // ИИ уже вошел в игру
+							totalScore = score + players[playerIndex][2];
+							if (totalScore >= 1000) {
+								messageText.text = players[playerIndex][0] + " набрал " + totalScore + " очков\nи победил!";
+								endGame("LOST");
+								return;
+							}
+							
+							if (diceCountMax > 2) { // если очки принесли только 1-2 кубика - ИИ продолжает бросать
+								messageText.text = players[playerIndex][0] + " набрал " + score + " очков\nи продолжает бросать кости.";
+								timer = new Timer(2500, 1);
+								timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+								timer.start(); 
+							}else{ // если очки принесли 3 и блее кубиков - ИИ решает бросать сам
+								if (Utils.getRandomInt(0, 10) > 5){ // ИИ кидает еще
+									messageText.text = players[playerIndex][0] + " набрал " + score + " очков\nи продолжает бросать кости.";
+									timer = new Timer(2500, 1);
+									timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+									timer.start();
+								}else{ // ИИ отказывается
+									// сохраняем результат ИИ
+									if (players[playerIndex][3] == true) { // если ИИ уже вошел в игру
+										players[playerIndex][2] += score;
+										(players[playerIndex][1] as TextField).text = players[playerIndex][0] + ": " + players[playerIndex][2];
+									}else{ // ИИ ещё не вошел в игру
+										if (score >= 75) { // ИИ набрал необходимое количество очков для входа
+											players[playerIndex][2] += score;
+											(players[playerIndex][1] as TextField).text = players[playerIndex][0] + ": " + players[playerIndex][2];
+											players[playerIndex][3] = true;
+										}
+									}
+									
+									if (players[playerIndex][2] >= 1000) {
+										endGame("LOST");
+									}else{
+										if (playerIndex < 3) { // ход переходит к следующему ИИ игроку
+											playerIndex++;
+											messageText.text = players[playerIndex - 1][0] + " набрал " + score + " очков.\nХод переходит к " + players[playerIndex][0];
+											score = 0;
+											diceCountMax = 5;
+											buttonApply.visible = false;
+											buttonCancel.visible = false;
+											for (i = 0; i < boxDice.length; i++){
+												boxDice[i][1] = false;
+											}
+											timer = new Timer(2500, 1);
+											timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+											timer.start(); 
+										}else{ // ход переходит к пользователю
+											if (timer != null) timer.stop();
+											messageText.text = players[playerIndex][0] + " набрала " + score + " очков.\nХод переходит к Вам.";
+											score = 0;
+											playerIndex = 0;
+											diceCountMax = 5;
+											buttonApply.visible = true;
+											buttonCancel.visible = true;
+											for (i = 0; i < boxDice.length; i++){
+												boxDice[i][1] = false;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}else{ // ничего не выпало
+					if (playerIndex < 3) { // ход переходит к следующему ИИ игроку
+						playerIndex++;
+						messageText.text = players[playerIndex - 1][0] + " ничего не выпало.\nХод переходит к " + players[playerIndex][0];
+						score = 0;
+						diceCountMax = 5;
+						buttonApply.visible = false;
+						buttonCancel.visible = false;
+						for (i = 0; i < boxDice.length; i++){
+							boxDice[i][1] = false;
+						}
+						timer = new Timer(2500, 1);
+						timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+						timer.start(); 
+					}else{ // ход переходит к пользователю
+						if (timer != null) timer.stop();
+						messageText.text = players[playerIndex][0] + " ничего не выпало.\nХод переходит к Вам.";
+						score = 0;
+						playerIndex = 0;
+						diceCountMax = 5;
+						buttonApply.visible = true;
+						buttonCancel.visible = true;
+						for (i = 0; i < boxDice.length; i++){
+							boxDice[i][1] = false;
+						}
+					}
+				}
+			}
 		}
 		
 		private function checkScoreDice():Boolean
@@ -432,27 +776,27 @@ package bones.thousand
 			
 			if (dice.length == 5){
 				if (dice[0] == 1 && dice[1] == 2 && dice[2] == 3 && dice[3] == 4 && dice[4] == 5){
-					score -= 100; // возможен БАГ!!!!!!!!!!!
-					selectDice("ALL");
+					score = -100;
+					selectDice(null);
 					diceCountMax -= 5;
 					return true;
 				}
 				if (dice[0] == 2 && dice[1] == 3 && dice[2] == 4 && dice[3] == 5 && dice[4] == 6){
 					score += 200;
-					selectDice("ALL");
+					selectDice(null);
 					diceCountMax -= 5;
 					return true;
 				}
 				if (dice[0] == dice[1] && dice[0] == dice[2] && dice[0] == dice[3] && dice[0] == dice[4]) {
 					score += 1000;
-					selectDice("ALL");
+					selectDice(null);
 					diceCountMax -= 5;
 					return true;
 				}
 			}else{
 				return false;
 			}
-			
+			return false;
 		}
 		
 		private function checkDice4():Boolean
@@ -489,18 +833,100 @@ package bones.thousand
 		
 		private function checkDice3():Boolean
 		{
-			
+			var i:int;
+			var j:int;
+			var dice: Array = [];
+			/* Поиск одинаковых значений кубиков */
+			for (i = 0; i < boxDice.length; i++){
+				if (boxDice[i][1] == false){
+					for (j = 0; j < boxDice.length; j++){
+						if (i != j && boxDice[j][1] == false && boxDice[i][0] == boxDice[j][0]){
+							dice.push(j);
+						}
+					}
+					if (dice.length == 2){
+						dice.push(i);
+						if (boxDice[i][0] == 1) score += 30;
+						if (boxDice[i][0] == 2) score += 20;
+						if (boxDice[i][0] == 3) score += 30;
+						if (boxDice[i][0] == 4) score += 40;
+						if (boxDice[i][0] == 5) score += 50;
+						if (boxDice[i][0] == 6) score += 60;
+						selectDice(dice);
+						diceCountMax -= 3;
+						return true;
+					}else{
+						dice = [];
+					}
+				}
+			}
+			return false;
 		}
 		
 		private function checkDice1():Boolean
 		{
-			
+			var i:int;
+			var result:Boolean = false;
+			var dice: Array = [];
+			for (i = 0; i < boxDice.length; i++){
+				if (boxDice[i][1] == false) {
+					if (boxDice[i][0] == 1){
+						result = true;
+						score += 10;
+						dice.push(i);
+						diceCountMax -= 1;
+					}
+					if (boxDice[i][0] == 5){
+						result = true;
+						score += 5;
+						dice.push(i);
+						diceCountMax -= 1;
+					}
+				}
+			}
+			if (result == true) selectDice(dice);
+			return result;
 		}
 		
+		private function selectDice(dice:Array):void
+		{
+			var i:int;
+			if (dice == null) {
+				for (i = 0; i < boxDice.length; i++){
+					boxDice[i][1] = false;
+					tween = new Tween(boxDice[i][4], 1.0);
+					tween.moveTo(boxDice[i][2], boxDice[i][3]);
+					Starling.juggler.add(tween);
+				}
+			}else{
+				var count:int = dice.length;
+				for (i = 0; i < count; i++){
+					boxDice[dice[i]][1] = true;
+					tween = new Tween(boxDice[dice[i]][4], 1.0);
+					tween.moveTo(boxDice[dice[i]][2], boxDice[dice[i]][3]);
+					Starling.juggler.add(tween);
+				}
+			}
+		}
 		
 		private function endGame(type:String):void
 		{
+			pause = true;
+			if (timer != null) timer.stop();
 			
+			Data.userRatingThousand = players[0][2];
+			
+			if (type == "WIN"){
+				if (gameOver == false){
+					gameOver = true;
+					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.THOUSAND_WIN }));
+				}
+			}else{
+				if (gameOver == false){
+					gameOver = true;
+					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.THOUSAND_LOST }));
+				}
+			}
 		}
 	}
 

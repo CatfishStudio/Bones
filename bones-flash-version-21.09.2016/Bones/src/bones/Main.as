@@ -7,11 +7,13 @@ package bones
 	import flash.display3D.Context3DRenderMode;
 	import flash.geom.Rectangle;
 	
+	
 	import starling.core.Starling;
 	import starling.display.Stage;
 	
 	import bones.data.Constants;
-	
+	import bones.vkAPI.VK;
+	import vk.APIConnection;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -31,7 +33,15 @@ package bones
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
+			vkInit();
 			initStarling();
+		}
+		
+		/* Иникиализация ВКонтакте */
+		private function vkInit():void
+		{
+			var flashVars: Object = stage.loaderInfo.parameters as Object;
+			VK.vkConnection = new APIConnection(flashVars);
 		}
 		
 		private function initStarling():void

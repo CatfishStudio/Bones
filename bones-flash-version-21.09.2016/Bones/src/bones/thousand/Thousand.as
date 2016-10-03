@@ -253,9 +253,9 @@ package bones.thousand
 			playerIndex = 0;
 			players = [
 				["Вы", new TextField(200, 50, "Вы", textFormat), 0, false, 45, 533],
-				["Морган", new TextField(200, 50, "Джек", textFormat), 0, false, 45, 240],
-				["Анжелика", new TextField(200, 50, "Барбосса", textFormat), 0, false, 628, 240],
-				["Тэтч", new TextField(200, 50, "Анжелика", textFormat), 0, false, 628, 533]
+				["Морган", new TextField(200, 50, "Морган", textFormat), 0, false, 45, 240],
+				["Анжелика", new TextField(200, 50, "Анжелика", textFormat), 0, false, 628, 240],
+				["Тэтч", new TextField(200, 50, "Тэтч", textFormat), 0, false, 628, 533]
 			];
 			
 			var i:int;
@@ -342,6 +342,7 @@ package bones.thousand
 			for (i = 0; i < boxDice.length; i++){
 				if (boxDice[i][1] == false){
 					index = Utils.getRandomInt(1, 7); // 1,2,3,4,5,6
+					if (index == 0) index = 1;
 					newPosX = 250 + (Math.random() / 0.1) * (i * 8);
 					newPosY = 250 + (Math.random() / 0.1) * (i * 5);
 					
@@ -369,16 +370,6 @@ package bones.thousand
 		
 		private function onRollDiceTweenComplete():void 
 		{
-			/*
-			Starling.juggler.remove(tween);
-			tween = null;
-			var i:int;
-			for (i = 0; i < animDices.length; i++){
-				animDices[i].stop();
-				animDices[i].visible = false;
-				(boxDice[i][4] as Sprite).visible = true;
-			}
-			*/
 			var i:int;
 			var totalScore:int;
 			diceCountMax--;
@@ -497,6 +488,7 @@ package bones.thousand
 			for (i = 0; i < boxDice.length; i++){
 				if (boxDice[i][1] == false){
 					index = Utils.getRandomInt(1, 7); // 1,2,3,4,5,6
+					if (index == 0) index = 1;
 					newPosX = 250 + (Math.random() / 0.1) * (i * 8);
 					newPosY = 250 + (Math.random() / 0.1) * (i * 5);
 					
@@ -508,6 +500,11 @@ package bones.thousand
 					(boxDice[i][4] as Sprite).y = newPosY;
 					(boxDice[i][4] as Sprite).visible = false;
 					boxDice[i][0] = index;
+					
+					animDices[i].x = boxDice[i][2];
+					animDices[i].y = boxDice[i][3];
+					animDices[i].play();
+					animDices[i].visible = true;
 					
 					tween = new Tween(animDices[i], 1.0);
 					tween.moveTo(newPosX, newPosY);
@@ -524,6 +521,15 @@ package bones.thousand
 			diceCountMax--;
 			
 			if (diceCountMax == 0){
+				
+				Starling.juggler.remove(tween);
+				tween = null;
+				for (i = 0; i < animDices.length; i++){
+					animDices[i].stop();
+					animDices[i].visible = false;
+					(boxDice[i][4] as Sprite).visible = true;
+				}
+				
 				diceCountMax = 5;
 				if (checkScoreDice() == true){ // что-то выпало (checkScoreDice изменяет значение diceCountMax)
 					if (diceCountMax === 0) { // если все кости принесли очки
@@ -894,7 +900,7 @@ package bones.thousand
 			if (dice == null) {
 				for (i = 0; i < boxDice.length; i++){
 					boxDice[i][1] = false;
-					tween = new Tween(boxDice[i][4], 1.0);
+					tween = new Tween(boxDice[i][4], 0.5);
 					tween.moveTo(boxDice[i][2], boxDice[i][3]);
 					Starling.juggler.add(tween);
 				}
@@ -902,7 +908,7 @@ package bones.thousand
 				var count:int = dice.length;
 				for (i = 0; i < count; i++){
 					boxDice[dice[i]][1] = true;
-					tween = new Tween(boxDice[dice[i]][4], 1.0);
+					tween = new Tween(boxDice[dice[i]][4], 0.5);
 					tween.moveTo(boxDice[dice[i]][2], boxDice[dice[i]][3]);
 					Starling.juggler.add(tween);
 				}
@@ -918,16 +924,51 @@ package bones.thousand
 			
 			if (type == "WIN"){
 				if (gameOver == false){
+					players[0][2] += score;
+					Data.userRatingThousand = players[0][2];
 					gameOver = true;
-					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.THOUSAND_WIN }));
+					timer = new Timer(1500, 1);
+					timer.addEventListener(TimerEvent.TIMER_COMPLETE, winGame); 
+					timer.start();
+					
 				}
 			}else{
 				if (gameOver == false){
 					gameOver = true;
-					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.THOUSAND_LOST }));
+					timer = new Timer(1500, 1);
+					timer.addEventListener(TimerEvent.TIMER_COMPLETE, lostGame); 
+					timer.start();
 				}
 			}
 		}
+		
+		private function winGame(e:TimerEvent):void
+		{
+			dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.THOUSAND_WIN }));
+		}
+		
+		private function lostGame(e:TimerEvent):void
+		{
+			dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.THOUSAND_LOST }));
+		}
+		
+		public function Pause(value:Boolean):void
+		{
+			if (value == true){
+				pause = value;
+				if (timer != null){
+					timer.stop();
+					timer = null;
+				}
+			}else{
+				pause = value;
+				timer = new Timer(500, 1);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
+				timer.start();
+			}
+			
+		}
+		
 	}
 
 }

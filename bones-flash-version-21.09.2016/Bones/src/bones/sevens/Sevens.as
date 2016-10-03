@@ -581,7 +581,7 @@ package bones.sevens
 			if(fieldDices != null){
 				count = fieldDices.length;
 				for (i = 0; i < count; i++){
-					if (fieldDices[i][fieldDices[i].length - 1] == null) continue;
+					if ((fieldDices[i].length - 1) < 0) continue;
 					if (fieldDices[i][fieldDices[i].length - 1].getSelect()){
 						fieldDices[i][fieldDices[i].length - 1].notHighlight();
 						fieldDices[i][fieldDices[i].length - 1].select();

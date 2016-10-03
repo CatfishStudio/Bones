@@ -25,7 +25,7 @@ package bones
 	 */
 	public class Game extends Sprite 
 	{
-		
+		private var _thousand:Thousand;
 		public function Game() 
 		{
 			super();
@@ -65,11 +65,11 @@ package bones
 			if (getChildByName(Constants.SETTINGS) != null)
 			{
 				removeChild(getChildByName(Constants.SETTINGS));
-				//if (getChildByName(Constants.MK_WINDOW_LEVEL)) _level.timerPause(false);
+				if (_thousand != null) _thousand.Pause(false);
 			}
 			else
 			{
-				//if (getChildByName(Constants.MK_WINDOW_LEVEL)) _level.timerPause(true);
+				if (_thousand != null) _thousand.Pause(true);
 				addChild(new Settings());
 			}
 		}
@@ -157,11 +157,14 @@ package bones
 			Sounds.PlaySound(Sounds.Sound3);
 			if (getChildByName(Constants.THOUSAND) != null)
 			{
-				removeChild(getChildByName(Constants.THOUSAND));
+				removeChild(_thousand);
+				_thousand.dispose();
+				_thousand = null;
 			}
 			else
 			{
-				addChild(new Thousand());
+				_thousand = new Thousand();
+				addChild(_thousand);
 			}
 		}
 		
@@ -171,9 +174,11 @@ package bones
 			if (getChildByName(Constants.THOUSAND_HELP) != null)
 			{
 				removeChild(getChildByName(Constants.THOUSAND_HELP));
+				if (_thousand != null) _thousand.Pause(false);
 			}
 			else
 			{
+				if (_thousand != null) _thousand.Pause(true);
 				addChild(new ThousandHelp());
 			}
 		}
@@ -187,6 +192,7 @@ package bones
 			}
 			else
 			{
+				if (_thousand != null) _thousand.Pause(true);
 				addChild(new ThousandEndGame());
 			}
 		}
@@ -200,6 +206,7 @@ package bones
 			}
 			else
 			{
+				if (_thousand != null) _thousand.Pause(true);
 				addChild(new ThousandWinGame());
 			}
 		}

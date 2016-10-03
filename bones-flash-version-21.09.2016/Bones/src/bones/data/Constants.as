@@ -46,7 +46,7 @@ package bones.data
 		
 		public static const THOUSAND:String = "thousand";
 		public static const THOUSAND_LOST:String = "thousandLost";
-		public static const THOUSAND_WIN:String = "thousand";
+		public static const THOUSAND_WIN:String = "thousandWin";
 		public static const THOUSAND_BUTTON_HELP:String = "thousandButtonHelp";
 		public static const THOUSAND_BUTTON_END_GAME:String = "thousandButtonEndGame";
 		

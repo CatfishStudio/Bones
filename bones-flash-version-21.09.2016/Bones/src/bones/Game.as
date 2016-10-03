@@ -19,6 +19,8 @@ package bones
 	import bones.thousand.ThousandEndGame;
 	import bones.thousand.ThousandHelp;
 	import bones.thousand.ThousandWinGame;
+	import bones.data.Data;
+	import bones.vkAPI.VK;
 	/**
 	 * ...
 	 * @author Catfish Studio
@@ -363,6 +365,8 @@ package bones
 				}
 				case Constants.MENU_BUTTON_IVENT:
 				{
+					// VK
+					VK.vkConnection.callMethod("showInviteBox");
 					break;
 				}				
 				case Constants.MENU_BUTTON_HELP:
@@ -385,9 +389,16 @@ package bones
 					rating();
 					break;
 				}
-				case Constants.BUTTON_POST:
+				case Constants.BUTTON_POST_SEVENS:
 				{
-					// POST !!!
+					// POST
+					VK.vkConnection.api('wall.post', { message: 'Игры в кости - Тысяча и Семёрка. \nЯ прошел игру Семёрка! \nНабрал ' + Data.userRatingSevens + ' очков. \nПрисоединяйтесь к игре https://vk.com/app5380703', attachments : 'photo-62618339_409463964' } , function(data) {} , function(data) {} );
+					break;
+				}
+				case Constants.BUTTON_POST_THOUSAND:
+				{
+					// POST
+					VK.vkConnection.api('wall.post', { message: 'Игры в кости - Тысяча и Семёрка. \nЯ прошел игру Тысяча! \nНабрал ' + Data.userRatingThousand + ' очков. \nПрисоединяйтесь к игре https://vk.com/app5380703', attachments : 'photo-62618339_409463964' } , function(data) {} , function(data) {} );
 					break;
 				}
 				default:

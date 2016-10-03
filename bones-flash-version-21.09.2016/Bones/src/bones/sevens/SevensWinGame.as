@@ -167,7 +167,7 @@ package bones.sevens
 			
 			bitmap = new Images.ImgButtonPost();
 			button = new Button(Texture.fromBitmap(bitmap));
-			button.name = Constants.BUTTON_POST;
+			button.name = Constants.BUTTON_POST_SEVENS;
 			button.x = image.width - (button.width / 2.5);
 			button.y = image.height + 110;
 			sprite.addChild(button);
@@ -201,7 +201,7 @@ package bones.sevens
 					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 					break;
 				}
-				case Constants.BUTTON_POST:
+				case Constants.BUTTON_POST_SEVENS:
 				{
 					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Button(e.target).name }));
 					break;

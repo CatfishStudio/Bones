@@ -10,7 +10,8 @@ package bones.data
 		public static const GAME_WINDOW_HEIGHT:int = 730;
 		
 		public static const BUTTON_SETTINGS:String = "buttonSettings";
-		public static const BUTTON_POST:String = "buttonPost";
+		public static const BUTTON_POST_SEVENS:String = "buttonPostSevens";
+		public static const BUTTON_POST_THOUSAND:String = "buttonPostThousand";
 		
 		public static const MENU:String = "menu";		
 		public static const MENU_BUTTON_THOUSAND:String = "menuButtonThousand";

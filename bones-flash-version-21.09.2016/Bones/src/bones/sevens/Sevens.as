@@ -509,7 +509,9 @@ package bones.sevens
 				rollDice();
 			}
 			
-			checkGameOver();
+			if (completeColumns[0].visible == false && completeColumns[1].visible == false && completeColumns[2].visible == false && completeColumns[3].visible == false && completeColumns[4].visible == false) {
+				checkGameOver();
+			}
 			textField1.text = "Сумма кубиков: ";
 		}
 		
@@ -721,7 +723,9 @@ package bones.sevens
 			if (completeColumns[0].visible && completeColumns[1].visible && completeColumns[2].visible && completeColumns[3].visible && completeColumns[4].visible) {
 				trace('[SAVENS]: game over - win!');
 				Data.userRatingSevens = score;
-				dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.SEVENS_WIN }));
+				timer = new Timer(1000, 1);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE, winGame); 
+				timer.start();
 				return;
 			}
 			
@@ -730,9 +734,21 @@ package bones.sevens
 				Data.userRatingSevens = score;
 				if (gameOver == false){
 					gameOver = true;
-					dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.SEVENS_LOST }));
+					timer = new Timer(1000, 1);
+					timer.addEventListener(TimerEvent.TIMER_COMPLETE, lostGame); 
+					timer.start();
 				}
 			}
+		}
+		
+		private function winGame(e:TimerEvent):void
+		{
+			dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.SEVENS_WIN }));
+		}
+		
+		private function lostGame(e:TimerEvent):void
+		{
+			dispatchEvent(new Navigation(Navigation.CHANGE_SCREEN, true, { id: Constants.SEVENS_LOST }));
 		}
 		
 	}

@@ -664,7 +664,7 @@ package bones.thousand
 								timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 
 								timer.start(); 
 							}else{ // если очки принесли 3 и блее кубиков - ИИ решает бросать сам
-								if (Utils.getRandomInt(0, 10) > 5){ // ИИ кидает еще
+								if (Utils.getRandomInt(0, 10) > 7){ // ИИ кидает еще
 									messageText.text = players[playerIndex][0] + " набрал " + score + " очков\nи продолжает бросать кости.";
 									timer = new Timer(2500, 1);
 									timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete); 

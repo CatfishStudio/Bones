@@ -1,22 +1,23 @@
-package LoadGame
+package LoadBonesGame
 {
 	import com.vk.MainVKBanner;
 	import com.vk.MainVKBannerEvent;
 	import com.vk.vo.BannersPanelVO;
+	
+	import flash.display.Bitmap;
+	import flash.system.LoaderContext;
+	import flash.system.ApplicationDomain;
+	import flash.system.SecurityDomain;
+	import flash.system.Security;
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.net.URLRequest;
-	import flash.system.ApplicationDomain;
-	import flash.system.LoaderContext;
-	import flash.system.Security;
-	import flash.system.SecurityDomain;
 	import flash.events.ProgressEvent;
-	import flash.display.Bitmap;
+	import flash.net.URLRequest;
 	
 	// ------------------------------------
-	import flash.display.Sprite;
+	 import flash.display.Sprite;
     import flash.display.MovieClip;
     import flash.display.DisplayObject;
     import flash.events.Event;
@@ -30,80 +31,71 @@ package LoadGame
     import flash.text.TextFormat;
     import flash.text.TextFieldType;
 	// ------------------------------------
-		
+	
+	import LoadBonesGame.Label;
 	/**
 	 * ...
 	 * @author Catfish Studio
 	 */
+	[SWF(width="1010", height="730", frameRate="60", backgroundColor="#ffffff")]
 	public class Main extends Sprite 
 	{
+		/*
 		[Embed(source = '../../assets/background.jpg')]
 		private var BackgroundImage:Class;
-		private var _image:Bitmap = new BackgroundImage();
+		private var _image:Bitmap;
 		
 		[Embed(source = '../../assets/logo.png')]
 		private var LogoImage:Class;
-		private var _imageLogo:Bitmap = new LogoImage();
-		
+		private var _imageLogo:Bitmap;
+		*/
 		
 		private var _request:URLRequest;
 		private var _loader:Loader;
 		private var _loaderContext:LoaderContext;
 		
-		private var loader: Loader;
+		private var _progressText:Label; // текст загрузки в процентах
 		
 		public function Main() 
 		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
+			//if (stage) init();
+			//else addEventListener(Event.ADDED_TO_STAGE, init);
+			
+			super();
+            init();
+            Security.allowDomain("*");
+            Security.allowInsecureDomain("*");
+            
 		}
 		
-		private function init(e:Event = null):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
+		private function init():void
+        {
+			//_image = new BackgroundImage();
+			//addChild(_image);
+			
+			//_imageLogo = new LogoImage();
+			//_imageLogo.y = 730 - _imageLogo.height;
+			//addChild(_imageLogo);
+			
+			/* Текстовое отображение загругки в процентах */
+			_progressText = new Label(380, 380, 300, 70, "Monotype Corsiva", 25, 0x000000, "Загрузка 0%", false);
+			_progressText.text = "Загрузка 0%";
+			this.addChild(_progressText);
 			
 			initGame();
-			
-			this.loader = new Loader();
-			var context: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
-			context.securityDomain = SecurityDomain.currentDomain;
-			try
-			{
-				// Загружается библиотека с указанным LoaderContext
-				this.loader.load(new URLRequest('http://api.vk.com/swf/vk_ads.swf'), context);
-				// По окончанию загрузки выполнится функция loader_onLoad
-				this.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, this.loader_onLoad);
-			}
-			catch (e: Error)
-			{
-				// если приложение запущено локально, то здесь можно разместить заглушку рекламного блока
-				trace('Main.init; error:', e.message);
-			}
-		}
-		
-		private var _progressText:Label; // текст загрузки в процентах
+        }
 		
 		private function initGame(e:Event = null):void 
 		{
-			/* Текстовое отображение загругки в процентах */
-			_progressText = new Label(638, 680, 200, 30, "Monotype Corsiva", 25, 0xFFFFAA, "Загрузка...", false);
-			_progressText.text = "Загрузка ...";
-			this.addChild(_progressText);
+			//bannerEnd = true;
 			
 			_loader = new Loader();
 			_loaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, SecurityDomain.currentDomain);
-			_request = new URLRequest("http://app.vk.com/c420925/u99302165/968a79468a38a5.swf");
+			_request = new URLRequest("http://app.vk.com/c420925/u99302165/656fd82674530d.swf");
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, LoadComplite);
 			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgress);
 			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, LoadError);
 			_loader.load(_request, _loaderContext);
-		}
-		
-		private function LoadComplite(e:Event):void 
-		{
-			this.removeChild(_progressText);
-			_progressText = null;
-			this.addChild(_loader);
 		}
 		
 		private function onProgress(e:ProgressEvent):void 
@@ -118,20 +110,37 @@ package LoadGame
 			trace("Error!!! " + e.toString() );
 		}
 		
-		private function loader_onLoad(e: Event) : void 
+		private function LoadComplite(e:Event):void
 		{
-			// если библиотека загружена правильно, то выполнится функция initBanner, в ином случае вы получите ошибку 1014
-			try
-			{
-				this.initBanner();
-			}
-			catch (e: Error)
-			{
-				trace('Main.loader_onLoad :', 'error: ', e.message);
-			}
+			_progressText.text = "Загрузка завершена! ";
+			_loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, LoadComplite); 
+			
+			this.removeChild(_progressText);
+			_progressText = null;
+			
+			this.addChild(_loader);
+			
+			initBanner();
+			/*
+			this.removeChild(_imageLogo);
+			_imageLogo = null;
+			this.removeChild(_image);
+			_image = null;
+			this.removeChild(_progressText);
+			_progressText = null;
+			*/
 		}
 		
-		private function initBanner() : void 
+		private function initBanner():void
+		{
+			var loader: Loader = new Loader();
+			var context: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			context.securityDomain = SecurityDomain.currentDomain;
+			loader.load(new URLRequest('//api.vk.com/swf/vk_ads.swf'), context);
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loader_onLoadComplete);
+		}
+		
+		private function loader_onLoadComplete(e:Event):void 
 		{
 			var ad_unit_id: String = "75957"; // укажите тут свой id
 			var block: MainVKBanner = new MainVKBanner(ad_unit_id); // создание баннера и присвоение ему id

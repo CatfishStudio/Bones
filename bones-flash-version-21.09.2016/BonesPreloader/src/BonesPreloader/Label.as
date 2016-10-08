@@ -1,4 +1,4 @@
-package LoadBonesGame
+package BonesPreloader
 {
 	import flash.text.TextField;
 	

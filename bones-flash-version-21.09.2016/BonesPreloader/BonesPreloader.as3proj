@@ -4,9 +4,9 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\LoadBonesGame.swf" />
-    <movie fps="60" />
-    <movie width="1010" />
+    <movie path="bin\BonesPreloader.swf" />
+    <movie fps="30" />
+    <movie width="860" />
     <movie height="730" />
     <movie version="21" />
     <movie minorVersion="0" />
@@ -57,7 +57,7 @@
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
-    <element path="lib\vk_ads.swc" />
+    <!-- example: <element path="..." /> -->
   </externalLibraryPaths>
   <!-- Runtime Shared Libraries -->
   <rslPaths>
@@ -69,12 +69,11 @@
   </intrinsics>
   <!-- Assets to embed into the output SWF -->
   <library>
-    <asset path="assets\logo.png" />
     <asset path="assets\background.jpg" />
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\LoadBonesGame\Main.as" />
+    <compile path="src\BonesPreloader\Main.as" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>

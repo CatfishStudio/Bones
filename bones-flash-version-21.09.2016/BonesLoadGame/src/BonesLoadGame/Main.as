@@ -80,6 +80,7 @@ package BonesLoadGame
 				
 				loadGame();
 			}else{
+				preloaderContent.setValue(100);
 				removeChild(preloader);
 				preloader = null;
 				preloaderContent = null;

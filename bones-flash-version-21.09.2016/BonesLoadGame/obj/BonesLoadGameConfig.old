@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'08.10.2016'</value>
+      <value>'01.12.2016'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -48,7 +48,7 @@
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>60</default-frame-rate>
   <default-size>
-    <width>1010</width>
-    <height>730</height>
+    <width>1060</width>
+    <height>780</height>
   </default-size>
 </flex-config>

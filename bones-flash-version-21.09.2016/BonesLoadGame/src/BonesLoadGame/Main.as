@@ -19,7 +19,7 @@ package BonesLoadGame
 	 * ...
 	 * @author Catfish Studio
 	 */
-	[SWF(width="1010", height="730", frameRate="60", backgroundColor="#ffffff")]
+	[SWF(width="1060", height="780", frameRate="60", backgroundColor="#ffffff")]
 	public class Main extends Sprite 
 	{
 		private var request:URLRequest;
@@ -78,6 +78,7 @@ package BonesLoadGame
 				preloaderContent = preloader.content;
 				preloaderContent.setValue(0);
 				
+				loadBanner();
 				loadGame();
 			}else{
 				preloaderContent.setValue(100);
@@ -86,7 +87,7 @@ package BonesLoadGame
 				preloaderContent = null;
 				addChild(loader);
 				
-				loadBanner();
+				//loadBanner();
 			}
 		}
 		
@@ -94,7 +95,7 @@ package BonesLoadGame
 		{
 			loader = new Loader();
 			loaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, SecurityDomain.currentDomain);
-			request = new URLRequest("http://app.vk.com/c420925/u99302165/656fd82674530d.swf"); 
+			request = new URLRequest("http://app.vk.com/c420925/u99302165/b4cddfc6d5578c.swf"); 
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
 			loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgress);
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
@@ -137,7 +138,7 @@ package BonesLoadGame
 			params.lines_color = '#E3E3E3'; // цвет разделителей
 			params.link_color = '#666666'; // цвет надписи "Реклама ВКонтакте"
 			params.ads_count = 3; // количество выдаваемых баннеров
-			params.ad_width = 150; // максимальная ширина блока
+			params.ad_width = 120; // максимальная ширина блока
 			block.initBanner(this.loaderInfo.parameters, params); // инициализация баннера
 			
 			

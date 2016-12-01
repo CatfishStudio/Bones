@@ -48,7 +48,7 @@ package bones
 		{
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.addEventListener (Event.RESIZE, resizeListenerFlash);
+			//stage.addEventListener (Event.RESIZE, resizeListenerFlash);
 			starling = new Starling(Game, stage, null, null, Context3DRenderMode.SOFTWARE);
 			starling.antiAliasing = 1;
 			starling.start();

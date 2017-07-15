@@ -44,7 +44,7 @@ package BonesLoadGame
 			
 			loader = new Loader();
 			loaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, SecurityDomain.currentDomain);
-			request = new URLRequest("http://app.vk.com/c420925/u99302165/98c6f8a0057a61.swf"); 
+			request = new URLRequest("https://app.vk.com/c420925/u99302165/98c6f8a0057a61.swf"); 
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
 			loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgress);
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
@@ -95,7 +95,7 @@ package BonesLoadGame
 		{
 			loader = new Loader();
 			loaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, SecurityDomain.currentDomain);
-			request = new URLRequest("http://app.vk.com/c420925/u99302165/b4cddfc6d5578c.swf"); 
+			request = new URLRequest("https://app.vk.com/c420925/u99302165/b4cddfc6d5578c.swf"); 
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
 			loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgress);
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
